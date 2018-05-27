@@ -1,0 +1,3 @@
+playbook.retry
+.vagrant
+vaulted_vars/*.txt
