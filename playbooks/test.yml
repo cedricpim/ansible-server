@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: vagrant
 
   tasks:
     - debug:

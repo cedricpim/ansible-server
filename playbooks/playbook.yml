@@ -1,5 +1,9 @@
 ---
-- hosts: all
+- hosts: server
+
+  vars_files:
+    - "../vaulted_vars/system.yml"
+    - "../group_vars/system.yml"
 
   tasks:
     - debug:
