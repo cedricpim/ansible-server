@@ -1,1 +1,9 @@
 ---
+server: "vagrant.com"
+general_user: "vagrant-server"
+general_password: "$6$gaagXYxRAIVVCA$rUek2lqIML2u5YBkFxMj.DOwC.ELGfI1K7iMyvlyH7bB4s9R/3MVmnEKoFV6hoWRSOH.78SAbrtlXd1rqBTXT0"
+general_sshd_settings:
+  - { regexp: "Port 2222", line: "Port 2222" }
+  - { regexp: "Protocol", line: "Protocol 2" }
+general_sshd_replacements:
+  - { regexp: "^#HostKey(.*)", line: 'HostKey \1' }

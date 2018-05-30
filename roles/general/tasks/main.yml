@@ -1,0 +1,74 @@
+---
+- name: "Update current packages"
+  apt:
+    upgrade: yes
+    update_cache: yes
+    force_apt_get: yes
+  become: yes
+
+- name: "Install vim"
+  apt:
+    name: "vim"
+    state: "latest"
+  become: yes
+
+- name: "Create {{ general_user }} user"
+  user:
+    name: "{{ general_user }}"
+    password: "{{ general_password }}"
+    createhome: yes
+    shell: "/bin/bash"
+    state: "present"
+  become: yes
+
+- name: "Set authorized key from local user"
+  authorized_key:
+    user: "{{ general_user }}"
+    key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+    state: "present"
+  become: yes
+
+- name: "Add {{ general_user }} to sudoers"
+  lineinfile:
+    path: "/etc/sudoers"
+    regexp: '{{ general_user }} ALL=\(ALL\) ALL'
+    line: "{{ general_user }} ALL=(ALL) ALL"
+    validate: "visudo -cf %s"
+    backup: yes
+  become: yes
+
+- name: "Set sshd login configurations"
+  block:
+    - lineinfile: path="/etc/ssh/sshd_config" regexp='{{ item.regexp }}' line='{{ item.line }}' state="present" firstmatch=yes backup=yes
+      with_items: "{{ general_sshd_settings }}"
+      notify: "reload ssh"
+    - replace: path="/etc/ssh/sshd_config" regexp='{{ item.regexp }}' replace='{{ item.line }}' backup=yes
+      with_items: "{{ general_sshd_replacements }}"
+      notify: "reload ssh"
+  become: yes
+
+- name: "Create folder for scripts"
+  file:
+    path: "~{{ general_user }}/{{ general_scripts_directory }}"
+    owner: "{{ general_user }}"
+    group: "{{ general_user }}"
+    mode: "0700"
+    state: "directory"
+  become: yes
+
+- name: "Copy server custom scripts"
+  template:
+    src: "pserver-stats.j2"
+    dest: "~{{ general_user }}/{{ general_scripts_directory }}/pserver-stats"
+    owner: "{{ general_user }}"
+    group: "{{ general_user }}"
+    mode: "0700"
+  become: yes
+
+- name: "Add scripts folder to path"
+  lineinfile:
+    path: "~{{ general_user }}/.bashrc"
+    regexp: 'export.*{{ general_scripts_directory }}'
+    line: 'export PATH=$PATH:$HOME/{{ general_scripts_directory }}'
+    state: "present"
+  become: yes

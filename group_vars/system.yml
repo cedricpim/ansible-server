@@ -1,1 +1,7 @@
 ---
+server: "{{ vault_server }}"
+general_user: "{{ vault_general_user }}"
+general_password: "{{ vault_general_password }}"
+general_ssh_ports: "{{ vault_general_ssh_ports }}"
+general_sshd_settings: "{{ general_sshd_settings }}"
+general_sshd_replacements: "{{ general_sshd_replacements }}"
