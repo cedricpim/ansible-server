@@ -1,6 +1,16 @@
 ---
 - hosts: vagrant
 
-  tasks:
-    - debug:
-        msg: "A"
+  roles:
+    - { role: "general", tags: "general" }
+    - { role: "nginx", tags: "nginx" }
+    - { role: "keeweb", tags: "keeweb" }
+    - { role: "monit", tags: "monit" }
+    - { role: "netdata", tags: "netdata" }
+    - { role: "radicale", tags: "radicale" }
+    - { role: "sigal", tags: "sigal" }
+    - { role: "syncthing", tags: "syncthing" }
+    - { role: "email", tags: "email" }
+    - { role: "rkhunter", tags: "rkhunter" }
+    - { role: "fail2ban", tags: "fail2ban" }
+    - { role: "letsencrypt", tags: "letsencrypt" }

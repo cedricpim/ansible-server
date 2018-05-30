@@ -5,6 +5,15 @@
     - "../vaulted_vars/system.yml"
     - "../group_vars/system.yml"
 
-  tasks:
-    - debug:
-        msg: "A"
+  roles:
+    - { role: "nginx", tags: "nginx" }
+    - { role: "keeweb", tags: "keeweb" }
+    - { role: "monit", tags: "monit" }
+    - { role: "netdata", tags: "netdata" }
+    - { role: "radicale", tags: "radicale" }
+    - { role: "sigal", tags: "sigal" }
+    - { role: "syncthing", tags: "syncthing" }
+    - { role: "email", tags: "email" }
+    - { role: "rkhunter", tags: "rkhunter" }
+    - { role: "fail2ban", tags: "fail2ban" }
+    - { role: "letsencrypt", tags: "letsencrypt" }
