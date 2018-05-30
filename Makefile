@@ -3,10 +3,16 @@ CHECK ?=
 VERBOSE ?=
 TAGS ?=
 ANSIBLE_OPTS ?=
+ROOT ?= no
 
 $(if ${CHECK},   $(eval ANSIBLE_OPTS += --check))
 $(if ${VERBOSE}, $(eval ANSIBLE_OPTS += -${VERBOSE}))
-$(if ${TAGS},    $(eval ANSIBLE_OPTS += --tags ${TAGS}))
+$(if ${TAGS},    $(eval ansible_opts += --tags ${TAGS}))
+
+setup:
+	$(eval ANSIBLE_OPTS += --vault-password-file vaulted_vars/system.txt)
+	$(if ${ROOT},    $(eval ANSIBLE_OPTS += -e "ansible_user=root"))
+	ansible-playbook playbooks/setup.yml --diff --ask-become-pass ${ANSIBLE_OPTS}
 
 deploy:
 	$(eval ANSIBLE_OPTS += --vault-password-file vaulted_vars/system.txt)

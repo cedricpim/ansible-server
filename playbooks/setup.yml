@@ -1,0 +1,9 @@
+---
+- hosts: server
+
+  vars_files:
+    - "../vaulted_vars/system.yml"
+    - "../group_vars/system.yml"
+
+   roles:
+     - { role: "general", tags: "general" }
