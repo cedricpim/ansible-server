@@ -11,7 +11,7 @@ $(if ${TAGS},    $(eval ansible_opts += --tags ${TAGS}))
 
 setup:
 	$(eval ANSIBLE_OPTS += --vault-password-file vaulted_vars/system.txt)
-	$(if ${ROOT},    $(eval ANSIBLE_OPTS += -e "ansible_user=root"))
+	$(if ${ROOT},    $(eval ANSIBLE_OPTS += -e "ansible_user=root ansible_port=22"))
 	ansible-playbook playbooks/setup.yml --diff --ask-become-pass ${ANSIBLE_OPTS}
 
 deploy:
