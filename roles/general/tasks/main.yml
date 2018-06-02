@@ -38,13 +38,13 @@
   become: yes
 
 - name: "Set sshd login configurations"
-  block:
-    - lineinfile: path="/etc/ssh/sshd_config" regexp='{{ item.regexp }}' line='{{ item.line }}' state="present" firstmatch=yes backup=yes
-      with_items: "{{ general_sshd_settings }}"
-      notify: "reload ssh"
-    - replace: path="/etc/ssh/sshd_config" regexp='{{ item.regexp }}' replace='{{ item.line }}' backup=yes
-      with_items: "{{ general_sshd_replacements }}"
-      notify: "reload ssh"
+  template:
+    src: "sshd_config.j2"
+    dest: "/etc/ssh/sshd_config"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: "reload ssh"
   become: yes
 
 - name: "Create folder for scripts"
