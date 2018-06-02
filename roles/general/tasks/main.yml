@@ -1,4 +1,10 @@
 ---
+- name: "update backports apt sources"
+  apt_repository:
+    repo: "deb http://ftp.debian.org/debian {{ ansible_distribution_release }}-backports main"
+    state: "present"
+  become: yes
+
 - name: "Update current packages"
   apt:
     upgrade: yes
