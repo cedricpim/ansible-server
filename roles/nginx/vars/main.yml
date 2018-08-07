@@ -1,0 +1,4 @@
+---
+nginx_key_url: "https://nginx.org/keys/nginx_signing.key"
+
+nginx_deb_package: "http://nginx.org/packages/mainline"

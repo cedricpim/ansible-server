@@ -6,4 +6,4 @@
     - "../group_vars/system.yml"
 
   roles:
-    - { role: "general", tags: "general" }
+    - { role: "nginx", tags: "nginx" }

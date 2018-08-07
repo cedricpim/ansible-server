@@ -2,4 +2,4 @@
 server: "{{ vault_server }}"
 general_user: "{{ vault_general_user }}"
 general_password: "{{ vault_general_password }}"
-general_sshd_ports: "{{ general_sshd_ports }}"
+general_sshd_ports: "{{ vault_general_sshd_ports }}"

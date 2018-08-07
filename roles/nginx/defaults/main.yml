@@ -1,0 +1,4 @@
+---
+nginx_user: "nginx"
+nginx_folder: "/etc/nginx"
+nginx_content_folder: "/var/www"

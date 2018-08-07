@@ -1,9 +1,9 @@
-PLAYBOOK ?= playbook
+PLAYBOOK ?= main
 CHECK ?=
 VERBOSE ?=
 TAGS ?=
 ANSIBLE_OPTS ?=
-ROOT ?= no
+ROOT ?=
 
 $(if ${CHECK},   $(eval ANSIBLE_OPTS += --check))
 $(if ${VERBOSE}, $(eval ANSIBLE_OPTS += -${VERBOSE}))
