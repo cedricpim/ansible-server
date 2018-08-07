@@ -4,3 +4,5 @@ general_user: "vagrant-server"
 general_password: "$6$gaagXYxRAIVVCA$rUek2lqIML2u5YBkFxMj.DOwC.ELGfI1K7iMyvlyH7bB4s9R/3MVmnEKoFV6hoWRSOH.78SAbrtlXd1rqBTXT0"
 general_sshd_ports:
   - "22"
+
+nginx_folder: "/etc/nginx"
