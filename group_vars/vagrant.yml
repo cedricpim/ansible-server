@@ -5,4 +5,10 @@ general_password: "$6$gaagXYxRAIVVCA$rUek2lqIML2u5YBkFxMj.DOwC.ELGfI1K7iMyvlyH7b
 general_sshd_ports:
   - "22"
 
+nginx_user: "nginx"
 nginx_folder: "/etc/nginx"
+
+letsencrypt_domains:
+  - "test.local"
+  - "www.test.local"
+letsencrypt_email: "test@localhost"

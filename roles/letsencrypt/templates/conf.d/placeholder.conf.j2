@@ -1,0 +1,10 @@
+{{ ansible_managed | comment }}
+
+server {
+  listen      80;
+  server_name "~^(.+\.)?{{ ansible_fqdn }}$";
+
+  location /.well-known/acme-challenge {
+    root {{ letsencrypt_challenge_directory }};
+  }
+}

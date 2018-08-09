@@ -1,0 +1,22 @@
+{{ ansible_managed | comment }}
+
+ssl_certificate {{ letsencrypt_folder }}/live/{{ ansible_fqdn }}/fullchain.pem;
+ssl_certificate_key {{ letsencrypt_folder }}live/{{ ansible_fqdn }}/privkey.pem;
+
+server {
+  listen      80;
+  server_name "~^(.+\.)?{{ ansible_fqdn }}$";
+
+  if ($host ~* "{{ ansible_fqdn }}") {
+    return 301 https://$host$request_uri;
+  }
+}
+
+server {
+  listen      {{ ansible_default_ipv4.address }}:{{ letsencrypt_ssl_port }} ssl;
+  server_name "~^(.+\.)?{{ ansible_fqdn }}$";
+
+  location /.well-known/acme-challenge {
+    root {{ letsencrypt_challenge_directory }};
+  }
+}

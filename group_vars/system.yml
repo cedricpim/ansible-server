@@ -4,4 +4,9 @@ general_user: "{{ vault_general_user }}"
 general_password: "{{ vault_general_password }}"
 general_sshd_ports: "{{ vault_general_sshd_ports }}"
 
-nginx_folder: "/etc/nginx"
+nginx_user: "{{ vault_nginx_user }}"
+nginx_folder: "{{ vault_nginx_folder }}"
+
+letsencrypt_domains: "{{ vault_letsencrypt_domains }}"
+letsencrypt_email: "{{ vault_letsencrypt_email }}"
+letsencrypt_ssl_port: "{{ vault_letsencrypt_ssl_port }}"

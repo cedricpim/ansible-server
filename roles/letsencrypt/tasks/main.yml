@@ -1,0 +1,43 @@
+---
+- name: "Install letsencrypt certbot"
+  apt:
+    name: "python-certbot-nginx"
+    state: "latest"
+    default_release: "{{ ansible_distribution_release }}-backports"
+  become: yes
+
+- name: "Create {{ letsencrypt_challenge_directory }} folder"
+  file:
+    path: "{{ letsencrypt_challenge_directory }}"
+    owner: "{{ nginx_user }}"
+    group: "{{ nginx_user }}"
+    mode: "0600"
+    state: "directory"
+  become: yes
+
+- name: "Check if certificate already exists"
+  stat:
+    path: "{{ letsencrypt_folder }}/live/{{ ansible_fqdn }}/cert.pem"
+  register: letsencrypt_cert
+  become: yes
+
+- name: "Generate certificates"
+  block:
+    - template: src="conf.d/placeholder.conf.j2" dest="{{ nginx_folder }}/conf.d/placeholder.conf" mode="0644"
+    - service: name="nginx" state="reloaded"
+    - shell: "certbot certonly --noninteractive --agree-tos --email {{ letsencrypt_email }} --webroot -w {{ letsencrypt_challenge_directory }} -d {{ letsencrypt_domains | join(',') }}"
+  always:
+    - file: path="{{ nginx_folder }}/conf.d/placeholder.conf" state="absent"
+  become: yes
+  when:
+    - letsencrypt_cert is defined
+    - not letsencrypt_cert.stat.exists
+
+- name: "Update SSL certificates on nginx"
+  block:
+    - template: src="conf.d/letsencrypt.conf.j2" dest="{{ nginx_folder }}/conf.d/letsencrypt.conf" mode="0644"
+    - lineinfile: path="{{ nginx_folder }}/conf.d/default.conf" regexp="ssl_certificate" state="absent"
+    - systemd: name="certbot.timer" state="started" enabled=yes
+  always:
+    - service: name="nginx" state="reloaded"
+  become: yes
