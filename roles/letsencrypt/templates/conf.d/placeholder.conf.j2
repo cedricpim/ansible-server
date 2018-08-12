@@ -2,7 +2,7 @@
 
 server {
   listen      80;
-  server_name "~^(.+\.)?{{ ansible_fqdn }}$";
+  server_name "~^(.+\.)?{{ server }}$";
 
   location /.well-known/acme-challenge {
     root {{ letsencrypt_challenge_directory }};

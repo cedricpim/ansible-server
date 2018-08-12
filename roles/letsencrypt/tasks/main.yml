@@ -17,7 +17,7 @@
 
 - name: "Check if certificate already exists"
   stat:
-    path: "{{ letsencrypt_folder }}/live/{{ ansible_fqdn }}/cert.pem"
+    path: "{{ letsencrypt_folder }}/live/{{ server }}/cert.pem"
   register: letsencrypt_cert
   become: yes
 

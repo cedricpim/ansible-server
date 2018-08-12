@@ -2,7 +2,7 @@
 
 server {
   listen      443 ssl;
-  server_name {{ ansible_fqdn }};
+  server_name {{ server }};
 
   location / {
     root   {{ nginx_content_folder }}/html;

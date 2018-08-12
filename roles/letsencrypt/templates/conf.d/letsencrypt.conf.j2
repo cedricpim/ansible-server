@@ -1,11 +1,11 @@
 {{ ansible_managed | comment }}
 
-ssl_certificate {{ letsencrypt_folder }}/live/{{ ansible_fqdn }}/fullchain.pem;
-ssl_certificate_key {{ letsencrypt_folder }}live/{{ ansible_fqdn }}/privkey.pem;
+ssl_certificate {{ letsencrypt_folder }}/live/{{ server }}/fullchain.pem;
+ssl_certificate_key {{ letsencrypt_folder }}live/{{ server }}/privkey.pem;
 
 server {
   listen      80;
-  server_name "~^(.+\.)?{{ ansible_fqdn }}$";
+  server_name "~^(.+\.)?{{ server }}$";
 
   location /.well-known/acme-challenge {
     root {{ letsencrypt_challenge_directory }};
