@@ -1,0 +1,60 @@
+---
+- name: "Check if nginx is installed"
+  shell: "dpkg-query -W -f='${Status}' nginx | grep 'install ok installed'"
+  failed_when: no
+  changed_when: no
+  register: nginx_check
+
+- name: "Check if certificate already exists"
+  stat:
+    path: "{{ letsencrypt_folder }}/live/{{ ansible_fqdn }}/cert.pem"
+  register: letsencrypt_cert
+  become: yes
+
+- name: "Create {{ nginx_user }} user"
+  user:
+    name: "{{ nginx_user }}"
+    shell: "/bin/false"
+    createhome: no
+    state: "present"
+  become: yes
+  when:
+    - nginx_check.rc == 0
+    - letsencrypt_cert is defined
+    - letsencrypt_cert.stat.exists
+
+- name: "Copy default server settings"
+  template:
+    src: "nginx/{{ conf }}.j2"
+    dest: "{{ nginx_folder }}/conf.d/{{ conf }}"
+    mode: "0644"
+  notify: "Reload nginx"
+  become: yes
+  when:
+    - nginx_check.rc == 0
+    - letsencrypt_cert is defined
+    - letsencrypt_cert.stat.exists
+
+- name: "Create {{ nginx_folder }}/conf for credentials"
+  file:
+    path: "{{ nginx_folder }}/conf"
+    mode: "0755"
+    state: "directory"
+  become: yes
+  when:
+    - nginx_check.rc == 0
+    - letsencrypt_cert is defined
+    - letsencrypt_cert.stat.exists
+
+- name: "Copy credentials"
+  template:
+    src: "nginx/{{ credentials }}.j2"
+    dest: "{{ nginx_folder }}/conf/{{ credentials }}"
+    mode: "0644"
+  notify: "Reload nginx"
+  become: yes
+  when:
+    - credentials is defined
+    - nginx_check.rc == 0
+    - letsencrypt_cert is defined
+    - letsencrypt_cert.stat.exists

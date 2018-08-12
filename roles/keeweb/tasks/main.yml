@@ -1,0 +1,35 @@
+---
+- name: "Install git"
+  apt:
+    name: "git"
+    state: "latest"
+    update_cache: yes
+  become: yes
+
+- name: "Create {{ nginx_content_folder }} folder"
+  file:
+    path: "{{ nginx_content_folder }}"
+    owner: "{{ nginx_user }}"
+    group: "{{ nginx_user }}"
+    mode: "0600"
+    state: "directory"
+  become: yes
+
+- name: "Clone KeeWeb"
+  git:
+    repo: "https://github.com/keeweb/keeweb.git"
+    dest: "{{ nginx_content_folder }}/keeweb"
+  become: yes
+
+- include_role:
+    name: "nginx"
+    tasks_from: "configure"
+  vars:
+    conf: "keeweb.conf"
+    credentials: "htpasswd.keeweb"
+
+- include_role:
+    name: "monit"
+    tasks_from: "configure"
+  vars:
+    conf: "keeweb"

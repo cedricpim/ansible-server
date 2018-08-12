@@ -9,3 +9,4 @@
     - { role: "nginx", tags: "nginx" }
     - { role: "letsencrypt", tags: "letsencrypt" }
     - { role: "monit", tags: "monit" }
+    - { role: "keeweb", tags: "keeweb" }

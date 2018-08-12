@@ -5,3 +5,4 @@
     - { role: "general", tags: "general" }
     - { role: "nginx", tags: "nginx" }
     - { role: "monit", tags: "monit" }
+    - { role: "keeweb", tags: "keeweb" }
