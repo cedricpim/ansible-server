@@ -1,0 +1,6 @@
+---
+- name: "Reload monit"
+  systemd:
+    name: "monit"
+    state: "reloaded"
+  become: yes

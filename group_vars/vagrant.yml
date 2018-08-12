@@ -7,8 +7,15 @@ general_sshd_ports:
 
 nginx_user: "nginx"
 nginx_folder: "/etc/nginx"
+nginx_monit: "vagrant.local"
 
 letsencrypt_domains:
   - "test.local"
   - "www.test.local"
-letsencrypt_email: "test@localhost"
+letsencrypt_email: "vagrant@local"
+
+monit_folder: "/etc/monit"
+monit_port: "22122"
+monit_username: "monit"
+monit_password: "monit"
+monit_alert_email: "vagrant@local"

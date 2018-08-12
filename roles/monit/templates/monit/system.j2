@@ -1,0 +1,13 @@
+{{ ansible_managed | comment }}
+
+check system $HOST
+  if loadavg (1min) > 4 then alert
+  if loadavg (5min) > 2 then alert
+  if memory usage > 90% for 4 cycles then alert
+  if swap usage > 25% for 4 cycles then alert
+  if cpu usage (user) > 70% for 2 cycles then alert
+  if cpu usage (system) > 30% for 2 cycles then alert
+  if cpu usage (wait) > 20% for 2 cycles then alert
+
+check filesystem rootfs with path {{ monit_filesystem_partition }}
+  if space usage > 90% for 5 times within 15 cycles then alert

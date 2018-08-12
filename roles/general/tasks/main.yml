@@ -78,3 +78,9 @@
     line: 'export PATH=$PATH:$HOME/{{ general_scripts_directory }}'
     state: "present"
   become: yes
+
+- include_role:
+    name: "monit"
+    tasks_from: "configure"
+  vars:
+    conf: "openssh-server"

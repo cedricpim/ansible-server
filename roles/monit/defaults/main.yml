@@ -1,0 +1,12 @@
+---
+monit_folder: "/etc/monit"
+
+monit_port: "22122"
+monit_sender: "monit@localhost"
+monit_interval: "120"
+monit_logfile: "/var/log/monit.log"
+monit_pidfile: "/var/run/monit.pid"
+monit_idfile: "/var/lib/monit/id"
+monit_statefile: "/var/lib/monit/state"
+
+monit_filesystem_partition: "/dev/sda1"

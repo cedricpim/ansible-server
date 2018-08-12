@@ -1,0 +1,34 @@
+---
+- name: "Install monit"
+  apt:
+    name: "monit"
+    state: "latest"
+    update_cache: yes
+  become: yes
+
+- name: "Copy main configuration"
+  template:
+    src: "monitrc.j2"
+    dest: "{{ monit_folder }}/monitrc"
+    mode: "0600"
+  notify: "Reload monit"
+  become: yes
+
+- include_role:
+    name: "monit"
+    tasks_from: "configure"
+  with_items:
+    - "acpid"
+    - "at"
+    - "cron"
+    - "rsyslog"
+    - "system"
+  loop_control:
+    loop_var: "conf"
+
+- name: "Start/enable monit"
+  systemd:
+    name: "monit"
+    state: "started"
+    enabled: yes
+  become: yes
