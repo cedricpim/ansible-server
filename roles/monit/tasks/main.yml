@@ -17,14 +17,8 @@
 - include_role:
     name: "monit"
     tasks_from: "configure"
-  with_items:
-    - "acpid"
-    - "at"
-    - "cron"
-    - "rsyslog"
-    - "system"
-  loop_control:
-    loop_var: "conf"
+  vars:
+    conf: "system"
 
 - name: "Start/enable monit"
   systemd:

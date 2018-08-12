@@ -12,10 +12,15 @@
     force_apt_get: yes
   become: yes
 
-- name: "Install vim"
+- name: "Install vim and some other utilities"
   apt:
-    name: "vim"
+    name: "{{ item }}"
     state: "latest"
+  with_items:
+    - "vim"
+    - "at"
+    - "acpid"
+    - "rsyslog"
   become: yes
 
 - name: "Create {{ general_user }} user"
@@ -82,5 +87,11 @@
 - include_role:
     name: "monit"
     tasks_from: "configure"
-  vars:
-    conf: "openssh-server"
+  with_items:
+    - "acpid"
+    - "at"
+    - "cron"
+    - "openssh-server"
+    - "rsyslog"
+  loop_control:
+    loop_var: "conf"
