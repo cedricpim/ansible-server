@@ -7,16 +7,11 @@ server {
   listen      80;
   server_name "~^(.+\.)?{{ ansible_fqdn }}$";
 
-  if ($host ~* "{{ ansible_fqdn }}") {
-    return 301 https://$host$request_uri;
-  }
-}
-
-server {
-  listen      {{ ansible_default_ipv4.address }}:{{ letsencrypt_ssl_port }} ssl;
-  server_name "~^(.+\.)?{{ ansible_fqdn }}$";
-
   location /.well-known/acme-challenge {
     root {{ letsencrypt_challenge_directory }};
+  }
+
+  if ($request_uri !~* "well-known/acme-challenge") {
+    return 301 https://$host$request_uri;
   }
 }
