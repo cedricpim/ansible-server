@@ -16,7 +16,5 @@ monit_port: "22122"
 monit_username: "monit"
 monit_password: "monit"
 monit_alert_email: "vagrant@local"
-monit_address: "monit.vagrant.local"
 
-keeweb_address: "keeweb.vagrant.local"
 keeweb_credentials: "vagrant:YYzo3ZBykz1oI"

@@ -20,7 +20,5 @@ monit_port: "{{ vault_monit_port }}"
 monit_username: "{{ vault_monit_username }}"
 monit_password: "{{ vault_monit_password }}"
 monit_alert_email: "{{ vault_monit_alert_email }}"
-monit_address: "{{ vault_monit_address }}"
 
-keeweb_address: "{{ vault_keeweb_address }}"
 keeweb_credentials: "{{ vault_keeweb_credentials }}"

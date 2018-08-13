@@ -1,11 +1,12 @@
 {{ ansible_managed | comment }}
 
-check process keeweb.{{ server }} with pidfile /var/run/nginx.pid
+check process monit.{{ server }} with pidfile /var/run/nginx.pid
   group {{ nginx_user }}
   start program = "/usr/sbin/service nginx start"
   stop program  = "/usr/sbin/service nginx stop"
-  if failed host keeweb.{{ server }} port 80  protocol http  request "/" status = 301 then restart
-  if failed host keeweb.{{ server }} port 443 protocol https request "/" status = 401 then restart
+  if failed host monit.{{ server }} port 80  protocol http  request "/" status = 301 then restart
+  if failed host monit.{{ server }} port 443 protocol https request "/" status = 401 then restart
   if cpu is greater than 40% for 2 cycles then alert
   if cpu > 60% for 5 cycles then restart
   if 10 restarts with 10 cycles then unmonitor
+

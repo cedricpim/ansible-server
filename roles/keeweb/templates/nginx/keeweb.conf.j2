@@ -2,7 +2,7 @@
 
 server {
   listen      {{ ansible_default_ipv4.address }}:443 ssl;
-  server_name {{ keeweb_address }};
+  server_name keeweb.{{ server }};
   access_log  {{ nginx_log }}/keeweb.access.log;
   error_log   {{ nginx_log }}/keeweb.error.log;
 

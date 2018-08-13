@@ -17,8 +17,11 @@
 - include_role:
     name: "monit"
     tasks_from: "configure"
-  vars:
-    conf: "system"
+  with_items:
+    - "monit"
+    - "system"
+  loop_control:
+    loop_var: "conf"
 
 - name: "Start/enable monit"
   systemd:
