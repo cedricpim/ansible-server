@@ -6,7 +6,6 @@ general_sshd_ports: "{{ vault_general_sshd_ports }}"
 
 nginx_user: "{{ vault_nginx_user }}"
 nginx_folder: "{{ vault_nginx_folder }}"
-nginx_monit: "{{ vault_nginx_monit }}"
 nginx_log: "{{ vault_nginx_log }}"
 nginx_content_folder: "{{ vault_nginx_content_folder }}"
 

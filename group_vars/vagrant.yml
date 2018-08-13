@@ -1,5 +1,5 @@
 ---
-server: "vagrant.com"
+server: "localhost"
 general_user: "vagrant-server"
 general_password: "$6$gaagXYxRAIVVCA$rUek2lqIML2u5YBkFxMj.DOwC.ELGfI1K7iMyvlyH7bB4s9R/3MVmnEKoFV6hoWRSOH.78SAbrtlXd1rqBTXT0"
 general_sshd_ports:
@@ -7,7 +7,6 @@ general_sshd_ports:
 
 nginx_user: "nginx"
 nginx_folder: "/etc/nginx"
-nginx_monit: "vagrant.local"
 nginx_log: "/var/log/nginx"
 nginx_content_folder: "/var/www"
 
