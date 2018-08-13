@@ -17,8 +17,10 @@ letsencrypt_folder: "{{ vault_lets_encrypt_folder }}"
 
 monit_folder: "{{ vault_monit_folder }}"
 monit_port: "{{ vault_monit_port }}"
-monit_username: "{{ vault_monit_username }}"
-monit_password: "{{ vault_monit_password }}"
+monit_credentials: "{{ vault_monit_credentials }}"
 monit_alert_email: "{{ vault_monit_alert_email }}"
 
 keeweb_credentials: "{{ vault_keeweb_credentials }}"
+
+netdata_port: "{{ vault_netdata_port }}"
+netdata_credentials: "{{ vault_netdata_credentials }}"

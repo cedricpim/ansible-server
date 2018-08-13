@@ -1,0 +1,6 @@
+---
+- name: "Reload netdata"
+  systemd:
+    name: "netdata"
+    state: "reloaded"
+  become: yes

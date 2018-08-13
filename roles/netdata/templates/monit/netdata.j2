@@ -1,0 +1,29 @@
+{{ ansible_managed | comment }}
+
+check process netdata.{{ server }} with pidfile /var/run/nginx.pid
+  group {{ nginx_user }}
+  start program = "/usr/sbin/service nginx start"
+  stop program  = "/usr/sbin/service nginx stop"
+  if failed host netdata.{{ address }} port 80  protocol http  request "/" status = 301 then restart
+  if failed host netdata.{{ address }} port 443 protocol https request "/" status = 401 then restart
+  if cpu is greater than 40% for 2 cycles then alert
+  if cpu > 60% for 5 cycles then restart
+  if 10 restarts with 10 cycles then unmonitor
+
+check process netdata
+  matching "sbin/netdata"
+  group netdata
+  start program = "/usr/sbin/service netdata start"
+  stop program  = "/usr/sbin/service netdata stop"
+  if failed host localhost port 19999 protocol http request "/" status = 400 then restart
+  if 5 restarts with 5 cycles then unmonitor
+  depends netdata_bin
+  depends netdata_rc
+
+check file netdata_bin with path "/usr/sbin/netdata"
+  group netdata
+  include /etc/monit/templates/rootbin
+
+check file netdata_rc with path "/lib/systemd/system/netdata.service"
+  group netdata
+  include /etc/monit/templates/rootrc

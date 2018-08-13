@@ -13,8 +13,10 @@ nginx_content_folder: "/var/www"
 
 monit_folder: "/etc/monit"
 monit_port: "22122"
-monit_username: "monit"
-monit_password: "monit"
+monit_credentials: "monit:monit"
 monit_alert_email: "vagrant@local"
 
 keeweb_credentials: "vagrant:YYzo3ZBykz1oI"
+
+netdata_port: "19999"
+netdata_credentials: "vagrant:YYzo3ZBykz1oI"
