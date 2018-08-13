@@ -11,6 +11,8 @@ nginx_monit: "vagrant.local"
 nginx_log: "/var/log/nginx"
 nginx_content_folder: "/var/www"
 
+letsencrypt_folder: "/etc/letsencrypt"
+
 monit_folder: "/etc/monit"
 monit_port: "22122"
 monit_credentials: "monit:monit"
