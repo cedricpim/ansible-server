@@ -55,7 +55,7 @@
     src: "nginx.conf.j2"
     dest: "{{ nginx_folder }}/nginx.conf"
     mode: "0644"
-  notify: "Reload nginx"
+  notify: "Reload Nginx"
   become: yes
 
 - name: "Copy default server settings"
@@ -63,7 +63,7 @@
     src: "conf.d/default.conf.j2"
     dest: "{{ nginx_folder }}/conf.d/default.conf"
     mode: "0644"
-  notify: "Reload nginx"
+  notify: "Reload Nginx"
   become: yes
 
 - name: "Check for letsencrypt configuration"
@@ -80,7 +80,7 @@
   with_items:
     - "ssl_certificate_key /etc/ssl/private/ssl-cert-snakeoil.key"
     - "ssl_certificate /etc/ssl/certs/ssl-cert-snakeoil.pem"
-  notify: "Reload nginx"
+  notify: "Reload Nginx"
   become: yes
   when: st_letsencrypt is defined and not st_letsencrypt.stat.exists
 

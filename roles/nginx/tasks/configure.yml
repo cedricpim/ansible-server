@@ -28,7 +28,7 @@
     src: "nginx/{{ conf }}.j2"
     dest: "{{ nginx_folder }}/conf.d/{{ conf }}"
     mode: "0644"
-  notify: "Reload nginx"
+  notify: "Reload Nginx"
   become: yes
   when:
     - nginx_check.rc == 0
@@ -51,7 +51,7 @@
     src: "nginx/{{ credentials }}.j2"
     dest: "{{ nginx_folder }}/conf/{{ credentials }}"
     mode: "0644"
-  notify: "Reload nginx"
+  notify: "Reload Nginx"
   become: yes
   when:
     - credentials is defined
