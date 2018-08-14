@@ -1,6 +1,6 @@
 ---
 - name: "Reload netdata"
-  systemd:
-    name: "netdata"
-    state: "reloaded"
+  block:
+    - systemd: name="netdata" state="started"
+    - systemd: name="netdata" state="reloaded"
   become: yes

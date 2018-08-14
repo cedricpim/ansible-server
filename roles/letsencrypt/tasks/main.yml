@@ -24,6 +24,7 @@
 - name: "Generate certificates"
   block:
     - template: src="conf.d/placeholder.conf.j2" dest="{{ nginx_folder }}/conf.d/placeholder.conf" mode="0644"
+    - service: name="nginx" state="started"
     - service: name="nginx" state="reloaded"
     - shell: "certbot certonly --noninteractive --agree-tos --email {{ letsencrypt_email }} --webroot -w {{ letsencrypt_challenge_directory }} -d {{ letsencrypt_domains | join(',') }}"
   always:
@@ -39,5 +40,6 @@
     - lineinfile: path="{{ nginx_folder }}/conf.d/default.conf" regexp="ssl_certificate" state="absent"
     - systemd: name="certbot.timer" state="started" enabled=yes
   always:
+    - service: name="nginx" state="started"
     - service: name="nginx" state="reloaded"
   become: yes
