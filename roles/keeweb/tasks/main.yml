@@ -19,6 +19,7 @@
   git:
     repo: "https://github.com/keeweb/keeweb.git"
     dest: "{{ nginx_content_folder }}/keeweb"
+  notify: "Reload nginx"
   become: yes
 
 - include_role:
