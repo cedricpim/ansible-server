@@ -1,0 +1,10 @@
+---
+dav_group: "dav"
+
+dav_radicale_user: "radicale"
+dav_radicale_bind_address: "127.0.0.1"
+dav_radicale_port: "5232"
+dav_radicale_log: "/var/log/radicale"
+dav_radicale_config: "/etc/radicale"
+dav_radicale_pid: "/var/run/radicale"
+dav_radicale_collections: "/var/lib/radicale/collections"

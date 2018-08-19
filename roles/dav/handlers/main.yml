@@ -1,0 +1,17 @@
+---
+- name: "Start Radicale"
+  systemd:
+    name: "radicale"
+    state: "started"
+  become: yes
+
+- name: "Reload Radicale"
+  systemd:
+    name: "radicale"
+    state: "reloaded"
+  become: yes
+
+- name: "Reload daemon"
+  systemd:
+    daemon_reload: yes
+  become: yes

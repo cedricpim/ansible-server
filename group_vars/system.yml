@@ -23,3 +23,6 @@ keeweb_credentials: "{{ vault_keeweb_credentials }}"
 
 netdata_port: "{{ vault_netdata_port }}"
 netdata_credentials: "{{ vault_netdata_credentials }}"
+
+dav_radicale_port: "{{ vault_dav_radicale_port }}"
+dav_credentials: "{{ vault_dav_credentials }}"
