@@ -161,7 +161,7 @@
 ## enable SSL for the HTTP interface.
 #
   set httpd port {{ monit_port }} and
-      use address localhost  # only accept connection from localhost
+      use address {{ monit_bind_address }}  # only accept connection from localhost
 #     allow localhost        # allow localhost to connect to the server and
       allow {{ monit_credentials }} # require user 'admin' with password 'monit'
 #     allow admin:monit      # require user 'admin' with password 'monit'

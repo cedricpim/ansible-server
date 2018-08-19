@@ -48,7 +48,7 @@
 [web]
 	# web files group = root
 	web files owner = {{ nginx_user }}
-	bind to = 127.0.0.1
+	bind to = {{ netdata_bind_address }}
 	# listen backlog = 100
 	default port = {{ netdata_port }}
 	# mode = multi-threaded
