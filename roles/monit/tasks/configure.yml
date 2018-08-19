@@ -17,7 +17,9 @@
     src: "monit/{{ conf }}.j2"
     dest: "{{ monit_folder }}/conf-available/{{ conf }}"
     mode: "0644"
-  notify: "Reload monit"
+  notify:
+    - "Start Monit"
+    - "Reload Monit"
   become: yes
   when: monit_check.rc == 0
 
@@ -26,6 +28,8 @@
     src: "{{ monit_folder }}/conf-available/{{ conf }}"
     dest: "{{ monit_folder }}/conf-enabled/{{ conf }}"
     state: "link"
-  notify: "Reload monit"
+  notify:
+    - "Start Monit"
+    - "Reload Monit"
   become: yes
   when: monit_check.rc == 0

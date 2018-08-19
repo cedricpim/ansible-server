@@ -11,7 +11,9 @@
     src: "netdata.conf.j2"
     dest: "{{ netdata_folder }}/netdata.conf"
     mode: "0600"
-  notify: "Reload netdata"
+  notify:
+    - "Start Netdata"
+    - "Reload Netdata"
   become: yes
 
 - name: "Start/enable netdata"

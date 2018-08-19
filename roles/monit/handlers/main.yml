@@ -1,6 +1,12 @@
 ---
-- name: "Reload monit"
-  block:
-    - systemd: name="monit" state="started"
-    - systemd: name="monit" state="reloaded"
+- name: "Start Monit"
+  systemd:
+    name: "monit"
+    state: "started"
+  become: yes
+
+- name: "Reload Monit"
+  systemd:
+    name: "monit"
+    state: "reloaded"
   become: yes

@@ -11,7 +11,9 @@
     src: "monitrc.j2"
     dest: "{{ monit_folder }}/monitrc"
     mode: "0600"
-  notify: "Reload monit"
+  notify:
+    - "Start Monit"
+    - "Reload Monit"
   become: yes
 
 - include_role:
