@@ -28,7 +28,7 @@
   user:
     name: "{{ general_user }}"
     password: "{{ general_password }}"
-    createhome: yes
+    create_home: yes
     shell: "/bin/bash"
     state: "present"
   become: yes

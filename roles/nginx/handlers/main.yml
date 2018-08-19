@@ -1,5 +1,6 @@
 ---
 - name: "Reload Nginx"
+  block:
     - systemd: name="nginx" state="started"
     - systemd: name="nginx" state="reloaded"
   become: yes
