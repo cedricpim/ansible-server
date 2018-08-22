@@ -29,9 +29,7 @@
     name: "radicale"
     state: "latest"
     executable: "pip3"
-  notify:
-    - "Start Radicale"
-    - "Reload Radicale"
+  notify: "Restart Radicale"
   become: yes
 
 - name: "Create Radicale folders"
@@ -58,20 +56,17 @@
   with_items:
     - "config"
     - "logging"
-  notify:
-    - "Start Radicale"
-    - "Reload Radicale"
+  notify: "Retart Radicale"
   become: yes
 
 - name: "Copy Radicale systemd"
   template:
     src: "radicale/radicale.service.j2"
     dest: "/etc/systemd/system/radicale.service"
-    mode: "0744"
+    mode: "0644"
   notify:
     - "Reload daemon"
-    - "Start Radicale"
-    - "Reload Radicale"
+    - "Restart Radicale"
   become: yes
 
 - name: "Stat/Enable Radicale"

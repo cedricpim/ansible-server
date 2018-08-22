@@ -1,2 +1,3 @@
 ---
 - import_tasks: "radicale.yml"
+- import_tasks: "vdirsyncer.yml"

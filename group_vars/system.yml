@@ -26,3 +26,5 @@ netdata_credentials: "{{ vault_netdata_credentials }}"
 
 dav_radicale_port: "{{ vault_dav_radicale_port }}"
 dav_credentials: "{{ vault_dav_credentials }}"
+dav_vdirsyncer_calendars: "{{ vault_dav_vdirsyncer_calendars }}"
+dav_vdirsyncer_special_calendars: "{{ vault_dav_vdirsyncer_special_calendars }}"

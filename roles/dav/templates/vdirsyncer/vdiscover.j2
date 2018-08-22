@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -eo pipefail
+IFS=$'\n\t'
+
+{{ ansible_managed | comment }}
+
+if [ `whoami` != "{{ dav_vdirsyncer_user }}" ]; then
+  escalation="sudo -u {{ dav_vdirsyncer_user }}"
+fi
+
+eval "$escalation /usr/bin/vdirsyncer -c {{ dav_vdirsyncer_config }}/config discover"

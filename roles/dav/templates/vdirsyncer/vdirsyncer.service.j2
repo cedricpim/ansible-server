@@ -1,0 +1,11 @@
+{{ ansible_managed | comment }}
+
+[Unit]
+Description=Synchronize calendars and contacts
+Documentation=https://vdirsyncer.readthedocs.org/
+
+[Service]
+ExecStart={{ dav_vdirsyncer_config }}/vsync
+Type=oneshot
+User={{ dav_vdirsyncer_user }}
+Group={{ dav_group }}
