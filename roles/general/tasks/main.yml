@@ -96,3 +96,9 @@
     - "rsyslog"
   loop_control:
     loop_var: "conf"
+
+- include_role:
+    name: "logrotate"
+    tasks_from: "configure"
+  vars:
+    conf: "rsyslog"

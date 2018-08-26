@@ -1,0 +1,37 @@
+{{ ansible_managed | comment }}
+
+{{ logs_folder }}/syslog
+{
+  rotate 7
+  daily
+  missingok
+  notifempty
+  delaycompress
+  compress
+  postrotate
+    invoke-rc.d rsyslog rotate > /dev/null
+  endscript
+}
+
+{{ logs_folder }}/mail.err
+{{ logs_folder }}/mail.info
+{{ logs_folder }}/mail.log
+{{ logs_folder }}/mail.warn
+{{ logs_folder }}/daemon.log
+{{ logs_folder }}/kern.log
+{{ logs_folder }}/auth.log
+{{ logs_folder }}/user.log
+{{ logs_folder }}/debug
+{{ logs_folder }}/messages
+{
+  rotate 4
+  weekly
+  missingok
+  notifempty
+  compress
+  delaycompress
+  sharedscripts
+  postrotate
+    invoke-rc.d rsyslog rotate > /dev/null
+  endscript
+}

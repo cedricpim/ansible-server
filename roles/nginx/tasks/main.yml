@@ -102,3 +102,9 @@
     tasks_from: "configure"
   vars:
     conf: "nginx"
+
+- include_role:
+    name: "logrotate"
+    tasks_from: "configure"
+  vars:
+    conf: "nginx"

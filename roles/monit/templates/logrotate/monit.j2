@@ -1,0 +1,11 @@
+{{ ansible_managed | comment }}
+
+{{ monit_logfile }} {
+  missingok
+  notifempty
+  size 100k
+  create 0644 root root
+  postrotate
+    /bin/kill -HUP `cat {{ monit_pidfile }} 2>/dev/null` 2> /dev/null || true
+  endscript
+}

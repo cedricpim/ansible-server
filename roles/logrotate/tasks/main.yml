@@ -1,0 +1,30 @@
+---
+- name: "Install Logrotate"
+  apt:
+    name: "logrotate"
+    state: "latest"
+    update_cache: yes
+  become:  yes
+
+- name: "Copy Logrotate settings"
+  template:
+    src: "logrotate.conf.j2"
+    dest: "/etc/logrotate.conf"
+    mode: "0644"
+  become: yes
+
+- name: "Create Logrotate folder for configurations"
+  file:
+    path: "{{ logrotate_config }}"
+    mode: "0755"
+    state: "directory"
+  become: yes
+
+- include_role:
+    name: "logrotate"
+    tasks_from: "configure"
+  with_items:
+    - "apt"
+    - "dpkg"
+  loop_control:
+    loop_var: "conf"

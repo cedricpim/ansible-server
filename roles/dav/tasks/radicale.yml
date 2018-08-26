@@ -89,3 +89,9 @@
     tasks_from: "configure"
   vars:
     conf: "dav"
+
+- include_role:
+    name: "logrotate"
+    tasks_from: "configure"
+  vars:
+    conf: "radicale"

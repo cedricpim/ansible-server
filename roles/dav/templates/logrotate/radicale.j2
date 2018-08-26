@@ -1,0 +1,11 @@
+{{ ansible_managed | comment }}
+
+{{ dav_radicale_log }}/radicale.log {
+  weekly
+  rotate 7
+  create 0640 {{ dav_radicale_user }} adm
+  missingok
+  compress
+  delaycompress
+  notifempty
+}

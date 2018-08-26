@@ -21,7 +21,7 @@
     update_cache: yes
   become:  yes
 
-- name: "Create Vdirsyncer folders"
+- name: "Create Vdirsyncer folder"
   file:
     path: "{{ dav_vdirsyncer_config }}"
     owner: "{{ dav_vdirsyncer_user }}"

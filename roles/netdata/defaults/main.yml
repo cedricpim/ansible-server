@@ -2,3 +2,4 @@
 netdata_folder: "/etc/netdata"
 netdata_port: "19999"
 netdata_bind_address: "127.0.0.1"
+netdata_log: "/var/log/netdata"

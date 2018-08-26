@@ -37,3 +37,9 @@
     tasks_from: "configure"
   vars:
     conf: "monit.conf"
+
+- include_role:
+    name: "logrotate"
+    tasks_from: "configure"
+  vars:
+    conf: "monit"

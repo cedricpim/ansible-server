@@ -3,6 +3,7 @@
 
   roles:
     - { role: "general", tags: "general" }
+    - { role: "logrotate", tags: "logrotate" }
     - { role: "nginx", tags: "nginx" }
     - { role: "monit", tags: "monit" }
     - { role: "keeweb", tags: "keeweb" }

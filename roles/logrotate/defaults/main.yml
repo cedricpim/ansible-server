@@ -1,0 +1,3 @@
+---
+logrotate_config: "/etc/logrotate.d"
+logs_folder: "/var/log"

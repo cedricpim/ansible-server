@@ -35,3 +35,9 @@
     tasks_from: "configure"
   vars:
     conf: "netdata"
+
+- include_role:
+    name: "logrotate"
+    tasks_from: "configure"
+  vars:
+    conf: "netdata"

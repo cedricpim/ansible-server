@@ -6,6 +6,7 @@
     - "../group_vars/system.yml"
 
   roles:
+    - { role: "logrotate", tags: "logrotate" }
     - { role: "nginx", tags: "nginx" }
     - { role: "letsencrypt", tags: "letsencrypt" }
     - { role: "monit", tags: "monit" }

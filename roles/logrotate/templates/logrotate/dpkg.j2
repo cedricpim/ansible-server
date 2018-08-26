@@ -1,0 +1,21 @@
+{{ ansible_managed | comment }}
+
+{{ logs_folder }}/dpkg.log {
+  monthly
+  rotate 12
+  compress
+  delaycompress
+  missingok
+  notifempty
+  create 0644 root root
+}
+
+{{ logs_folder }}/alternatives.log {
+  monthly
+  rotate 12
+  compress
+  delaycompress
+  missingok
+  notifempty
+  create 0644 root root
+}
