@@ -69,7 +69,7 @@
     - "Restart Radicale"
   become: yes
 
-- name: "Stat/Enable Radicale"
+- name: "Start/Enable Radicale"
   systemd:
     name: "radicale"
     state: "started"
@@ -94,4 +94,4 @@
     name: "logrotate"
     tasks_from: "configure"
   vars:
-    conf: "radicale"
+    conf: "dav"
