@@ -25,7 +25,7 @@
   notify: "Restart Sigal"
   become: yes
 
-- name: "Create Sigal configuration folder"
+- name: "Create Sigal configuration directory"
   file:
     path: "{{ item }}"
     owner: "{{ gallery_sigal_user }}"
@@ -45,32 +45,6 @@
     group: "{{ gallery_sigal_user }}"
     mode: "0644"
   notify: "Restart Sigal"
-  become: yes
-
-- name: "Create folder for scripts"
-  file:
-    path: "~{{ general_user }}/{{ general_scripts_directory }}"
-    owner: "{{ general_user }}"
-    group: "{{ general_user }}"
-    mode: "0700"
-    state: "directory"
-  become: yes
-
-- name: "Copy server custom scripts"
-  template:
-    src: "sigal/process-photos.j2"
-    dest: "~{{ general_user }}/{{ general_scripts_directory }}/process-photos"
-    owner: "{{ general_user }}"
-    group: "{{ general_user }}"
-    mode: "0700"
-  become: yes
-
-- name: "Add scripts folder to path"
-  lineinfile:
-    path: "~{{ general_user }}/.bashrc"
-    regexp: 'export.*{{ general_scripts_directory }}'
-    line: 'export PATH=$PATH:$HOME/{{ general_scripts_directory }}'
-    state: "present"
   become: yes
 
 - name: "Copy Sigal systemd"

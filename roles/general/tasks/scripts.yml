@@ -1,5 +1,5 @@
 ---
-- name: "Create folder for scripts"
+- name: "Create directory for scripts"
   file:
     path: "~{{ general_user }}/{{ general_scripts_directory }}"
     owner: "{{ general_user }}"
@@ -17,7 +17,7 @@
     mode: "0700"
   become: yes
 
-- name: "Add scripts folder to path"
+- name: "Add scripts directory to PATH"
   lineinfile:
     path: "~{{ general_user }}/.bashrc"
     regexp: 'export.*{{ general_scripts_directory }}'

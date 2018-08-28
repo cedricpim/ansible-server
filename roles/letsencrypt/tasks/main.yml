@@ -6,7 +6,7 @@
     default_release: "{{ ansible_distribution_release }}-backports"
   become: yes
 
-- name: "Create {{ letsencrypt_challenge_directory }} folder"
+- name: "Create {{ letsencrypt_challenge_directory }} directory"
   file:
     path: "{{ letsencrypt_challenge_directory }}"
     owner: "{{ nginx_user }}"

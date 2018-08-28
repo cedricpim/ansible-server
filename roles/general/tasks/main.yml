@@ -49,7 +49,7 @@
     backup: yes
   become: yes
 
-- name: "Set sshd login configurations"
+- name: "Set sshd settings"
   template:
     src: "sshd_config.j2"
     dest: "/etc/ssh/sshd_config"

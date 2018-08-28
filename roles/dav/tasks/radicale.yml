@@ -32,7 +32,7 @@
   notify: "Restart Radicale"
   become: yes
 
-- name: "Create Radicale folders"
+- name: "Create Radicale directories"
   file:
     path: "{{ item.path }}"
     owner: "{{ dav_radicale_user }}"

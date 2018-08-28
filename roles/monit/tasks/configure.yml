@@ -5,7 +5,7 @@
   changed_when: no
   register: monit_check
 
-- name: "Create folders for configurations"
+- name: "Create Monit directories"
   block:
     - file: path="{{ monit_directory }}/conf-available" mode="0755" state="directory"
     - file: path="{{ monit_directory }}/conf-enabled" mode="0755" state="directory"

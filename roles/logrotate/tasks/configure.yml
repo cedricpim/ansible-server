@@ -5,7 +5,7 @@
   changed_when: no
   register: logrotate_check
 
-- name: "Create Logrotate folder for configurations"
+- name: "Create Logrotate directory"
   file:
     path: "{{ logrotate_config_directory }}"
     mode: "0755"

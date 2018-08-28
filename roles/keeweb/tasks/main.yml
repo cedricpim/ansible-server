@@ -6,7 +6,7 @@
     update_cache: yes
   become: yes
 
-- name: "Create {{ nginx_content_directory }} folder"
+- name: "Create {{ nginx_content_directory }} directory"
   file:
     path: "{{ nginx_content_directory }}"
     owner: "{{ nginx_user }}"

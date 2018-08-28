@@ -13,7 +13,7 @@
     mode: "0644"
   become: yes
 
-- name: "Create Logrotate folder"
+- name: "Create Logrotate directory"
   file:
     path: "{{ logrotate_config_directory }}"
     mode: "0755"
