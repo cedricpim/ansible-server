@@ -9,7 +9,7 @@
 - name: "Copy Monit settings"
   template:
     src: "monitrc.j2"
-    dest: "{{ monit_directory }}/monitrc"
+    dest: "{{ monit_config_directory }}/monitrc"
     mode: "0600"
   notify:
     - "Start Monit"

@@ -7,15 +7,15 @@
 
 - name: "Create Monit directories"
   block:
-    - file: path="{{ monit_directory }}/conf-available" mode="0755" state="directory"
-    - file: path="{{ monit_directory }}/conf-enabled" mode="0755" state="directory"
+    - file: path="{{ monit_config_directory }}/conf-available" mode="0755" state="directory"
+    - file: path="{{ monit_config_directory }}/conf-enabled" mode="0755" state="directory"
   become: yes
   when: monit_check.rc == 0
 
 - name: "Copy {{ conf }} configuration"
   template:
     src: "monit/{{ conf }}.j2"
-    dest: "{{ monit_directory }}/conf-available/{{ conf }}"
+    dest: "{{ monit_config_directory }}/conf-available/{{ conf }}"
     mode: "0644"
   notify:
     - "Start Monit"
@@ -25,8 +25,8 @@
 
 - name: "Symlink {{ conf }} configuration"
   file:
-    src: "{{ monit_directory }}/conf-available/{{ conf }}"
-    dest: "{{ monit_directory }}/conf-enabled/{{ conf }}"
+    src: "{{ monit_config_directory }}/conf-available/{{ conf }}"
+    dest: "{{ monit_config_directory }}/conf-enabled/{{ conf }}"
     state: "link"
   notify:
     - "Start Monit"

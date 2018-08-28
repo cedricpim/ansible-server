@@ -12,7 +12,7 @@ nginx_content_directory: "{{ vault_nginx_content_directory }}"
 letsencrypt_domains: "{{ vault_letsencrypt_domains }}"
 letsencrypt_email: "{{ vault_letsencrypt_email }}"
 letsencrypt_ssl_port: "{{ vault_letsencrypt_ssl_port }}"
-letsencrypt_directory: "{{ vault_lets_encrypt_directory }}"
+letsencrypt_config_directory: "{{ vault_letsencrypt_config_directory }}"
 
 monit_directory: "{{ vault_monit_directory }}"
 monit_port: "{{ vault_monit_port }}"

@@ -7,7 +7,7 @@
 
 - name: "Check if certificate already exists"
   stat:
-    path: "{{ letsencrypt_directory }}/live/{{ server }}/cert.pem"
+    path: "{{ letsencrypt_config_directory }}/live/{{ server }}/cert.pem"
   register: letsencrypt_cert
   become: yes
 
@@ -26,7 +26,7 @@
 - name: "Copy default server settings"
   template:
     src: "nginx/{{ conf }}.j2"
-    dest: "{{ nginx_directory }}/conf.d/{{ conf }}"
+    dest: "{{ nginx_config_directory }}/conf.d/{{ conf }}"
     mode: "0644"
   notify:
     - "Start Nginx"
@@ -37,9 +37,9 @@
     - letsencrypt_cert is defined
     - letsencrypt_cert.stat.exists
 
-- name: "Create {{ nginx_directory }}/conf for credentials"
+- name: "Create {{ nginx_config_directory }}/conf for credentials"
   file:
-    path: "{{ nginx_directory }}/conf"
+    path: "{{ nginx_config_directory }}/conf"
     mode: "0755"
     state: "directory"
   become: yes
@@ -51,7 +51,7 @@
 - name: "Copy credentials"
   template:
     src: "nginx/{{ credentials }}.j2"
-    dest: "{{ nginx_directory }}/conf/{{ credentials }}"
+    dest: "{{ nginx_config_directory }}/conf/{{ credentials }}"
     mode: "0644"
   notify:
     - "Start Nginx"

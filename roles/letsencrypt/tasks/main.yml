@@ -17,18 +17,18 @@
 
 - name: "Check if certificate already exists"
   stat:
-    path: "{{ letsencrypt_directory }}/live/{{ server }}/cert.pem"
+    path: "{{ letsencrypt_config_directory }}/live/{{ server }}/cert.pem"
   register: letsencrypt_cert
   become: yes
 
 - name: "Generate certificates"
   block:
-    - template: src="conf.d/placeholder.conf.j2" dest="{{ nginx_directory }}/conf.d/placeholder.conf" mode="0644"
+    - template: src="conf.d/placeholder.conf.j2" dest="{{ nginx_config_directory }}/conf.d/placeholder.conf" mode="0644"
     - service: name="nginx" state="started"
     - service: name="nginx" state="reloaded"
     - shell: "certbot certonly --noninteractive --agree-tos --email {{ letsencrypt_email }} --webroot -w {{ letsencrypt_challenge_directory }} -d {{ letsencrypt_domains | join(',') }}"
   always:
-    - file: path="{{ nginx_directory }}/conf.d/placeholder.conf" state="absent"
+    - file: path="{{ nginx_config_directory }}/conf.d/placeholder.conf" state="absent"
   become: yes
   when:
     - letsencrypt_cert is defined
@@ -36,8 +36,8 @@
 
 - name: "Update SSL certificates on nginx"
   block:
-    - template: src="conf.d/letsencrypt.conf.j2" dest="{{ nginx_directory }}/conf.d/letsencrypt.conf" mode="0644"
-    - lineinfile: path="{{ nginx_directory }}/conf.d/default.conf" regexp="ssl_certificate" state="absent"
+    - template: src="conf.d/letsencrypt.conf.j2" dest="{{ nginx_config_directory }}/conf.d/letsencrypt.conf" mode="0644"
+    - lineinfile: path="{{ nginx_config_directory }}/conf.d/default.conf" regexp="ssl_certificate" state="absent"
     - systemd: name="certbot.timer" state="started" enabled=yes
   always:
     - service: name="nginx" state="started"

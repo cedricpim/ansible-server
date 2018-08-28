@@ -9,7 +9,7 @@
 - name: "Copy Netdata settings"
   template:
     src: "netdata.conf.j2"
-    dest: "{{ netdata_directory }}/netdata.conf"
+    dest: "{{ netdata_config_directory }}/netdata.conf"
     mode: "0600"
   notify:
     - "Start Netdata"

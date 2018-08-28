@@ -1,4 +1,4 @@
 ---
 letsencrypt_challenge_directory: "/var/www/letsencrypt"
 letsencrypt_ssl_port: "443"
-letsencrypt_directory: "/etc/letsencrypt"
+letsencrypt_config_directory: "/etc/letsencrypt"

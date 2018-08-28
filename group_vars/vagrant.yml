@@ -11,7 +11,7 @@ nginx_directory: "/etc/nginx"
 nginx_log_directory: "/var/log/nginx"
 nginx_content_directory: "/var/www"
 
-letsencrypt_directory: "/etc/letsencrypt"
+letsencrypt_config_directory: "/etc/letsencrypt"
 
 monit_directory: "/etc/monit"
 monit_port: "22122"

@@ -53,7 +53,7 @@
 - name: "Copy main settings"
   template:
     src: "nginx.conf.j2"
-    dest: "{{ nginx_directory }}/nginx.conf"
+    dest: "{{ nginx_config_directory }}/nginx.conf"
     mode: "0644"
   notify:
     - "Start Nginx"
@@ -63,7 +63,7 @@
 - name: "Copy default server settings"
   template:
     src: "conf.d/default.conf.j2"
-    dest: "{{ nginx_directory }}/conf.d/default.conf"
+    dest: "{{ nginx_config_directory }}/conf.d/default.conf"
     mode: "0644"
   notify:
     - "Start Nginx"
@@ -72,12 +72,12 @@
 
 - name: "Check for letsencrypt configuration"
   stat:
-    path: "{{ nginx_directory }}/conf.d/letsencrypt.conf"
+    path: "{{ nginx_config_directory }}/conf.d/letsencrypt.conf"
   register: st_letsencrypt
 
 - name: "Add placeholder certificates"
   lineinfile:
-    path: "{{ nginx_directory }}/conf.d/default.conf"
+    path: "{{ nginx_config_directory }}/conf.d/default.conf"
     regexp: '{{ item }}'
     line: "  {{ item }};"
     insertafter: "server_name"
