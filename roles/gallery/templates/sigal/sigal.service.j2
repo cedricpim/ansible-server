@@ -1,0 +1,28 @@
+{{ ansible_managed | comment }}
+
+[Unit]
+Description=Sigal - Simple Static Gallery Generator
+After=network.target
+Requires=network.target
+
+[Service]
+ExecStart=/usr/local/bin/sigal serve -p {{ gallery_sigal_port }} -c {{ gallery_sigal_config_folder }}/sigal.conf.py &
+Restart=on-failure
+User={{ gallery_sigal_user }}
+Group={{ gallery_sigal_user }}
+Type=simple
+# Deny other users access to the pictures
+UMask=0027
+# Optional security settings
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+NoNewPrivileges=true
+ReadWritePaths={{ gallery_sigal_config_folder }} {{ gallery_sigal_pictures_folder }}
+
+[Install]
+WantedBy=multi-user.target

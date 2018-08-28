@@ -1,0 +1,11 @@
+---
+- name: "Restart Sigal"
+  systemd:
+    name: "sigal"
+    state: "restarted"
+  become: yes
+
+- name: "Reload daemon"
+  systemd:
+    daemon_reload: yes
+  become: yes

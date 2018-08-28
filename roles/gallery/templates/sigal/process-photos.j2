@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+set -eo pipefail
+IFS=$'\n\t'
+
+{{ ansible_managed | comment }}
+
+# Folders to be used during the rebuild process
+build_dir="{{ gallery_sigal_pictures_folder }}"
+build_backup_dir="/tmp/sigal-backup"
+conf_file="{{ gallery_sigal_config_folder }}/sigal.conf.py"
+
+sudo sigal build -v -c $conf_file
+
+sudo cp -r $build_dir $build_backup_dir
+
+# Remove non related photo files
+sudo rm -r "$build_backup_dir/index.html" "$build_backup_dir/static"
+for file in $build_backup_dir/**/index.html; do sudo rm -r "$file"; done
+for dir in $build_backup_dir/**/thumbnails; do sudo rm -r "$dir"; done
+
+# Rebuild the main html file
+sudo sigal build -v -c $conf_file $build_backup_dir $build_dir
+
+# Remove temporary backup folder
+sudo rm -r $build_backup_dir
+
+# Add the changes to the main index file about title and favicon
+sudo sed -i 's/_build_backup/Gallery/' $build_dir/index.html
+sudo sed -i 's/<style>/<link rel="icon" href="static\/favicon.ico">\n    <style>/' $build_dir/index.html
+
+# Pass over the ownership of the files
+sudo chown -R {{gallery_sigal_user }}: {{ gallery_sigal_pictures_folder }}

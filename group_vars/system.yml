@@ -1,8 +1,10 @@
 ---
 server: "{{ vault_server }}"
+
 general_user: "{{ vault_general_user }}"
 general_password: "{{ vault_general_password }}"
 general_sshd_ports: "{{ vault_general_sshd_ports }}"
+general_scripts_directory: "{{ vault_general_scripts_directory }}"
 
 nginx_user: "{{ vault_nginx_user }}"
 nginx_folder: "{{ vault_nginx_folder }}"
@@ -28,3 +30,8 @@ dav_radicale_port: "{{ vault_dav_radicale_port }}"
 dav_credentials: "{{ vault_dav_credentials }}"
 dav_vdirsyncer_calendars: "{{ vault_dav_vdirsyncer_calendars }}"
 dav_vdirsyncer_special_calendars: "{{ vault_dav_vdirsyncer_special_calendars }}"
+
+gallery_sigal_port: "{{ vault_gallery_sigal_port }}"
+gallery_credentials: "{{ vault_gallery_credentials }}"
+gallery_sigal_pictures_source: "{{ vault_gallery_sigal_pictures_source }}"
+gallery_sigal_author: "{{ vault_gallery_sigal_author }}"

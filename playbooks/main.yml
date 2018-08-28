@@ -13,3 +13,4 @@
     - { role: "keeweb", tags: "keeweb" }
     - { role: "netdata", tags: "netdata" }
     - { role: "dav", tags: "dav" }
+    - { role: "gallery", tags: "gallery" }

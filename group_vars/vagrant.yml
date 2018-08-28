@@ -1,9 +1,11 @@
 ---
 server: "localhost"
+
 general_user: "vagrant"
 general_password: "$6$gaagXYxRAIVVCA$rUek2lqIML2u5YBkFxMj.DOwC.ELGfI1K7iMyvlyH7bB4s9R/3MVmnEKoFV6hoWRSOH.78SAbrtlXd1rqBTXT0"
 general_sshd_ports:
   - "22"
+general_scripts_directory: ".scripts"
 
 nginx_user: "nginx"
 nginx_folder: "/etc/nginx"
@@ -28,6 +30,8 @@ dav_radicale_bind_address: "0.0.0.0"
 dav_vdirsyncer_calendars:
   - { id: "premier_league", title: "Premier League", url: "https://ics.ecal.com/ecal-sub/5b7d89968cbe0763118b4569/Premier%20League.ics" }
   - { id: "astro", title: "Astro", url: "https://cantonbecker.com/astronomy-calendar/astrocal.ics" }
-
 dav_vdisyncer_special_calendars:
   - { id: "premier_league", reminder: "TRIGGER\\:\\-P2DT", sed: ":a;N;\\$!ba;s#BEGIN:VALARM.*TRIGGER:-P2DT.*(BEGIN:VALARM)#\\1#g" }
+
+gallery_credentials: "vagrant:YYzo3ZBykz1oI"
+gallery_sigal_pictures_source: "/home/vagrant/pictures"
