@@ -3,8 +3,8 @@
 server {
   listen      {{ ansible_default_ipv4.address }}:443 ssl;
   server_name dav.{{ server }};
-  access_log  {{ nginx_log }}/dav.access.log;
-  error_log   {{ nginx_log }}/dav.error.log;
+  access_log  {{ nginx_log_directory }}/dav.access.log;
+  error_log   {{ nginx_log_directory }}/dav.error.log;
 
   location / {
     auth_basic           "Restricted Area";

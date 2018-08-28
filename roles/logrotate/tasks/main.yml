@@ -13,9 +13,9 @@
     mode: "0644"
   become: yes
 
-- name: "Create Logrotate folder for configurations"
+- name: "Create Logrotate folder"
   file:
-    path: "{{ logrotate_config }}"
+    path: "{{ logrotate_config_directory }}"
     mode: "0755"
     state: "directory"
   become: yes

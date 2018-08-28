@@ -5,9 +5,9 @@ IFS=$'\n\t'
 {{ ansible_managed | comment }}
 
 # Folders to be used during the rebuild process
-build_dir="{{ gallery_sigal_pictures_folder }}"
+build_dir="{{ gallery_sigal_pictures_directory }}"
 build_backup_dir="/tmp/sigal-backup"
-conf_file="{{ gallery_sigal_config_folder }}/sigal.conf.py"
+conf_file="{{ gallery_sigal_config_directory }}/sigal.conf.py"
 
 sudo sigal build -v -c $conf_file
 
@@ -29,4 +29,4 @@ sudo sed -i 's/_build_backup/Gallery/' $build_dir/index.html
 sudo sed -i 's/<style>/<link rel="icon" href="static\/favicon.ico">\n    <style>/' $build_dir/index.html
 
 # Pass over the ownership of the files
-sudo chown -R {{gallery_sigal_user }}: {{ gallery_sigal_pictures_folder }}
+sudo chown -R {{gallery_sigal_user }}: {{ gallery_sigal_pictures_directory }}

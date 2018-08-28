@@ -1,6 +1,6 @@
 {{ ansible_managed | comment }}
 
-{{ netdata_log }}/*.log {
+{{ netdata_log_directory }}/*.log {
   daily
   missingok
   rotate 4

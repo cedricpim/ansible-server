@@ -1,22 +1,22 @@
 ---
-- name: "Install netdata"
+- name: "Install Netdata"
   apt:
     name: "netdata"
     state: "latest"
     update_cache: yes
   become: yes
 
-- name: "Copy main configuration"
+- name: "Copy Netdata settings"
   template:
     src: "netdata.conf.j2"
-    dest: "{{ netdata_folder }}/netdata.conf"
+    dest: "{{ netdata_directory }}/netdata.conf"
     mode: "0600"
   notify:
     - "Start Netdata"
     - "Reload Netdata"
   become: yes
 
-- name: "Start/enable netdata"
+- name: "Start/enable Netdata"
   systemd:
     name: "netdata"
     state: "started"
@@ -27,7 +27,7 @@
     name: "nginx"
     tasks_from: "configure"
   vars:
-    conf: "netadata.conf"
+    conf: "netdata.conf"
     credentials: "htpasswd.netdata"
 
 - include_role:

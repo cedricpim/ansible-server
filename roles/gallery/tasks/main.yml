@@ -33,14 +33,14 @@
     mode: "0755"
     state: "directory"
   with_items:
-    - "{{ gallery_sigal_config_folder }}"
-    - "{{ gallery_sigal_pictures_folder }}"
+    - "{{ gallery_sigal_config_directory }}"
+    - "{{ gallery_sigal_pictures_directory }}"
   become: yes
 
 - name: "Copy Sigal settings"
   template:
     src: "sigal/sigal.conf.py.j2"
-    dest: "{{ gallery_sigal_config_folder }}/sigal.conf.py"
+    dest: "{{ gallery_sigal_config_directory }}/sigal.conf.py"
     owner: "{{ gallery_sigal_user }}"
     group: "{{ gallery_sigal_user }}"
     mode: "0644"
@@ -90,6 +90,12 @@
     enabled: yes
     daemon_reload: yes
   become: yes
+
+- include_role:
+    name: "general"
+    tasks_from: "scripts"
+  vars:
+    script: "process-photos"
 
 - include_role:
     name: "nginx"

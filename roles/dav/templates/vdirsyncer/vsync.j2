@@ -9,15 +9,15 @@ if [ `whoami` != "{{ dav_vdirsyncer_user }}" ]; then
 fi
 
 # Sync calendars
-eval "$escalation /usr/bin/vdirsyncer -c {{ dav_vdirsyncer_config }}/config sync --force-delete"
+eval "$escalation /usr/bin/vdirsyncer -c {{ dav_vdirsyncer_config_directory }}/config sync --force-delete"
 
 {% for special_calendar in dav_vdisyncer_special_calendars %}
 # This is required a second time, so that we do not end up with duplicated events
-eval "$escalation /usr/bin/vdirsyncer -c {{ dav_vdirsyncer_config }}/config sync {{ special_calendar.id }}_calendar"
+eval "$escalation /usr/bin/vdirsyncer -c {{ dav_vdirsyncer_config_directory }}/config sync {{ special_calendar.id }}_calendar"
 
 # Edit in-place calendars (useful to remove a certain kind of reminder for example)
-if ls {{ dav_radicale_collections }}/collection-root/{{ dav_vdirsyncer_collections }}/{{ special_calendar.id }}/*.ics >> /dev/null 2>&1; then
-  for file in {{ dav_radicale_collections }}/collection-root/{{ dav_vdirsyncer_collections }}/{{ special_calendar.id }}/*.ics; do
+if ls {{ dav_radicale_collections_directory }}/collection-root/{{ dav_vdirsyncer_collections_directory }}/{{ special_calendar.id }}/*.ics >> /dev/null 2>&1; then
+  for file in {{ dav_radicale_collections_directory }}/collection-root/{{ dav_vdirsyncer_collections_directory }}/{{ special_calendar.id }}/*.ics; do
     if grep -q "{{ special_calendar.reminder }}" $file; then
       eval "$escalation sed -i -r '{{ special_calendar.sed }}' $file"
     fi

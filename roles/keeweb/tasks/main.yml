@@ -6,9 +6,9 @@
     update_cache: yes
   become: yes
 
-- name: "Create {{ nginx_content_folder }} folder"
+- name: "Create {{ nginx_content_directory }} folder"
   file:
-    path: "{{ nginx_content_folder }}"
+    path: "{{ nginx_content_directory }}"
     owner: "{{ nginx_user }}"
     group: "{{ nginx_user }}"
     mode: "0600"
@@ -18,7 +18,7 @@
 - name: "Clone KeeWeb"
   git:
     repo: "https://github.com/keeweb/keeweb.git"
-    dest: "{{ nginx_content_folder }}/keeweb"
+    dest: "{{ nginx_content_directory }}/keeweb"
   notify:
     - "Start Nginx"
     - "Reload Nginx"

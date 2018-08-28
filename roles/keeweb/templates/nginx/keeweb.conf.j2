@@ -3,14 +3,14 @@
 server {
   listen      {{ ansible_default_ipv4.address }}:443 ssl;
   server_name keeweb.{{ server }};
-  access_log  {{ nginx_log }}/keeweb.access.log;
-  error_log   {{ nginx_log }}/keeweb.error.log;
+  access_log  {{ nginx_log_directory }}/keeweb.access.log;
+  error_log   {{ nginx_log_directory }}/keeweb.error.log;
 
   location / {
     auth_basic           "Restricted Area";
     auth_basic_user_file conf/htpasswd.keeweb;
 
-    root {{ nginx_content_folder }}/keeweb;
+    root {{ nginx_content_directory }}/keeweb;
     index index.html;
   }
 }

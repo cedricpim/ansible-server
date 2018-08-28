@@ -1,7 +1,7 @@
 {{ ansible_managed | comment }}
 
 [general]
-  status_path = "{{ dav_vdirsyncer_config }}/status/"
+  status_path = "{{ dav_vdirsyncer_config_directory }}/status/"
 
 #############################
 ######### Calendars #########
@@ -18,7 +18,7 @@
 
 [storage {{ calendar.id }}_calendar_local]
   type = "filesystem"
-  path = "{{ dav_radicale_collections }}/collection-root/{{ dav_vdirsyncer_collections }}/{{ calendar.id }}"
+  path = "{{ dav_radicale_collections_directory }}/collection-root/{{ dav_vdirsyncer_collections_directory }}/{{ calendar.id }}"
   fileext = ".ics"
 
 [storage {{ calendar.id }}_calendar_remote]

@@ -22,7 +22,7 @@ hosts = {{ dav_radicale_bind_address }}:{{ dav_radicale_port }}
 daemon = True
 
 # File storing the PID in daemon mode
-pid = {{ dav_radicale_pid }}/radicale.pid
+pid = {{ dav_radicale_pid_directory }}/radicale.pid
 
 # Max parallel connections
 #max_connections = 20
@@ -104,7 +104,7 @@ type = multifilesystem
 
 # Folder for storing local collections, created if not present
 #filesystem_folder = /var/lib/radicale/collections
-filesystem_folder = {{ dav_radicale_collections }}
+filesystem_folder = {{ dav_radicale_collections_directory }}
 
 # Lock the storage. Never start multiple instances of Radicale or edit the
 # storage externally while Radicale is running if disabled.
@@ -141,7 +141,7 @@ type = internal
 # If no config is given, simple information is printed on the standard output
 # For more information about the syntax of the configuration file, see:
 # http://docs.python.org/library/logging.config.html
-config = {{ dav_radicale_config }}/logging
+config = {{ dav_radicale_config_directory }}/logging
 
 # Set the default logging level to debug
 debug = False

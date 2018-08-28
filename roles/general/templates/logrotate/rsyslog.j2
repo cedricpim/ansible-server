@@ -1,6 +1,6 @@
 {{ ansible_managed | comment }}
 
-{{ logs_folder }}/syslog
+{{ logs_directory }}/syslog
 {
   rotate 7
   daily
@@ -13,16 +13,16 @@
   endscript
 }
 
-{{ logs_folder }}/mail.err
-{{ logs_folder }}/mail.info
-{{ logs_folder }}/mail.log
-{{ logs_folder }}/mail.warn
-{{ logs_folder }}/daemon.log
-{{ logs_folder }}/kern.log
-{{ logs_folder }}/auth.log
-{{ logs_folder }}/user.log
-{{ logs_folder }}/debug
-{{ logs_folder }}/messages
+{{ logs_directory }}/mail.err
+{{ logs_directory }}/mail.info
+{{ logs_directory }}/mail.log
+{{ logs_directory }}/mail.warn
+{{ logs_directory }}/daemon.log
+{{ logs_directory }}/kern.log
+{{ logs_directory }}/auth.log
+{{ logs_directory }}/user.log
+{{ logs_directory }}/debug
+{{ logs_directory }}/messages
 {
   rotate 4
   weekly

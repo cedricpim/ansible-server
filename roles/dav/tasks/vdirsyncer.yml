@@ -23,7 +23,7 @@
 
 - name: "Create Vdirsyncer folder"
   file:
-    path: "{{ dav_vdirsyncer_config }}"
+    path: "{{ dav_vdirsyncer_config_directory }}"
     owner: "{{ dav_vdirsyncer_user }}"
     group: "{{ dav_group }}"
     mode: "0755"
@@ -33,7 +33,7 @@
 - name: "Copy Vdirsyncer settings"
   template:
     src: "vdirsyncer/config.j2"
-    dest: "{{ dav_vdirsyncer_config }}/config"
+    dest: "{{ dav_vdirsyncer_config_directory }}/config"
     owner: "{{ dav_vdirsyncer_user }}"
     group: "{{ dav_group }}"
     mode: "0600"
@@ -43,7 +43,7 @@
 - name: "Copy Vdirsyncer script"
   template:
     src: "vdirsyncer/{{ item }}.j2"
-    dest: "{{ dav_vdirsyncer_config }}/{{ item }}"
+    dest: "{{ dav_vdirsyncer_config_directory }}/{{ item }}"
     owner: "{{ dav_vdirsyncer_user }}"
     group: "{{ dav_group }}"
     mode: "0700"
@@ -66,7 +66,7 @@
   become: yes
 
 - name: "Discover collections"
-  shell: "yes | {{ dav_vdirsyncer_config }}/vdiscover"
+  shell: "yes | {{ dav_vdirsyncer_config_directory }}/vdiscover"
   notify:
     - "Reload daemon"
     - "Restart Vdirsyncer timer"

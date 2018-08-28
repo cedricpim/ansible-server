@@ -1,5 +1,5 @@
 ---
-monit_folder: "/etc/monit"
+monit_directory: "/etc/monit"
 
 monit_port: "22122"
 monit_sender: "monit@localhost"

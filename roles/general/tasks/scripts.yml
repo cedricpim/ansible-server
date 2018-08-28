@@ -1,0 +1,26 @@
+---
+- name: "Create folder for scripts"
+  file:
+    path: "~{{ general_user }}/{{ general_scripts_directory }}"
+    owner: "{{ general_user }}"
+    group: "{{ general_user }}"
+    mode: "0700"
+    state: "directory"
+  become: yes
+
+- name: "Copy server custom scripts"
+  template:
+    src: "scripts/{{ script }}.j2"
+    dest: "~{{ general_user }}/{{ general_scripts_directory }}/{{ script }}"
+    owner: "{{ general_user }}"
+    group: "{{ general_user }}"
+    mode: "0700"
+  become: yes
+
+- name: "Add scripts folder to path"
+  lineinfile:
+    path: "~{{ general_user }}/.bashrc"
+    regexp: 'export.*{{ general_scripts_directory }}'
+    line: 'export PATH=$PATH:$HOME/{{ general_scripts_directory }}'
+    state: "present"
+  become: yes

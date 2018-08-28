@@ -1,6 +1,6 @@
 {{ ansible_managed | comment }}
 
-{{ logs_folder }}/apt/term.log {
+{{ logs_directory }}/apt/term.log {
   rotate 12
   monthly
   compress
@@ -8,7 +8,7 @@
   notifempty
 }
 
-{{ logs_folder }}/apt/history.log {
+{{ logs_directory }}/apt/history.log {
   rotate 12
   monthly
   compress

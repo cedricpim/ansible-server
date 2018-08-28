@@ -3,7 +3,7 @@
 user  {{ nginx_user }};
 worker_processes  1;
 
-error_log  {{ nginx_log }}/error.log warn;
+error_log  {{ nginx_log_directory }}/error.log warn;
 pid        {{ nginx_pidfile }};
 
 events {
@@ -11,7 +11,7 @@ events {
 }
 
 http {
-  include       {{ nginx_folder }}/mime.types;
+  include       {{ nginx_directory }}/mime.types;
   default_type  application/octet-stream;
 
   log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
@@ -24,5 +24,5 @@ http {
 
   keepalive_timeout  65;
 
-  include {{ nginx_folder }}/conf.d/*.conf;
+  include {{ nginx_directory }}/conf.d/*.conf;
 }

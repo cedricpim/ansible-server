@@ -5,7 +5,7 @@ server {
   server_name {{ server }};
 
   location / {
-    root   {{ nginx_content_folder }}/html;
+    root   {{ nginx_content_directory }}/html;
     index  index.html index.htm;
   }
 

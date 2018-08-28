@@ -8,4 +8,4 @@ if [ `whoami` != "{{ dav_vdirsyncer_user }}" ]; then
   escalation="sudo -u {{ dav_vdirsyncer_user }}"
 fi
 
-eval "$escalation /usr/bin/vdirsyncer -c {{ dav_vdirsyncer_config }}/config discover"
+eval "$escalation /usr/bin/vdirsyncer -c {{ dav_vdirsyncer_config_directory }}/config discover"

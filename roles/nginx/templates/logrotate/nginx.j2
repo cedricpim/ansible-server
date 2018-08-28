@@ -1,6 +1,6 @@
 {{ ansible_managed | comment }}
 
-{{ nginx_log }}/*.log {
+{{ nginx_log_directory }}/*.log {
   daily
   missingok
   rotate 2

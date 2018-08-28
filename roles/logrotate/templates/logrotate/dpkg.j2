@@ -1,6 +1,6 @@
 {{ ansible_managed | comment }}
 
-{{ logs_folder }}/dpkg.log {
+{{ logs_directory }}/dpkg.log {
   monthly
   rotate 12
   compress
@@ -10,7 +10,7 @@
   create 0644 root root
 }
 
-{{ logs_folder }}/alternatives.log {
+{{ logs_directory }}/alternatives.log {
   monthly
   rotate 12
   compress

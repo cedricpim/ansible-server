@@ -22,7 +22,7 @@
 	# history = 3996
 	# update every = 1
 	# config directory = /etc/netdata
-	log directory = {{ netdata_log }}
+	log directory = {{ netdata_log_directory }}
 	# plugins directory = /usr/lib/x86_64-linux-gnu/netdata/plugins.d
 	# web files directory = /usr/share/netdata/web
 	# cache directory = /var/cache/netdata
@@ -32,9 +32,9 @@
 	# host access prefix =
 	# memory deduplication (ksm) = yes
 	# debug flags = 0x0000000000000000
-	debug log = {{ netdata_log }}/debug.log
-	error log = {{ netdata_log }}/error.log
-	access log = {{ netdata_log }}/access.log
+	debug log = {{ netdata_log_directory }}/debug.log
+	error log = {{ netdata_log_directory }}/error.log
+	access log = {{ netdata_log_directory }}/access.log
 	# errors flood protection period = 1200
 	# errors to trigger flood protection = 200
 	# pthread stack size = 8388608

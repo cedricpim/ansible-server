@@ -1,6 +1,6 @@
 ---
 nginx_user: "nginx"
-nginx_folder: "/etc/nginx"
-nginx_content_folder: "/var/www"
-nginx_log: "/var/log/nginx"
+nginx_directory: "/etc/nginx"
+nginx_content_directory: "/var/www"
+nginx_log_directory: "/var/log/nginx"
 nginx_pidfile: "/var/run/nginx.pid"

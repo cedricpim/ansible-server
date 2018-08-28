@@ -40,16 +40,16 @@
     mode: "{{ item.mode }}"
     state: "directory"
   with_items:
-    - { path: "{{ dav_radicale_config }}", mode: "0744" }
-    - { path: "{{ dav_radicale_pid }}", mode: "0744" }
-    - { path: "{{ dav_radicale_log }}", mode: "0755" }
-    - { path: "{{ dav_radicale_collections }}", mode: "0775" }
+    - { path: "{{ dav_radicale_config_directory }}", mode: "0744" }
+    - { path: "{{ dav_radicale_pid_directory }}", mode: "0744" }
+    - { path: "{{ dav_radicale_log_directory }}", mode: "0755" }
+    - { path: "{{ dav_radicale_collections_directory }}", mode: "0775" }
   become: yes
 
 - name: "Copy Radicale settings"
   template:
     src: "radicale/{{ item }}.j2"
-    dest: "{{ dav_radicale_config }}/{{ item }}"
+    dest: "{{ dav_radicale_config_directory }}/{{ item }}"
     owner: "{{ dav_radicale_user }}"
     group: "{{ dav_group }}"
     mode: "0644"

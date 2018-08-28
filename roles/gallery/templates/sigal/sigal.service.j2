@@ -6,7 +6,7 @@ After=network.target
 Requires=network.target
 
 [Service]
-ExecStart=/usr/local/bin/sigal serve -p {{ gallery_sigal_port }} -c {{ gallery_sigal_config_folder }}/sigal.conf.py &
+ExecStart=/usr/local/bin/sigal serve -p {{ gallery_sigal_port }} -c {{ gallery_sigal_config_directory }}/sigal.conf.py &
 Restart=on-failure
 User={{ gallery_sigal_user }}
 Group={{ gallery_sigal_user }}
@@ -22,7 +22,7 @@ ProtectKernelTunables=true
 ProtectKernelModules=true
 ProtectControlGroups=true
 NoNewPrivileges=true
-ReadWritePaths={{ gallery_sigal_config_folder }} {{ gallery_sigal_pictures_folder }}
+ReadWritePaths={{ gallery_sigal_config_directory }} {{ gallery_sigal_pictures_directory }}
 
 [Install]
 WantedBy=multi-user.target

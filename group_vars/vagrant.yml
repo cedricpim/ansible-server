@@ -5,16 +5,15 @@ general_user: "vagrant"
 general_password: "$6$gaagXYxRAIVVCA$rUek2lqIML2u5YBkFxMj.DOwC.ELGfI1K7iMyvlyH7bB4s9R/3MVmnEKoFV6hoWRSOH.78SAbrtlXd1rqBTXT0"
 general_sshd_ports:
   - "22"
-general_scripts_directory: ".scripts"
 
 nginx_user: "nginx"
-nginx_folder: "/etc/nginx"
-nginx_log: "/var/log/nginx"
-nginx_content_folder: "/var/www"
+nginx_directory: "/etc/nginx"
+nginx_log_directory: "/var/log/nginx"
+nginx_content_directory: "/var/www"
 
-letsencrypt_folder: "/etc/letsencrypt"
+letsencrypt_directory: "/etc/letsencrypt"
 
-monit_folder: "/etc/monit"
+monit_directory: "/etc/monit"
 monit_port: "22122"
 monit_credentials: "monit:monit"
 monit_bind_address: "0.0.0.0"

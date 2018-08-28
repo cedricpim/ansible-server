@@ -6,10 +6,10 @@
     update_cache: yes
   become: yes
 
-- name: "Copy main configuration"
+- name: "Copy Monit settings"
   template:
     src: "monitrc.j2"
-    dest: "{{ monit_folder }}/monitrc"
+    dest: "{{ monit_directory }}/monitrc"
     mode: "0600"
   notify:
     - "Start Monit"

@@ -7,7 +7,7 @@
 
 - name: "Create Logrotate folder for configurations"
   file:
-    path: "{{ logrotate_config }}"
+    path: "{{ logrotate_config_directory }}"
     mode: "0755"
     state: "directory"
   become: yes
@@ -16,7 +16,7 @@
 - name: "Copy {{ conf }} configuration"
   template:
     src: "logrotate/{{ conf }}.j2"
-    dest: "{{ logrotate_config }}/{{ conf }}"
+    dest: "{{ logrotate_config_directory }}/{{ conf }}"
     mode: "0644"
   become: yes
   when: logrotate_check.rc == 0
