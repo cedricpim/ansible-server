@@ -14,3 +14,4 @@
     - { role: "netdata", tags: "netdata" }
     - { role: "dav", tags: "dav" }
     - { role: "gallery", tags: "gallery" }
+    - { role: "sync", tags: "sync" }

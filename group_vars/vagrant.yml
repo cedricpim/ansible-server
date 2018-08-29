@@ -34,3 +34,5 @@ dav_vdisyncer_special_calendars:
 
 gallery_credentials: "vagrant:YYzo3ZBykz1oI"
 gallery_sigal_pictures_source: "/home/vagrant/pictures"
+
+sync_credentials: "vagrant:YYzo3ZBykz1oI"

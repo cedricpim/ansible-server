@@ -1,0 +1,73 @@
+---
+- name: "Install Syncthing"
+  apt:
+    name: "syncthing"
+    state: "latest"
+    update_cache: yes
+  become: yes
+
+- name: "Create {{ syncthing_user }} user"
+  user:
+    name: "{{ syncthing_user }}"
+    shell: "/bin/false"
+    state: "present"
+    create_home: no
+  become: yes
+
+- name: "Create Syncthing folder"
+  file:
+    path: "{{ syncthing_config_directory }}"
+    owner: "{{ syncthing_user }}"
+    group: "{{ syncthing_user }}"
+    mode: "0755"
+    state: "directory"
+  become: yes
+
+- name: "Create Syncthing service directory"
+  file:
+    path: "/etc/systemd/system/syncthing@{{ syncthing_user }}.service.d"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  become: yes
+
+- name: "Override Syncthing user"
+  template:
+    src: "systemd/override.conf.j2"
+    dest: "/etc/systemd/system/syncthing@{{ syncthing_user }}.service.d/override.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify:
+    - "Reload daemon"
+    - "Restart Syncthing"
+  become: yes
+
+- name: "Start/Enable Syncthing"
+  systemd:
+    name: "syncthing@{{ syncthing_user }}"
+    state: "stopped"
+    enabled: yes
+  become: yes
+
+- name: "Update Syncthing port"
+  lineinfile:
+    path: "{{ syncthing_config_directory }}/config.xml"
+    regexp: '^(\s+)<address>127\.0\.0\.1'
+    line: '\1<address>127.0.0.1:{{ syncthing_port }}</address>'
+    backrefs: yes
+  notify: "Restart Syncthing"
+  become: yes
+
+- include_role:
+    name: "nginx"
+    tasks_from: "configure"
+  vars:
+    conf: "sync.conf"
+    credentials: "htpasswd.sync"
+
+- include_role:
+    name: "monit"
+    tasks_from: "configure"
+  vars:
+    conf: "sync"

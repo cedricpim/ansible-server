@@ -33,3 +33,6 @@ gallery_sigal_port: "{{ vault_gallery_sigal_port }}"
 gallery_credentials: "{{ vault_gallery_credentials }}"
 gallery_sigal_pictures_source: "{{ vault_gallery_sigal_pictures_source }}"
 gallery_sigal_author: "{{ vault_gallery_sigal_author }}"
+
+syncthing_port: "{{ vault_syncthing_port }}"
+sync_credentials: "{{ vault_sync_credentials }}"

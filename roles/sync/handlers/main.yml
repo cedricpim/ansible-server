@@ -1,0 +1,11 @@
+---
+- name: "Restart Syncthing"
+  systemd:
+    name: "syncthing@{{ syncthing_user }}"
+    state: "restarted"
+  become: yes
+
+- name: "Reload daemon"
+  systemd:
+    daemon_reload: yes
+  become: yes
