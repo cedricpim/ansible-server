@@ -6,7 +6,7 @@ general_password: "{{ vault_general_password }}"
 general_sshd_ports: "{{ vault_general_sshd_ports }}"
 
 nginx_user: "{{ vault_nginx_user }}"
-nginx_directory: "{{ vault_nginx_directory }}"
+nginx_config_directory: "{{ vault_nginx_config_directory }}"
 nginx_content_directory: "{{ vault_nginx_content_directory }}"
 
 letsencrypt_domains: "{{ vault_letsencrypt_domains }}"

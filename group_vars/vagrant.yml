@@ -7,7 +7,7 @@ general_sshd_ports:
   - "22"
 
 nginx_user: "nginx"
-nginx_directory: "/etc/nginx"
+nginx_config_directory: "/etc/nginx"
 nginx_log_directory: "/var/log/nginx"
 nginx_content_directory: "/var/www"
 

@@ -60,6 +60,16 @@
     - "Reload Nginx"
   become: yes
 
+- name: "Create Nginx directories for individual configurations"
+  file:
+    path: "{{ item }}"
+    mode: "0755"
+    state: "directory"
+  with_items:
+    - "{{ nginx_config_directory }}/conf.d"
+    - "{{ nginx_config_directory }}/conf"
+  become: yes
+
 - name: "Copy default server settings"
   template:
     src: "conf.d/default.conf.j2"
