@@ -1,0 +1,4 @@
+---
+rkhunter_config_directory: "/etc"
+rkhunter_default_directory: "/etc/default"
+rkhunter_logfile: "/var/log/rkhunter.log"

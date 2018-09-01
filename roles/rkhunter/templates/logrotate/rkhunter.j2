@@ -1,0 +1,11 @@
+{{ ansible_managed | comment }}
+
+{{ rkhunter_logfile }} {
+  weekly
+  missingok
+  rotate 4
+  compress
+  delaycompress
+  notifempty
+  create 0640 root adm
+}

@@ -1,0 +1,37 @@
+---
+- name: "Install Rkhunter"
+  apt:
+    name: "rkhunter"
+    state: "latest"
+    update_cache: yes
+  become:  yes
+
+- name: "Create Rkhunter directories"
+  file:
+    path: "{{ item }}"
+    mode: "0755"
+    state: "directory"
+  with_items:
+    - "{{ rkhunter_config_directory }}"
+    - "{{ rkhunter_default_directory }}"
+  become: yes
+
+- name: "Copy Rkhunter settings"
+  template:
+    src: "{{ item.filename }}.j2"
+    dest: "{{ item.directory }}/{{ item.filename }}"
+    mode: "0644"
+  with_items:
+    - { directory: "{{ rkhunter_config_directory }}", filename: "rkhunter.conf" }
+    - { directory: "{{ rkhunter_default_directory }}", filename: "rkhunter" }
+  become: yes
+
+- name: "Update Rkhunter"
+  command: "rkhunter --update"
+  become: yes
+
+- include_role:
+    name: "logrotate"
+    tasks_from: "configure"
+  vars:
+    conf: "rkhunter"

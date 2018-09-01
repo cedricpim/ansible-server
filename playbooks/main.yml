@@ -15,3 +15,4 @@
     - { role: "dav", tags: "dav" }
     - { role: "gallery", tags: "gallery" }
     - { role: "sync", tags: "sync" }
+    - { role: "rkhunter", tags: "rkhunter" }
