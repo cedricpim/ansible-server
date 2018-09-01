@@ -1,26 +1,14 @@
 ---
 - name: "Create directory for scripts"
   file:
-    path: "~{{ general_user }}/{{ general_scripts_directory }}"
-    owner: "{{ general_user }}"
-    group: "{{ general_user }}"
-    mode: "0700"
+    path: "{{ general_scripts_directory }}"
+    mode: "0755"
     state: "directory"
   become: yes
 
 - name: "Copy server custom scripts"
   template:
     src: "scripts/{{ script }}.j2"
-    dest: "~{{ general_user }}/{{ general_scripts_directory }}/{{ script }}"
-    owner: "{{ general_user }}"
-    group: "{{ general_user }}"
-    mode: "0700"
-  become: yes
-
-- name: "Add scripts directory to PATH"
-  lineinfile:
-    path: "~{{ general_user }}/.bashrc"
-    regexp: 'export.*{{ general_scripts_directory }}'
-    line: 'export PATH=$PATH:$HOME/{{ general_scripts_directory }}'
-    state: "present"
+    dest: "{{ general_scripts_directory }}/{{ script }}"
+    mode: "0755"
   become: yes

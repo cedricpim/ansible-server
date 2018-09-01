@@ -1,2 +1,2 @@
 ---
-general_scripts_directory: ".scripts"
+general_scripts_directory: "/usr/local/bin"
