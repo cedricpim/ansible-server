@@ -18,6 +18,7 @@ monit_port: "22122"
 monit_credentials: "monit:monit"
 monit_bind_address: "0.0.0.0"
 monit_alert_email: "vagrant@local"
+monit_logfile: "/var/log/monit.log"
 
 keeweb_credentials: "vagrant:YYzo3ZBykz1oI"
 
@@ -40,3 +41,5 @@ sync_personal_credentials: "vagrant:YYzo3ZBykz1oI"
 sync_personal_file: "vagrant.txt"
 
 rkhunter_alert_email: "vagrant@local"
+
+fail2ban_alert_email: "vagrant@local"

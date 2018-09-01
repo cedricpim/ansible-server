@@ -12,3 +12,4 @@
     - { role: "gallery", tags: "gallery" }
     - { role: "sync", tags: "sync" }
     - { role: "rkhunter", tags: "rkhunter" }
+    - { role: "fail2ban", tags: "fail2ban" }

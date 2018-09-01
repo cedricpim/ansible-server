@@ -1,0 +1,3 @@
+---
+fail2ban_config_directory: "/etc/fail2ban"
+fail2ban_logfile: "/var/log/fail2ban.log"

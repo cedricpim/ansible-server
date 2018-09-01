@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -eo pipefail
+IFS=$'\n\t'
+
+{{ ansible_managed | comment }}
+
+case $1 in
+  list)
+    sudo fail2ban-client status | grep "Jail list:" | sed "s/ //g" | awk '{split($2,a,",");for(i in a) system("sudo fail2ban-client status " a[i])}' | grep "Status\|IP list"
+    ;;
+
+  unban)
+    sudo fail2ban-client set $2 unbanip $3
+    ;;
+
+  *)
+    echo $"Usage: $0 {list|unban}"
+    exit 1
+esac

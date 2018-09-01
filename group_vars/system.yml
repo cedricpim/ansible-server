@@ -18,6 +18,7 @@ monit_directory: "{{ vault_monit_directory }}"
 monit_port: "{{ vault_monit_port }}"
 monit_credentials: "{{ vault_monit_credentials }}"
 monit_alert_email: "{{ vault_monit_alert_email }}"
+monit_logfile: "{{ vault_monit_logfile }}"
 
 keeweb_credentials: "{{ vault_keeweb_credentials }}"
 
@@ -40,3 +41,5 @@ sync_personal_credentials: "{{ vault_sync_personal_credentials }}"
 sync_personal_file: "{{ vault_sync_personal_file }}"
 
 rkhunter_alert_email: "{{ vault_rkhunter_alert_email }}"
+
+fail2ban_alert_email: "{{ vault_fail2ban_alert_email }}"
