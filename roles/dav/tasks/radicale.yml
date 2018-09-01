@@ -56,7 +56,7 @@
   with_items:
     - "config"
     - "logging"
-  notify: "Retart Radicale"
+  notify: "Restart Radicale"
   become: yes
 
 - name: "Copy Radicale systemd"
