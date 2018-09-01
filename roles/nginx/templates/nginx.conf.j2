@@ -20,9 +20,20 @@ http {
 
   access_log  /var/log/nginx/access.log  main;
 
-  sendfile        on;
+  sendfile           on;
 
   keepalive_timeout  65;
+
+  # More strict protocol permissions and ciphers
+  ssl_dhparam  {{ nginx_ssl_dhparam }};
+  ssl_ciphers  "{{ nginx_ssl_ciphers }}";
+  ssl_protocols  {{ nginx_ssl_ciphers | join(" ") }};
+  ssl_session_cache  {{ nginx_ssl_session_cache }};
+  ssl_prefer_server_ciphers  on;
+
+  # Set HTTP Strict Transport Security
+  add_header  Strict-Transport-Security "max-age=63072000; includeSubdomains; ";
+  add_header  X-Frame-Options "DENY";
 
   include {{ nginx_config_directory }}/conf.d/*.conf;
 }

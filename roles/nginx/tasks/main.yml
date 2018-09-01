@@ -50,6 +50,10 @@
     state: "directory"
   become: yes
 
+- name: "Generate a stronger DHE parameter"
+  command: "openssl dhparam -out {{ nginx_ssl_dhparam }} 4096"
+  become: yes
+
 - name: "Copy main settings"
   template:
     src: "nginx.conf.j2"
