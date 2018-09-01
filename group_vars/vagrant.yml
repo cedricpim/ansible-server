@@ -36,3 +36,5 @@ gallery_credentials: "vagrant:YYzo3ZBykz1oI"
 gallery_sigal_pictures_source: "/home/vagrant/pictures"
 
 sync_credentials: "vagrant:YYzo3ZBykz1oI"
+sync_personal_credentials: "vagrant:YYzo3ZBykz1oI"
+sync_personal_file: "vagrant.txt"

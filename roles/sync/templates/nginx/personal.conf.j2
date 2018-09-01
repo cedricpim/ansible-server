@@ -1,0 +1,24 @@
+{{ ansible_managed | comment }}
+
+server {
+  listen      443 ssl;
+  server_name {{ server }};
+
+  # Download and send {{ sync_personal_file }} file
+  location = /{{ sync_personal_file }} {
+    auth_basic           "Restricted Area";
+    auth_basic_user_file conf/htpasswd.personal;
+
+    root {{ syncthing_config_directory }}/general/files;
+  }
+
+  # Download public files
+  location /public/ {
+    root {{ syncthing_config_directory }}/general;
+
+    if ($uri ~ "/public/index") { return 403; }
+
+    sendfile on;
+    sendfile_max_chunk 1m;
+  }
+}

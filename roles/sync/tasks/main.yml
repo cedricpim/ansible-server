@@ -29,6 +29,7 @@
     owner: "root"
     group: "root"
     mode: "0755"
+    state: "directory"
   become: yes
 
 - name: "Override Syncthing user"
@@ -46,7 +47,7 @@
 - name: "Start/Enable Syncthing"
   systemd:
     name: "syncthing@{{ syncthing_user }}"
-    state: "stopped"
+    state: "started"
     enabled: yes
   become: yes
 
@@ -65,6 +66,13 @@
   vars:
     conf: "sync.conf"
     credentials: "htpasswd.sync"
+
+- include_role:
+    name: "nginx"
+    tasks_from: "configure"
+  vars:
+    conf: "personal.conf"
+    credentials: "htpasswd.personal"
 
 - include_role:
     name: "monit"

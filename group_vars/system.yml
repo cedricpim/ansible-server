@@ -36,3 +36,5 @@ gallery_sigal_author: "{{ vault_gallery_sigal_author }}"
 
 syncthing_port: "{{ vault_syncthing_port }}"
 sync_credentials: "{{ vault_sync_credentials }}"
+sync_personal_credentials: "{{ vault_sync_personal_credentials }}"
+sync_personal_file: "{{ vault_sync_personal_file }}"
