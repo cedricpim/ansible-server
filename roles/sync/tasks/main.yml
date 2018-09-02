@@ -4,7 +4,6 @@
     name: "syncthing"
     state: "latest"
     update_cache: yes
-  become: yes
 
 - name: "Create {{ syncthing_user }} user"
   user:
@@ -12,7 +11,6 @@
     shell: "/bin/false"
     state: "present"
     create_home: no
-  become: yes
 
 - name: "Create Syncthing folder"
   file:
@@ -21,7 +19,6 @@
     group: "{{ syncthing_user }}"
     mode: "0755"
     state: "directory"
-  become: yes
 
 - name: "Create Syncthing service directory"
   file:
@@ -30,7 +27,6 @@
     group: "root"
     mode: "0755"
     state: "directory"
-  become: yes
 
 - name: "Override Syncthing user"
   template:
@@ -42,14 +38,12 @@
   notify:
     - "Reload daemon"
     - "Restart Syncthing"
-  become: yes
 
 - name: "Start/Enable Syncthing"
   systemd:
     name: "syncthing@{{ syncthing_user }}"
     state: "started"
     enabled: yes
-  become: yes
 
 - name: "Update Syncthing port"
   lineinfile:
@@ -58,7 +52,6 @@
     line: '\1<address>127.0.0.1:{{ syncthing_port }}</address>'
     backrefs: yes
   notify: "Restart Syncthing"
-  become: yes
 
 - include_role:
     name: "nginx"

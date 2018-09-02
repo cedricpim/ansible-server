@@ -1,5 +1,18 @@
 ---
 - hosts: server
+  become: yes
+
+  pre_tasks:
+    - name: "Update backports apt sources"
+      apt_repository:
+        repo: "deb http://ftp.debian.org/debian {{ ansible_distribution_release }}-backports main"
+        state: "present"
+
+    - name: "Update current packages"
+      apt:
+        upgrade: yes
+        update_cache: yes
+        force_apt_get: yes
 
   vars_files:
     - "../vaulted_vars/system.yml"

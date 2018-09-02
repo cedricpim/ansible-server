@@ -3,10 +3,8 @@
   systemd:
     name: "fail2ban"
     state: "started"
-  become: yes
 
 - name: "Reload Fail2Ban"
   systemd:
     name: "fail2ban"
     state: "reloaded"
-  become: yes

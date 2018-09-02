@@ -4,11 +4,9 @@
     path: "{{ general_scripts_directory }}"
     mode: "0755"
     state: "directory"
-  become: yes
 
 - name: "Copy server custom scripts"
   template:
     src: "scripts/{{ script }}.j2"
     dest: "{{ general_scripts_directory }}/{{ script }}"
     mode: "0755"
-  become: yes

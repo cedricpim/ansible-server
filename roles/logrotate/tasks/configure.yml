@@ -10,7 +10,6 @@
     path: "{{ logrotate_config_directory }}"
     mode: "0755"
     state: "directory"
-  become: yes
   when: logrotate_check.rc == 0
 
 - name: "Copy {{ conf }} configuration"
@@ -18,5 +17,4 @@
     src: "logrotate/{{ conf }}.j2"
     dest: "{{ logrotate_config_directory }}/{{ conf }}"
     mode: "0644"
-  become: yes
   when: logrotate_check.rc == 0

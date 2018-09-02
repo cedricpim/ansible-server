@@ -4,7 +4,6 @@
     name: "python-certbot-nginx"
     state: "latest"
     default_release: "{{ ansible_distribution_release }}-backports"
-  become: yes
 
 - name: "Create {{ letsencrypt_challenge_directory }} directory"
   file:
@@ -13,13 +12,11 @@
     group: "{{ nginx_user }}"
     mode: "0600"
     state: "directory"
-  become: yes
 
 - name: "Check if certificate already exists"
   stat:
     path: "{{ letsencrypt_config_directory }}/live/{{ server }}/cert.pem"
   register: letsencrypt_cert
-  become: yes
 
 - name: "Generate certificates"
   block:
@@ -29,7 +26,6 @@
     - shell: "certbot certonly --noninteractive --agree-tos --email {{ letsencrypt_email }} --webroot -w {{ letsencrypt_challenge_directory }} -d {{ letsencrypt_domains | join(',') }}"
   always:
     - file: path="{{ nginx_config_directory }}/conf.d/placeholder.conf" state="absent"
-  become: yes
   when:
     - letsencrypt_cert is defined
     - not letsencrypt_cert.stat.exists
@@ -42,4 +38,3 @@
   always:
     - service: name="nginx" state="started"
     - service: name="nginx" state="reloaded"
-  become: yes

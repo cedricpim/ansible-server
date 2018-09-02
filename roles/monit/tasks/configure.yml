@@ -9,7 +9,6 @@
   block:
     - file: path="{{ monit_config_directory }}/conf-available" mode="0755" state="directory"
     - file: path="{{ monit_config_directory }}/conf-enabled" mode="0755" state="directory"
-  become: yes
   when: monit_check.rc == 0
 
 - name: "Copy {{ conf }} configuration"
@@ -20,7 +19,6 @@
   notify:
     - "Start Monit"
     - "Reload Monit"
-  become: yes
   when: monit_check.rc == 0
 
 - name: "Symlink {{ conf }} configuration"
@@ -31,5 +29,4 @@
   notify:
     - "Start Monit"
     - "Reload Monit"
-  become: yes
   when: monit_check.rc == 0

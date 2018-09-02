@@ -3,7 +3,6 @@
   apt_key:
     url: "{{ nginx_key_url }}"
     state: "present"
-  become: yes
 
 - name: "Update nginx apt sources"
   apt_repository:
@@ -12,7 +11,6 @@
   with_items:
     - "deb {{ nginx_deb_package }}/{{ ansible_distribution | lower }}/ {{ ansible_distribution_release }} nginx"
     - "deb-src {{ nginx_deb_package }}/{{ ansible_distribution | lower }}/ {{ ansible_distribution_release }} nginx"
-  become: yes
 
 - name: "Install nginx and ssl-cert"
   apt:
@@ -22,7 +20,6 @@
   with_items:
     - "nginx"
     - "ssl-cert"
-  become: yes
 
 - name: "Create {{ nginx_user }} user"
   user:
@@ -30,7 +27,6 @@
     shell: "/bin/false"
     createhome: no
     state: "present"
-  become: yes
 
 - name: "Create {{ nginx_content_directory }} directory"
   file:
@@ -39,7 +35,6 @@
     group: "{{ nginx_user }}"
     mode: "0600"
     state: "directory"
-  become: yes
 
 - name: "Ensure {{ nginx_log_directory }} permissions are set"
   file:
@@ -48,11 +43,9 @@
     group: "{{ nginx_user }}"
     mode: "0755"
     state: "directory"
-  become: yes
 
 - name: "Generate a stronger DHE parameter"
   command: "openssl dhparam -out {{ nginx_ssl_dhparam }} 4096"
-  become: yes
 
 - name: "Copy main settings"
   template:
@@ -62,7 +55,6 @@
   notify:
     - "Start Nginx"
     - "Reload Nginx"
-  become: yes
 
 - name: "Create Nginx directories for individual configurations"
   file:
@@ -72,7 +64,6 @@
   with_items:
     - "{{ nginx_config_directory }}/conf.d"
     - "{{ nginx_config_directory }}/conf"
-  become: yes
 
 - name: "Copy default server settings"
   template:
@@ -82,7 +73,6 @@
   notify:
     - "Start Nginx"
     - "Reload Nginx"
-  become: yes
 
 - name: "Check for letsencrypt configuration"
   stat:
@@ -101,7 +91,6 @@
   notify:
     - "Start Nginx"
     - "Reload Nginx"
-  become: yes
   when: st_letsencrypt is defined and not st_letsencrypt.stat.exists
 
 - name: "Enable/start nginx"
@@ -109,7 +98,6 @@
     name: "nginx"
     state: "started"
     enabled: yes
-  become: yes
 
 - include_role:
     name: "monit"

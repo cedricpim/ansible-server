@@ -3,10 +3,8 @@
   systemd:
     name: "nginx"
     state: "started"
-  become: yes
 
 - name: "Reload Nginx"
   systemd:
     name: "nginx"
     state: "reloaded"
-  become: yes

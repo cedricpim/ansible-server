@@ -7,7 +7,6 @@
   with_items:
     - "python3"
     - "python3-pip"
-  become: yes
 
 - name: "Create {{ gallery_sigal_user }} user"
   user:
@@ -15,7 +14,6 @@
     shell: "/bin/false"
     state: "present"
     create_home: no
-  become: yes
 
 - name: "Install Sigal"
   pip:
@@ -23,7 +21,6 @@
     state: "latest"
     executable: "pip3"
   notify: "Restart Sigal"
-  become: yes
 
 - name: "Create Sigal configuration directory"
   file:
@@ -35,7 +32,6 @@
   with_items:
     - "{{ gallery_sigal_config_directory }}"
     - "{{ gallery_sigal_pictures_directory }}"
-  become: yes
 
 - name: "Copy Sigal settings"
   template:
@@ -45,7 +41,6 @@
     group: "{{ gallery_sigal_user }}"
     mode: "0644"
   notify: "Restart Sigal"
-  become: yes
 
 - name: "Copy Sigal systemd"
   template:
@@ -55,7 +50,6 @@
   notify:
     - "Reload daemon"
     - "Restart Sigal"
-  become: yes
 
 - name: "Start/Enable Sigal"
   systemd:
@@ -63,7 +57,6 @@
     state: "started"
     enabled: yes
     daemon_reload: yes
-  become: yes
 
 - include_role:
     name: "general"

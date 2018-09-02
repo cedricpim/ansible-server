@@ -3,15 +3,12 @@
   systemd:
     name: "radicale"
     state: "restarted"
-  become: yes
 
 - name: "Restart Vdirsyncer timer"
   systemd:
     name: "vdirsyncer.timer"
     state: "restarted"
-  become: yes
 
 - name: "Reload daemon"
   systemd:
     daemon_reload: yes
-  become: yes

@@ -3,10 +3,8 @@
   systemd:
     name: "monit"
     state: "started"
-  become: yes
 
 - name: "Reload Monit"
   systemd:
     name: "monit"
     state: "reloaded"
-  become: yes

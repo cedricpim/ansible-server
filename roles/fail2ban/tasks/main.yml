@@ -4,7 +4,6 @@
     name: "fail2ban"
     state: "latest"
     update_cache: yes
-  become:  yes
 
 - name: "Copy Fail2Ban settings"
   template:
@@ -14,7 +13,6 @@
   notify:
     - "Start Fail2Ban"
     - "Reload Fail2Ban"
-  become: yes
 
 - name: "Ensure required log files exist"
   file:
@@ -27,14 +25,12 @@
     - { path: "{{ monit_logfile }}", owner: "root", group: "root" }
     - { path: "/var/log/mail.warn", owner: "root", group: "adm" }
     - { path: "/var/log/mail.log", owner: "root", group: "adm" }
-  become: yes
 
 - name: "Start/Enable Fail2Ban"
   systemd:
     name: "fail2ban"
     state: "started"
     enabled: yes
-  become: yes
 
 - include_role:
     name: "monit"

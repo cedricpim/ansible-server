@@ -3,4 +3,3 @@
   systemd:
     name: "netdata"
     state: "restarted"
-  become: yes

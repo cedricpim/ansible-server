@@ -4,7 +4,6 @@
     name: "git"
     state: "latest"
     update_cache: yes
-  become: yes
 
 - name: "Create {{ nginx_content_directory }} directory"
   file:
@@ -13,7 +12,6 @@
     group: "{{ nginx_user }}"
     mode: "0600"
     state: "directory"
-  become: yes
 
 - name: "Clone KeeWeb"
   git:
@@ -22,7 +20,6 @@
   notify:
     - "Start Nginx"
     - "Reload Nginx"
-  become: yes
 
 - include_role:
     name: "nginx"

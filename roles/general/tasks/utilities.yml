@@ -10,11 +10,9 @@
     - "acpid"
     - "rsyslog"
     - "htop"
-  become: yes
 
 - name: "Copy htop configuration file"
   template:
     src: "htoprc.j2"
     dest: "/etc/htoprc"
     mode: "0644"
-  become: yes

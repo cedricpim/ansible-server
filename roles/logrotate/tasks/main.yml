@@ -4,21 +4,18 @@
     name: "logrotate"
     state: "latest"
     update_cache: yes
-  become:  yes
 
 - name: "Copy Logrotate settings"
   template:
     src: "logrotate.conf.j2"
     dest: "/etc/logrotate.conf"
     mode: "0644"
-  become: yes
 
 - name: "Create Logrotate directory"
   file:
     path: "{{ logrotate_config_directory }}"
     mode: "0755"
     state: "directory"
-  become: yes
 
 - include_role:
     name: "logrotate"

@@ -1,17 +1,4 @@
 ---
-- name: "Update backports apt sources"
-  apt_repository:
-    repo: "deb http://ftp.debian.org/debian {{ ansible_distribution_release }}-backports main"
-    state: "present"
-  become: yes
-
-- name: "Update current packages"
-  apt:
-    upgrade: yes
-    update_cache: yes
-    force_apt_get: yes
-  become: yes
-
 - name: "Create {{ general_user }} user"
   user:
     name: "{{ general_user }}"
@@ -19,14 +6,12 @@
     create_home: yes
     shell: "/bin/bash"
     state: "present"
-  become: yes
 
 - name: "Set authorized key from local user"
   authorized_key:
     user: "{{ general_user }}"
     key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
     state: "present"
-  become: yes
 
 - name: "Add {{ general_user }} to sudoers"
   lineinfile:
@@ -35,7 +20,6 @@
     line: "{{ general_user }} ALL=(ALL) ALL"
     validate: "visudo -cf %s"
     backup: yes
-  become: yes
 
 - name: "Set SSHD settings"
   template:
@@ -43,7 +27,6 @@
     dest: "/etc/ssh/sshd_config"
     mode: "0644"
   notify: "Reload SSH"
-  become: yes
 
 - name: "Set systemd settings"
   template:
@@ -51,7 +34,6 @@
     dest: "/etc/systemd/system.conf"
     mode: "0644"
   notify: "Restart server configuration"
-  become: yes
 
 - include_role:
     name: "general"
