@@ -60,6 +60,9 @@
 
 - name: "Discover collections"
   shell: "yes | {{ dav_vdirsyncer_config_directory }}/vdiscover"
+  environment:
+    LC_ALL: "{{ dav_vdirsyncer_locale }}"
+    LANG: "{{ dav_vdirsyncer_locale }}"
   notify:
     - "Reload daemon"
     - "Restart Vdirsyncer timer"
