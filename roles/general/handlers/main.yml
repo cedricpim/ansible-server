@@ -1,6 +1,10 @@
 ---
-- name: "reload ssh"
+- name: "Reload SSH"
   systemd:
     name: "ssh"
     state: "restarted"
+  become: yes
+
+- name: "Restart server configuration"
+  command: "systemctl daemon-reexec"
   become: yes
