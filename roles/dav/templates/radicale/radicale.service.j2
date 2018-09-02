@@ -8,8 +8,7 @@ Requires=network.target
 [Service]
 ExecStart=/usr/bin/env python3 -m radicale
 Restart=on-failure
-User={{ dav_radicale_user }}
-Group={{ dav_group }}
+User={{ dav_user }}
 Type=forking
 # Deny other users access to the calendar data
 UMask=0027

@@ -1,7 +1,6 @@
 ---
-dav_group: "dav"
+dav_user: "dav"
 
-dav_radicale_user: "radicale"
 dav_radicale_bind_address: "127.0.0.1"
 dav_radicale_port: "5232"
 dav_radicale_log_directory: "/var/log/radicale"
@@ -9,7 +8,6 @@ dav_radicale_config_directory: "/etc/radicale"
 dav_radicale_pid_directory: "/var/run/radicale"
 dav_radicale_collections_directory: "/var/lib/radicale"
 
-dav_vdirsyncer_user: "vdirsyncer"
 dav_vdirsyncer_config_directory: "/etc/vdirsyncer"
 dav_vdirsyncer_collections_directory: "dav"
 dav_vdirsyncer_locale: "C.UTF-8"

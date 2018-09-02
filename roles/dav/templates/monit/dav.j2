@@ -11,7 +11,7 @@ check process dav.{{ server }} with pidfile {{ nginx_pidfile }}
   if 10 restarts with 10 cycles then unmonitor
 
 check process radicale with pidfile {{ dav_radicale_pid_directory }}/radicale.pid
-  group {{ dav_group }}
+  group {{ dav_user }}
   start program = "/usr/sbin/service radicale start"
   stop program  = "/usr/sbin/service radicale stop"
   if failed host localhost port {{ dav_radicale_port }} protocol http request "/" status = 302 then restart

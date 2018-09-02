@@ -1,13 +1,7 @@
 ---
-- name: "Ensure group {{ dav_group }} exists"
-  group:
-    name: "{{ dav_group }}"
-    state: "present"
-
-- name: "Create {{ dav_vdirsyncer_user }} user"
+- name: "Create {{ dav_user }} user"
   user:
-    name: "{{ dav_vdirsyncer_user }}"
-    group: "{{ dav_group }}"
+    name: "{{ dav_user }}"
     shell: "/bin/false"
     state: "present"
     create_home: no
@@ -21,8 +15,8 @@
 - name: "Create Vdirsyncer directories"
   file:
     path: "{{ dav_vdirsyncer_config_directory }}"
-    owner: "{{ dav_vdirsyncer_user }}"
-    group: "{{ dav_group }}"
+    owner: "{{ dav_user }}"
+    group: "{{ dav_user }}"
     mode: "0755"
     state: "directory"
 
@@ -30,8 +24,8 @@
   template:
     src: "vdirsyncer/config.j2"
     dest: "{{ dav_vdirsyncer_config_directory }}/config"
-    owner: "{{ dav_vdirsyncer_user }}"
-    group: "{{ dav_group }}"
+    owner: "{{ dav_user }}"
+    group: "{{ dav_user }}"
     mode: "0600"
   notify: "Restart Vdirsyncer timer"
 
@@ -39,8 +33,8 @@
   template:
     src: "vdirsyncer/{{ item }}.j2"
     dest: "{{ dav_vdirsyncer_config_directory }}/{{ item }}"
-    owner: "{{ dav_vdirsyncer_user }}"
-    group: "{{ dav_group }}"
+    owner: "{{ dav_user }}"
+    group: "{{ dav_user }}"
     mode: "0700"
   with_items:
     - "vsync"

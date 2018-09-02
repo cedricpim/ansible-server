@@ -4,8 +4,8 @@ IFS=$'\n\t'
 
 {{ ansible_managed | comment }}
 
-if [ `whoami` != "{{ dav_vdirsyncer_user }}" ]; then
-  escalation="sudo -u {{ dav_vdirsyncer_user }}"
+if [ `whoami` != "{{ dav_user }}" ]; then
+  escalation="sudo -u {{ dav_user }}"
 fi
 
 # Sync calendars

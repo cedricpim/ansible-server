@@ -26,7 +26,7 @@ keeweb_credentials: "vagrant:YYzo3ZBykz1oI"
 netdata_credentials: "vagrant:YYzo3ZBykz1oI"
 netdata_bind_address: "0.0.0.0"
 
-dav_credentials: "vagrant:YYzo3ZBykz1oI"
+dav_credentials: "dav:YYzo3ZBykz1oI"
 dav_radicale_bind_address: "0.0.0.0"
 dav_vdirsyncer_calendars:
   - { id: "premier_league", title: "Premier League", url: "https://ics.ecal.com/ecal-sub/5b7d89968cbe0763118b4569/Premier%20League.ics" }
