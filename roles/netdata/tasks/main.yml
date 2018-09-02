@@ -1,4 +1,10 @@
 ---
+- name: "Update backports apt sources"
+  apt_repository:
+    repo: "deb http://ftp.debian.org/debian {{ ansible_distribution_release }}-backports main"
+    state: "present"
+  become: yes
+
 - name: "Install Netdata"
   apt:
     name: "netdata"
@@ -11,9 +17,7 @@
     src: "netdata.conf.j2"
     dest: "{{ netdata_config_directory }}/netdata.conf"
     mode: "0600"
-  notify:
-    - "Start Netdata"
-    - "Reload Netdata"
+  notify: "Restart Netdata"
   become: yes
 
 - name: "Start/enable Netdata"

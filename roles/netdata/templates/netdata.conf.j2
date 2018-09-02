@@ -15,7 +15,7 @@
 # global netdata configuration
 
 [global]
-	run as user = netdata
+	run as user = root
 	# glibc malloc arena max for plugins = 1
 	# glibc malloc arena max for netdata = 1
 	# hostname = {{ server }}
@@ -47,7 +47,7 @@
 
 [web]
 	# web files group = root
-	web files owner = {{ nginx_user }}
+	# web files owner = root
 	bind to = {{ netdata_bind_address }}
 	# listen backlog = 100
 	default port = {{ netdata_port }}

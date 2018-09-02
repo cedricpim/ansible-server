@@ -1,12 +1,6 @@
 ---
-- name: "Start Netdata"
+- name: "Restart Netdata"
   systemd:
     name: "netdata"
-    state: "started"
-  become: yes
-
-- name: "Reload Netdata"
-  systemd:
-    name: "netdata"
-    state: "reloaded"
+    state: "restarted"
   become: yes
