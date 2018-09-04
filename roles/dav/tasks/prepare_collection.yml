@@ -1,0 +1,41 @@
+---
+- name: "Ensure {{ collection }} folder is created"
+  file:
+    path: "{{ dav_radicale_collections_directory }}/collection-root/{{ dav_radicale_collection }}/{{ collection.id }}"
+    owner: "{{ dav_user }}"
+    group: "{{ dav_user }}"
+    mode: "0750"
+    state: "directory"
+
+- name: "Check if {{ collection }} properties exists"
+  stat:
+    path: "{{ dav_radicale_collections_directory }}/collection-root/{{ dav_radicale_collection }}/{{ collection.id }}/.Radicale.props"
+  register: collection_property
+
+- name: "Create {{ collection }} property for non addressbook"
+  lineinfile:
+    path: "{{ dav_radicale_collections_directory }}/collection-root/{{ dav_radicale_collection }}/{{ collection.id }}/.Radicale.props"
+    line: '{"D:displayname": "{{ collection.title }}", "ICAL:calendar-color": "{{ collection.color }}", "tag": "{{ collection.type }}"}'
+    owner: "{{ dav_user }}"
+    group: "{{ dav_user }}"
+    mode: "0600"
+    state: "present"
+    create: yes
+  when:
+    - collection_property is defined
+    - collection_property.stat.islnk is not defined
+    - collection.type != "VADDRESSBOOK"
+
+- name: "Create {{ collection }} property for addressbook"
+  lineinfile:
+    path: "{{ dav_radicale_collections_directory }}/collection-root/{{ dav_radicale_collection }}/{{ collection.id }}/.Radicale.props"
+    line: '{"D:displayname": "{{ collection.title }}", "tag": "{{ collection.type }}"}'
+    owner: "{{ dav_user }}"
+    group: "{{ dav_user }}"
+    mode: "0600"
+    state: "present"
+    create: yes
+  when:
+    - collection_property is defined
+    - collection_property.stat.islnk is not defined
+    - collection.type == "VADDRESSBOOK"

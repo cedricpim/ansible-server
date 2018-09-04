@@ -34,7 +34,7 @@
     - { path: "{{ dav_radicale_config_directory }}", mode: "0744" }
     - { path: "{{ dav_radicale_pid_directory }}", mode: "0744" }
     - { path: "{{ dav_radicale_log_directory }}", mode: "0755" }
-    - { path: "{{ dav_radicale_collections_directory }}", mode: "0775" }
+    - { path: "{{ dav_radicale_collections_directory }}", mode: "0750" }
 
 - name: "Copy Radicale settings"
   template:
@@ -47,6 +47,13 @@
     - "config"
     - "logging"
   notify: "Restart Radicale"
+
+- include_role:
+    name: "dav"
+    tasks_from: "prepare_collection"
+  with_items: "{{ dav_collections }}"
+  loop_control:
+    loop_var: "collection"
 
 - name: "Copy Radicale systemd"
   template:

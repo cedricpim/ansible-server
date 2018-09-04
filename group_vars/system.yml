@@ -1,6 +1,7 @@
 ---
 server: "{{ vault_server }}"
 
+general_scripts_directory: "{{ vault_general_scripts_directory }}"
 general_user: "{{ vault_general_user }}"
 general_password: "{{ vault_general_password }}"
 general_sshd_ports: "{{ vault_general_sshd_ports }}"
@@ -28,8 +29,7 @@ netdata_credentials: "{{ vault_netdata_credentials }}"
 
 dav_radicale_port: "{{ vault_dav_radicale_port }}"
 dav_credentials: "{{ vault_dav_credentials }}"
-dav_vdirsyncer_calendars: "{{ vault_dav_vdirsyncer_calendars }}"
-dav_vdirsyncer_special_calendars: "{{ vault_dav_vdirsyncer_special_calendars }}"
+dav_collections: "{{ vault_dav_collections }}"
 
 gallery_sigal_port: "{{ vault_gallery_sigal_port }}"
 gallery_credentials: "{{ vault_gallery_credentials }}"

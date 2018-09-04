@@ -29,16 +29,14 @@
     mode: "0600"
   notify: "Restart Vdirsyncer timer"
 
-- name: "Copy Vdirsyncer script"
-  template:
-    src: "vdirsyncer/{{ item }}.j2"
-    dest: "{{ dav_vdirsyncer_config_directory }}/{{ item }}"
-    owner: "{{ dav_user }}"
-    group: "{{ dav_user }}"
-    mode: "0700"
+- include_role:
+    name: "general"
+    tasks_from: "scripts"
   with_items:
     - "vsync"
     - "vdiscover"
+  loop_control:
+    loop_var: "script"
 
 - name: "Copy Vdirsyncer systemd"
   template:
@@ -53,13 +51,10 @@
     - "Restart Vdirsyncer timer"
 
 - name: "Discover collections"
-  shell: "yes | {{ dav_vdirsyncer_config_directory }}/vdiscover"
+  shell: "yes | vdiscover"
   environment:
     LC_ALL: "{{ dav_vdirsyncer_locale }}"
     LANG: "{{ dav_vdirsyncer_locale }}"
-  notify:
-    - "Reload daemon"
-    - "Restart Vdirsyncer timer"
 
 - name: "Run Vdirsyncer oneshot service"
   systemd:

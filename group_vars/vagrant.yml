@@ -1,6 +1,7 @@
 ---
 server: "localhost"
 
+general_scripts_directory: "/usr/local/bin"
 general_user: "vagrant-local"
 general_password: "$6$gaagXYxRAIVVCA$rUek2lqIML2u5YBkFxMj.DOwC.ELGfI1K7iMyvlyH7bB4s9R/3MVmnEKoFV6hoWRSOH.78SAbrtlXd1rqBTXT0"
 general_sshd_ports:
@@ -28,11 +29,35 @@ netdata_bind_address: "0.0.0.0"
 
 dav_credentials: "dav:YYzo3ZBykz1oI"
 dav_radicale_bind_address: "0.0.0.0"
-dav_vdirsyncer_calendars:
-  - { id: "premier_league", title: "Premier League", url: "https://ics.ecal.com/ecal-sub/5b7d89968cbe0763118b4569/Premier%20League.ics" }
-  - { id: "astro", title: "Astro", url: "https://cantonbecker.com/astronomy-calendar/astrocal.ics" }
-dav_vdisyncer_special_calendars:
-  - { id: "premier_league", reminder: "TRIGGER\\:\\-P2DT", sed: ":a;N;\\$!ba;s#BEGIN:VALARM.*TRIGGER:-P2DT.*(BEGIN:VALARM)#\\1#g" }
+dav_collections:
+  - id: "personal"
+    title: "Personal"
+    color: "#063F33"
+    type: "VCALENDAR"
+  - id: "public"
+    title: "Public"
+    color: "#F33063"
+    type: "VCALENDAR"
+  - id: "contacts"
+    title: "Contacts"
+    type: "VADDRESSBOOK"
+  - id: "work"
+    title: "Work"
+    type: "VADDRESSBOOK"
+  - id: "astro"
+    title: "Astro"
+    color: "#0CA1FF"
+    type: "VCALENDAR"
+    url: "https://cantonbecker.com/astronomy-calendar/astrocal.ics"
+    fileext: ".ics"
+  - id: "premier_league"
+    title: "Premier League"
+    color: "#BE171B"
+    type: "VCALENDAR"
+    url: "https://ics.ecal.com/ecal-sub/5b7d89968cbe0763118b4569/Premier%20League.ics"
+    fileext: ".ics"
+    reminder: "TRIGGER\\:\\-P2DT"
+    sed: ":a;N;\\$!ba;s#BEGIN:VALARM.*TRIGGER:-P2DT.*(BEGIN:VALARM)#\\1#g"
 
 gallery_credentials: "vagrant:YYzo3ZBykz1oI"
 gallery_sigal_pictures_source: "/home/vagrant/pictures"

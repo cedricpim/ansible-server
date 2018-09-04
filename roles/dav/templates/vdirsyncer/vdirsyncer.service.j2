@@ -5,6 +5,6 @@ Description=Synchronize calendars and contacts
 Documentation=https://vdirsyncer.readthedocs.org/
 
 [Service]
-ExecStart={{ dav_vdirsyncer_config_directory }}/vsync
+ExecStart={{ general_scripts_directory }}/vsync
 Type=oneshot
 User={{ dav_user }}

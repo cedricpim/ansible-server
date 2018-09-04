@@ -4,25 +4,24 @@
   status_path = "{{ dav_vdirsyncer_config_directory }}/status/"
 
 #############################
-######### Calendars #########
+######## Collections ########
 #############################
 
-{% for calendar in dav_vdirsyncer_calendars %}
-
-#### {{ calendar.title }} ####
-[pair {{ calendar.id }}_calendar]
-  a = "{{ calendar.id }}_calendar_local"
-  b = "{{ calendar.id }}_calendar_remote"
+{% for collection in dav_collections | rejectattr('url', 'undefined') %}
+#### {{ collection.id }} ####
+[pair {{ collection.id }}]
+  a = "{{ collection.id }}_local"
+  b = "{{ collection.id }}_remote"
   collections = null
   metadata = ["color", "displayname"]
 
-[storage {{ calendar.id }}_calendar_local]
+[storage {{ collection.id }}_local]
   type = "filesystem"
-  path = "{{ dav_radicale_collections_directory }}/collection-root/{{ dav_vdirsyncer_collections_directory }}/{{ calendar.id }}"
-  fileext = ".ics"
+  path = "{{ dav_radicale_collections_directory }}/collection-root/{{ dav_radicale_collection }}/{{ collection.id }}"
+  fileext = "{{ collection.fileext }}"
 
-[storage {{ calendar.id }}_calendar_remote]
+[storage {{ collection.id }}_remote]
   type = "http"
-  url = "{{ calendar.url }}"
+  url = "{{ collection.url }}"
 
 {% endfor %}

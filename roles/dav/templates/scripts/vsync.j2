@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -eo pipefail
+IFS=$'\n\t'
+
+{{ ansible_managed | comment }}
+
+if [ `whoami` != "{{ dav_user }}" ]; then
+  escalation="sudo -u {{ dav_user }}"
+fi
+
+# Sync calendars
+eval "$escalation /usr/bin/vdirsyncer -c {{ dav_vdirsyncer_config_directory }}/config sync --force-delete"
+
+base_dir={{ dav_radicale_collections_directory }}/collection-root/{{ dav_radicale_collection }}
+
+{% for collection in dav_collections | rejectattr('reminder', 'undefined') %}
+# This is required a second time, so that we do not end up with duplicated events
+eval "$escalation /usr/bin/vdirsyncer -c {{ dav_vdirsyncer_config_directory }}/config sync {{ collection.id }}"
+
+# Edit in-place calendars (useful to remove a certain kind of reminder for example)
+if ls $base_dir/{{ collection.id }}/*.ics >> /dev/null 2>&1; then
+  for file in $base_dir/{{ collection.id }}/*.ics; do
+    if grep -q "{{ collection.reminder }}" $file; then
+      eval "$escalation sed -i -r '{{ collection.sed }}' $file"
+    fi
+  done
+fi
+{% endfor %}
