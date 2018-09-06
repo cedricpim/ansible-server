@@ -16,7 +16,6 @@
   file:
     path: "{{ dav_vdirsyncer_config_directory }}"
     owner: "{{ dav_user }}"
-    group: "{{ dav_user }}"
     mode: "0755"
     state: "directory"
 
