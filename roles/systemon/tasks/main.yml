@@ -1,5 +1,5 @@
 ---
-- name: "Install python2, git and other dependencies"
+- name: "Install Python2, Git and other dependencies"
   apt:
     name: "{{ item }}"
     state: "latest"
