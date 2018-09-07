@@ -1,26 +1,15 @@
 ---
 server: "localhost"
 
-general_scripts_directory: "/usr/local/bin"
 general_user: "vagrant-local"
 general_password: "$6$gaagXYxRAIVVCA$rUek2lqIML2u5YBkFxMj.DOwC.ELGfI1K7iMyvlyH7bB4s9R/3MVmnEKoFV6hoWRSOH.78SAbrtlXd1rqBTXT0"
 general_sshd_ports:
   - "22"
 
-nginx_user: "nginx"
-nginx_config_directory: "/etc/nginx"
-nginx_log_directory: "/var/log/nginx"
-nginx_content_directory: "/var/www"
-nginx_pidfile: "/var/run/nginx.pid"
-
-letsencrypt_config_directory: "/etc/letsencrypt"
-
-monit_directory: "/etc/monit"
 monit_port: "22122"
 monit_credentials: "monit:monit"
 monit_bind_address: "0.0.0.0"
 monit_alert_email: "vagrant@local"
-monit_logfile: "/var/log/monit.log"
 
 keeweb_credentials: "vagrant:YYzo3ZBykz1oI"
 
