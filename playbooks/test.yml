@@ -14,6 +14,12 @@
         update_cache: yes
         force_apt_get: yes
 
+  post_tasks:
+    - name: "Restart Systemon"
+      systemd:
+        name: "systemon"
+        state: "restarted"
+
   roles:
     - { role: "general", tags: "general" }
     - { role: "logrotate", tags: "logrotate" }
@@ -26,3 +32,4 @@
     - { role: "sync", tags: "sync" }
     - { role: "rkhunter", tags: "rkhunter" }
     - { role: "fail2ban", tags: "fail2ban" }
+    - { role: "systemon", tags: "systemon" }

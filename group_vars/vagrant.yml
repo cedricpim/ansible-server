@@ -69,3 +69,5 @@ sync_personal_file: "vagrant.txt"
 rkhunter_alert_email: "vagrant@local"
 
 fail2ban_alert_email: "vagrant@local"
+
+systemon_smtp_to: "vagrant@local"

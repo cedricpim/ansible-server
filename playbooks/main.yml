@@ -14,6 +14,12 @@
         update_cache: yes
         force_apt_get: yes
 
+  post_tasks:
+    - name: "Restart Systemon"
+      systemd:
+        name: "systemon"
+        state: "restarted"
+
   vars_files:
     - "../vaulted_vars/system.yml"
     - "../group_vars/system.yml"
@@ -30,3 +36,4 @@
     - { role: "sync", tags: "sync" }
     - { role: "rkhunter", tags: "rkhunter" }
     - { role: "fail2ban", tags: "fail2ban" }
+    - { role: "systemon", tags: "systemon" }
