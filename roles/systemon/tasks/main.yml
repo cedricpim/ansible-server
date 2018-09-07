@@ -12,6 +12,7 @@
     - "libsystemd-dev"
     - "libffi-dev"
     - "libssl-dev"
+    - "sendmail"
 
 - name: "Download Systemon"
   git:
