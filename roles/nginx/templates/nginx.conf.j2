@@ -27,7 +27,7 @@ http {
   # More strict protocol permissions and ciphers
   ssl_dhparam  {{ nginx_ssl_dhparam }};
   ssl_ciphers  "{{ nginx_ssl_ciphers }}";
-  ssl_protocols  {{ nginx_ssl_ciphers | join(" ") }};
+  ssl_protocols  {{ nginx_ssl_protocols | join(" ") }};
   ssl_session_cache  {{ nginx_ssl_session_cache }};
   ssl_prefer_server_ciphers  on;
 
