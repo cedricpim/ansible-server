@@ -70,6 +70,7 @@ Vagrant.configure("2") do |config|
   # information on available options.
 
   config.vm.provision "ansible" do |ansible|
+    ansible.raw_arguments = ["--diff"]
     ansible.verbose = ENV['VERBOSE']
     ansible.inventory_path = 'inventory.ini'
     ansible.playbook = "playbooks/test.yml"
