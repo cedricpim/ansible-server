@@ -36,3 +36,12 @@ rkhunter_alert_email: "{{ vault_rkhunter_alert_email }}"
 fail2ban_alert_email: "{{ vault_fail2ban_alert_email }}"
 
 systemon_smtp_to: "{{ vault_systemon_smtp_to }}"
+
+email_webmaster: "{{ vault_email_webmaster }}"
+email_virtual_mailbox_users: "{{ vault_email_virtual_mailbox_users }}"
+email_virtuals: "{{ vault_email_virtuals }}"
+email_virtual_regexs: "{{ vault_email_virtual_regexs }}"
+email_credentials: "{{ vault_email_credentials }}"
+email_mailboxes: "{{ vault_email_mailboxes }}"
+email_spamassassin_languages: "{{ vault_email_spamassassin_languages }}"
+email_sieve_filters: "{{ vault_email_sieve_filters }}"

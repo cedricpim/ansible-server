@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -eo pipefail
+IFS=$'\n\t'
+
+{{ ansible_managed | comment }}
+
+if [ `whoami` != "{{ email_spamassassin_user }}" ]; then
+  escalation="sudo -u {{ email_spamassassin_user }}"
+fi
+
+eval "$escalation /usr/bin/nice -n19 /usr/bin/sa-learn --spam {{ email_directory }}/{{ server }}/**/mail/Spam/cur/"
+
+eval "$escalation /usr/bin/nice -n19 /usr/bin/sa-learn --ham {{ email_directory }}/{{ server }}/**/mail/Archive/cur/"

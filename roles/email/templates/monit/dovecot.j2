@@ -1,0 +1,18 @@
+{{ ansible_managed | comment }}
+
+check process dovecot with pidfile /var/run/dovecot/master.pid
+  group mail
+  start program = "/usr/sbin/service dovecot start"
+  stop program  = "/usr/sbin/service dovecot stop"
+  if failed host {{ server }} port 993 type tcpssl sslauto protocol imap then restart
+  if 5 restarts within 5 cycles then unmonitor
+  depends dovecot_init
+  depends dovecot_bin
+
+check file dovecot_init with path "{{ systemd_directory }}/dovecot.service"
+  group mail
+  include /etc/monit/templates/rootrc
+
+check file dovecot_bin with path "/usr/sbin/dovecot"
+  group mail
+  include /etc/monit/templates/rootbin

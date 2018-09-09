@@ -1,0 +1,16 @@
+---
+- name: "Copy {{ mapping }}"
+  template:
+    src: "postfix/{{ mapping }}.j2"
+    dest: "{{ email_postfix_config_directory }}/{{ mapping }}"
+    mode: "0644"
+  register: template_mapping
+
+- name: "Hash {{ mapping }}"
+  command: "postmap {{ email_postfix_config_directory }}/{{ mapping }}"
+  notify:
+    - "Start Postfix"
+    - "Reload Postfix"
+  when:
+    - template_mapping is defined
+    - template_mapping.changed

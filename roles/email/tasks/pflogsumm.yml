@@ -1,0 +1,24 @@
+---
+- name: "Install Pflogsumm"
+  apt:
+    name: "pflogsumm"
+    state: "latest"
+
+- include_role:
+    name: "general"
+    tasks_from: "scripts"
+  vars:
+    script: "ppflogsumm"
+
+- name: "Copy Pflogsumm systemd"
+  template:
+    src: "pflogsumm/{{ item }}.j2"
+    dest: "{{ systemd_directory }}/{{ item }}"
+    mode: "0755"
+  with_items:
+    - "pflogsumm.service"
+    - "pflogsumm.timer"
+
+- name: "Restart/Enable Pflogsumm services"
+  block:
+    - systemd: name="pflogsumm.timer" state="started" enabled=yes daemon_reload=yes

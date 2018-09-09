@@ -1,0 +1,86 @@
+{{ ansible_managed | comment }}
+
+# Some general options
+protocols = imap sieve
+ssl = yes
+ssl_cert = <{{ letsencrypt_config_directory }}/live/{{ server }}/fullchain.pem
+ssl_key = <{{ letsencrypt_config_directory }}/live/{{ server }}/privkey.pem
+ssl_client_ca_dir = /etc/ssl/certs
+ssl_cipher_list = ALL:!LOW:!SSLv2:!EXP:!aNULL
+mail_home = {{ email_directory }}/%d/%n
+mail_location = maildir:{{ email_directory }}/%d/%n/mail:LAYOUT=fs
+auth_username_chars = abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890.-_@
+
+# Set max. process size in megabytes. Most of the memory goes to mmap()ing
+# files, so it shouldn't harm much even if this limit is set pretty high.
+#mail_process_size = 512
+
+# IMAP configuration
+protocol imap {
+  mail_max_userip_connections = 10
+  imap_client_workarounds = delay-newmail tb-extra-mailbox-sep
+}
+
+service imap-login {
+  inet_listener imap {
+    port = 0
+  }
+  inet_listener imaps {
+    port = 993
+  }
+}
+
+# Authentication
+service auth-worker {
+  # Forbid to access /etc/shadow
+  user = $default_internal_user
+}
+
+service auth {
+  # IMPORTANT: Match the path to smtpd_sasl_path of Postfix auth
+  unix_listener {{ email_postfix_spool }}/{{ email_smtpd_sasl_path }} {
+    group = {{ email_postfix_user }}
+    user = {{ email_postfix_user }}
+    mode = 0666
+  }
+}
+
+# LDA configuration
+protocol lda {
+  postmaster_address = {{ email_webmaster }}
+  mail_plugins = sieve
+  quota_full_tempfail = yes
+  deliver_log_format = msgid=%m: %$
+  rejection_reason = Your message to <%t> was automatically rejected:%n%r
+}
+
+# Plugins configuration
+plugin {
+  sieve=~/.dovecot.sieve
+  sieve_dir=~/sieve
+  sieve_before = {{ email_directory }}/sieve-before
+  sieve_after = {{ email_directory }}/sieve-after
+}
+
+# Authentication configuration
+auth_mechanisms = plain login
+
+passdb {
+  driver = passwd-file
+  args = username_format=%u scheme=ssha512 /etc/dovecot/passwd.db
+  deny = no
+  master = no
+  pass = no
+  skip = never
+  result_failure = continue
+  result_internalfail = continue
+  result_success = return-ok
+}
+
+userdb {
+  driver = static
+  args = uid={{ email_user_uid }} gid={{ email_user_uid }} home={{ email_directory }}/%d/%n
+}
+
+# Log all failed authentication attempts
+auth_verbose=yes

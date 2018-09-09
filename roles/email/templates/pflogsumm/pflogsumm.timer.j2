@@ -1,0 +1,10 @@
+{{ ansible_managed | comment }}
+
+[Unit]
+Description=Generate report about emails from previous day
+
+[Timer]
+OnCalendar=*-*-* 00:05:00
+
+[Install]
+WantedBy=timers.target

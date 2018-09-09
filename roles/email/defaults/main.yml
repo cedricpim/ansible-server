@@ -1,0 +1,27 @@
+---
+email_user: "vmail"
+email_user_uid: "5000"
+email_directory: "/var/mail/vmail"
+
+email_postfix_user: "postfix"
+email_postfix_config_directory: "/etc/postfix"
+email_postfix_spool: "/var/spool/postfix"
+
+email_dovecot_config_directory: "/etc/dovecot"
+email_smtpd_sasl_path: "private/dovecot-auth"
+
+email_opendkim_user: "opendkim"
+email_opendkim_config_directory: "/etc/opendkim"
+email_opendkim_sock: "opendkim/opendkim.sock"
+
+email_spamassassin_user: "debian-spamd"
+email_spamassassin_home: "/var/lib/spamassassin"
+email_spamassassin_config_directory: "/etc/spamassassin"
+email_spamassassin_languages:
+  - "en"
+  - "fr"
+email_spamassassin_locales:
+  - "en"
+
+email_pflogsumm_sender: "pflogsumm@localhost"
+email_pflogsumm_receiver: "root@localhost"

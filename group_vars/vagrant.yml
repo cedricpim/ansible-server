@@ -60,3 +60,35 @@ rkhunter_alert_email: "vagrant@local"
 fail2ban_alert_email: "vagrant@local"
 
 systemon_smtp_to: "vagrant@local"
+
+email_webmaster: "webmaster@local"
+email_virtual_mailbox_users:
+  - { email: "vagrant@local", real_email: "vagrant@local" }
+  - { email: "vagrant-virtual@local", real_email: "vagrant@local" }
+email_virtuals:
+  - { email: "vagrant-virtual@local", real_email: "vagrant@local" }
+email_virtual_regexs:
+  - { regex: "/vagrant\\+.+@local/", real_email: "vagrant@local" }
+email_credentials:
+  - { email: "webmaster@local", pass: "xsoV/zOL9Ncz360Kz02xhLy+1aqXiw2bG+7qkcHbLq1+GOqsBAfXlS7OHtBuQroSXGHRu96IOPBgK/yqZmo1AB/NePc=" }
+  - { email: "vagrant@local", pass: "lpiJyM6PEEZaoXHratE+NIUwTBErtWVqoZOhSJVa+O1Wl9ykwwIhkQ0CA6KpIFtWYsTkWh9EPLp6WgvpCtPw2Ilq7TQ=" }
+email_mailboxes:
+  - { name: "Starred", auto: "subscribe", special_use: "\\Flagged" }
+  - { name: "Drafts", auto: "subscribe", special_use: "\\Drafts" }
+  - { name: "Spam", auto: "subscribe", special_use: "\\Junk" }
+  - { name: "Trash", auto: "subscribe", special_use: "\\Trash" }
+  - { name: "Sent", auto: "subscribe", special_use: "\\Sent" }
+  - { name: "Bills", auto: "subscribe" }
+  - { name: "Travel/Tickets", auto: "subscribe" }
+  - { name: "Sign Ups", auto: "subscribe" }
+email_sieve_filters: |
+  if header :contains "From" "work@localhost" {
+    fileinto :create "Work";
+    keep;
+  }
+
+  if anyof (header :contains "To" "travels@localhost",
+            header :contains "From" "travels-express@localhost") {
+    fileinto :create "Travels";
+    keep;
+  }

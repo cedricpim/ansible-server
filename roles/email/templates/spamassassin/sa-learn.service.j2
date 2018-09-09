@@ -1,0 +1,10 @@
+{{ ansible_managed | comment }}
+
+[Unit]
+Description=Make SpamAssassin learn what is Ham and Spam
+Documentation=https://spamassassin.apache.org/
+
+[Service]
+ExecStart={{ general_scripts_directory }}/slearn
+Type=oneshot
+User={{ email_spamassassin_user }}

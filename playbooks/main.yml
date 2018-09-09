@@ -2,6 +2,10 @@
 - hosts: server
   become: yes
 
+  vars_files:
+    - "../vaulted_vars/system.yml"
+    - "../group_vars/system.yml"
+
   pre_tasks:
     - name: "Update backports apt sources"
       apt_repository:
@@ -13,16 +17,6 @@
         upgrade: yes
         update_cache: yes
         force_apt_get: yes
-
-  post_tasks:
-    - name: "Restart Systemon"
-      systemd:
-        name: "systemon"
-        state: "restarted"
-
-  vars_files:
-    - "../vaulted_vars/system.yml"
-    - "../group_vars/system.yml"
 
   roles:
     - { role: "logrotate", tags: "logrotate" }
@@ -37,3 +31,31 @@
     - { role: "rkhunter", tags: "rkhunter" }
     - { role: "fail2ban", tags: "fail2ban" }
     - { role: "systemon", tags: "systemon" }
+    - { role: "email", tags: "email" }
+
+  post_tasks:
+    - name: "Get list of users"
+      command: "cut -d: -f1 /etc/passwd"
+      register: users
+
+    - name: "Copy aliases"
+      template:
+        src: "aliases.j2"
+        dest: "/etc/aliases"
+        mode: "0644"
+      register: template_aliases
+      when: users is defined
+
+    - name: "Hash aliases"
+      command: "newaliases"
+      notify:
+        - "Start Postfix"
+        - "Reload Postfix"
+      when:
+        - template_aliases is defined
+        - template_aliases.changed
+
+    - name: "Restart Systemon"
+      systemd:
+        name: "systemon"
+        state: "restarted"

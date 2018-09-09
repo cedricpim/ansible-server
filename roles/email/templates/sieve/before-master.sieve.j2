@@ -1,0 +1,26 @@
+{{ ansible_managed | comment }}
+
+require ["envelope", "fileinto", "imap4flags", "regex", "mailbox"];
+
+# File low-level spam in spam bucket
+if anyof (header :contains "X-Spam-Level" "****",
+          header :contains "X-Spam-Flag" "YES") {
+  fileinto "Spam";
+  stop;
+}
+
+if header "From" "{{ email_pflogsumm_sender }}" {
+  fileinto :create "Reports";
+  keep;
+  stop;
+}
+
+if anyof (header "From" "{{ monit_sender }}",
+          header :contains "From" "{{ fail2ban_sender }}",
+          header :contains "Subject" "[rkhunter]") {
+  fileinto :create "Alerts";
+  keep;
+  stop;
+}
+
+{{ email_sieve_filters | default("") }}

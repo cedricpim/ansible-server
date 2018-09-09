@@ -1,0 +1,28 @@
+{{ ansible_managed | comment }}
+
+check process spamassassin with pidfile /var/run/spamd.pid
+   group mail
+   start program = "/usr/sbin/service spamassassin start && /usr/sbin/service spamass-milter start"
+   stop program  = "/usr/sbin/service spamassassin stop && /usr/sbin/service spamass-milter stop"
+   if cpu usage > 99% for 5 cycles then alert
+   if mem usage > 99% for 5 cycles then alert
+   depends on spamassassin_bin
+   depends on spamassassin_rc
+   depends on milter_bin
+   depends on milter_rc
+
+check file spamassassin_bin with path "/usr/bin/spamassassin"
+  group mail
+  include /etc/monit/templates/rootbin
+
+check file spamassassin_rc with path "{{ systemd_directory }}/spamassassin.service"
+  group mail
+  include /etc/monit/templates/rootrc
+
+check file milter_bin with path "/usr/sbin/spamass-milter"
+  group mail
+  include /etc/monit/templates/rootbin
+
+check file milter_rc with path "/etc/init.d/spamass-milter"
+  group mail
+  include /etc/monit/templates/rootbin

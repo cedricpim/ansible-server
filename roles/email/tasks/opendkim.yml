@@ -1,0 +1,85 @@
+---
+- name: "Install OpenDKIM"
+  apt:
+    name: "{{ item }}"
+    state: "latest"
+  with_items:
+    - "opendkim"
+    - "opendkim-tools"
+    - "libmail-dkim-perl"
+
+- name: "Create OpenDKIM folder"
+  file:
+    path: "{{ email_opendkim_config_directory }}"
+    owner: "{{ email_opendkim_user }}"
+    group: "{{ email_opendkim_user }}"
+    mode: "0755"
+    state: "directory"
+
+- name: "Check if keys have been generated"
+  stat:
+    path: "{{ email_opendkim_config_directory }}/mail.txt"
+  register: opendkim_keys
+
+- name: "Generate DKIM pair of keys"
+  command: "opendkim-genkey -r -h sha256 -d mail.{{ server }} -s mail"
+  args:
+    chdir: "{{ email_opendkim_config_directory }}"
+  notify:
+    - "Start OpenDKIM"
+    - "Reload OpenDKIM"
+  when: opendkim_keys is defined and opendkim_keys.stat.islnk is not defined
+
+- name: "Set correct permissions"
+  file:
+    path: "{{ email_opendkim_config_directory }}"
+    owner: "{{ email_opendkim_user }}"
+    group: "{{ email_opendkim_user }}"
+    recurse: yes
+
+- name: "Rename mail.private to mail"
+  command: "mv mail.private mail"
+  args:
+    chdir: "{{ email_opendkim_config_directory }}"
+    creates: "{{ email_opendkim_config_directory }}/mail"
+    removes: "{{ email_opendkim_config_directory }}/mail.private"
+  notify:
+    - "Start OpenDKIM"
+    - "Reload OpenDKIM"
+
+- name: "Copy Tables for OpenDKIM"
+  template:
+    src: "opendkim/{{ item }}.j2"
+    dest: "{{ email_opendkim_config_directory }}/{{ item }}"
+    owner: "{{ email_opendkim_user }}"
+    group: "{{ email_opendkim_user }}"
+    mode: "0644"
+  with_items:
+    - "KeyTable"
+    - "SigningTable"
+    - "TrustedHosts"
+  notify:
+    - "Start OpenDKIM"
+    - "Reload OpenDKIM"
+
+- name: "Copy OpenDKIM settings"
+  template:
+    src: "opendkim/opendkim.conf.j2"
+    dest: "/etc/opendkim.conf"
+    mode: "0644"
+  notify:
+    - "Start OpenDKIM"
+    - "Reload OpenDKIM"
+
+- name: "Create spool directory on Postfix for OpenDKIM"
+  file:
+    path: "{{ email_postfix_spool }}/opendkim"
+    owner: "{{ email_opendkim_user }}"
+    group: "root"
+    mode: "0755"
+    state: "directory"
+
+- name: "Start/Enable OpenDKIM"
+  block:
+    - systemd: name="opendkim" state="started" enabled=yes
+    - systemd: name="opendkim" state="reloaded"

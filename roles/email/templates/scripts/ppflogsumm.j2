@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -eo pipefail
+IFS=$'\n\t'
+
+{{ ansible_managed | comment }}
+
+subject="Subject: Mail Report for `TZ=CET+24 date "+%A, %d-%m-%Y"`"
+
+pflogsumm -e --problems_first --smtpd-warning-detail 0 --verbose-msg-detail -d yesterday /var/log/mail.log |
+formail -c -I"$subject" -I"From: {{ email_pflogsumm_sender }}" -I"To: {{ email_pflogsumm_receiver }}" |
+sendmail {{ email_pflogsumm_receiver }}

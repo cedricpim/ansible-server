@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -eo pipefail
+IFS=$'\n\t'
+
+{{ ansible_managed | comment }}
+
+sieve-test {{ email_directory }}/sieve-$1/master.sieve {{ email_directory }}/{{ server }}/**/mail/cur/$2 -t - -Tlevel=matching

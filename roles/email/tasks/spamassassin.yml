@@ -1,0 +1,131 @@
+---
+- name: "Install SpamAssassin"
+  apt:
+    name: "{{ item }}"
+    state: "latest"
+  with_items:
+    - "spamass-milter"
+    - "pyzor"
+    - "razor"
+
+- name: "Create SpamAssassin user"
+  user:
+    name: "{{ email_spamassassin_user }}"
+    shell: "/bin/false"
+    home: "{{ email_spamassassin_home }}"
+    state: "present"
+
+- name: "Add SpamAssassin group to spamass-milter user"
+  user:
+    name: "spamass-milter"
+    groups: "{{ email_spamassassin_user }}"
+    append: yes
+    state: "present"
+
+- name: "Copy SpamAssassin settings"
+  template:
+    src: "spamassassin/{{ item }}.j2"
+    dest: "/etc/default/{{ item }}"
+    mode: "0644"
+  with_items:
+    - "spamassassin"
+    - "spamass-milter"
+  notify:
+    - "Start SpamAssassin"
+    - "Reload SpamAssassin"
+
+- name: "Copy SpamAssassin milter settings"
+  template:
+    src: "spamassassin/{{ item }}.j2"
+    dest: "{{ email_spamassassin_config_directory }}/{{ item }}"
+    mode: "0644"
+  with_items:
+    - "init.pre"
+    - "local.cf"
+  notify:
+    - "Start SpamAssassin"
+    - "Reload SpamAssassin"
+
+- name: "Create spool directory on Postfix for SpamAssassin"
+  file:
+    path: "{{ email_postfix_spool }}/spamassassin"
+    owner: "{{ email_spamassassin_user }}"
+    group: "root"
+    mode: "0755"
+    state: "directory"
+
+- name: "Update SpamAssassin rules"
+  command: "sa-update --verbose"
+  register: spamassassin_sa_update
+  failed_when:
+    - spamassassin_sa_update.failed
+    - not "Update finished" in spamassassin_sa_update.stdout
+
+- name: "Create global Bayesian filter and SpamAssassin Add-on folders"
+  file:
+    path: "{{ email_spamassassin_home }}/{{ item }}"
+    owner: "{{ email_spamassassin_user }}"
+    group: "{{ email_spamassassin_user }}"
+    mode: "0755"
+    state: "directory"
+  with_items:
+    - ".spamassassin"
+    - ".razor"
+    - ".pyzor"
+
+- name: "Run Pyzor add-on"
+  command: "pyzor --homedir {{ email_spamassassin_home }}/.pyzor discover"
+
+- name: "Run Razor add-on"
+  command: "razor-admin -home={{ email_spamassassin_home }}/.razor {{ item }}"
+  with_items:
+    - "-register"
+    - "-create"
+    - "-discover"
+
+- name: "Set Razor home directory"
+  lineinfile:
+    path: "{{ email_spamassassin_home }}/.razor/razor-agent.conf"
+    line: 'razorhome = {{ email_spamassassin_home }}/.razor'
+    state: "present"
+
+- name: "Set correct permissions"
+  file:
+    path: "{{ email_spamassassin_home }}"
+    owner: "{{ email_spamassassin_user }}"
+    group: "{{ email_spamassassin_user }}"
+    recurse: yes
+
+- include_role:
+    name: "general"
+    tasks_from: "scripts"
+  vars:
+    script: "slearn"
+
+- name: "Copy sa-learn systemd"
+  template:
+    src: "spamassassin/{{ item }}.j2"
+    dest: "{{ systemd_directory }}/{{ item }}"
+    mode: "0755"
+  with_items:
+    - "sa-learn.service"
+    - "sa-learn.timer"
+
+- name: "Restart/Enable SpamAssassin services"
+  block:
+    - systemd: name="spamassassin" state="started" enabled=yes daemon_reload=yes
+    - systemd: name="spamassassin" state="reloaded"
+
+- name: "Restart/Enable SpamAssassin services"
+  block:
+    - systemd: name="spamass-milter" state="started" enabled=yes daemon_reload=yes
+
+- name: "Restart/Enable SpamAssassin services"
+  block:
+    - systemd: name="sa-learn.timer" state="started" enabled=yes daemon_reload=yes
+
+- include_role:
+    name: "monit"
+    tasks_from: "configure"
+  vars:
+    conf: "spamassassin"

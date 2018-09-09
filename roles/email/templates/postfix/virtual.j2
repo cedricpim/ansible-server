@@ -1,0 +1,6 @@
+{{ ansible_managed | comment }}
+
+{{ email_webmaster }}  {{ email_webmaster }}
+{% for virtual in email_virtuals %}
+{{ virtual.email }}  {{ virtual.real_email }}
+{% endfor %}

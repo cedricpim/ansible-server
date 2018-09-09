@@ -1,0 +1,58 @@
+---
+- name: "Install Postfix"
+  apt:
+    name: "{{ item }}"
+    state: "latest"
+  with_items:
+    - "postfix"
+    - "ssl-cert"
+
+- name: "Add user postfix to group opendkim"
+  user:
+    name: "{{ email_postfix_user }}"
+    groups: "{{ email_opendkim_user }}"
+    append: yes
+    state: "present"
+
+- name: "Copy mailname file"
+  template:
+    src: "postfix/mailname.j2"
+    dest: "/etc/mailname"
+    mode: "0644"
+  notify:
+    - "Start Postfix"
+    - "Reload Postfix"
+
+- name: "Copy Postfix settings"
+  template:
+    src: "postfix/{{ item }}.cf.j2"
+    dest: "{{ email_postfix_config_directory }}/{{ item }}.cf"
+    mode: "0644"
+  with_items:
+    - "main"
+    - "master"
+  notify:
+    - "Start Postfix"
+    - "Reload Postfix"
+
+- include_role:
+    name: "email"
+    tasks_from: "mapping"
+  with_items:
+    - "virtual-mailbox-domains"
+    - "virtual-mailbox-users"
+    - "virtual"
+    - "virtual-regex"
+  loop_control:
+    loop_var: "mapping"
+
+- name: "Start/Enable Postfix"
+  block:
+    - systemd: name="postfix" state="started" enabled=yes
+    - systemd: name="postfix" state="reloaded"
+
+- include_role:
+    name: "monit"
+    tasks_from: "configure"
+  vars:
+    conf: "postfix"
