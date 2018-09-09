@@ -1,21 +1,9 @@
 ---
-- name: "Update nginx keys"
-  apt_key:
-    url: "{{ nginx_key_url }}"
-    state: "present"
-
-- name: "Update nginx apt sources"
-  apt_repository:
-    repo: "{{ item }}"
-    state: "present"
-  with_items:
-    - "deb {{ nginx_deb_package }}/{{ ansible_distribution | lower }}/ {{ ansible_distribution_release }} nginx"
-    - "deb-src {{ nginx_deb_package }}/{{ ansible_distribution | lower }}/ {{ ansible_distribution_release }} nginx"
-
 - name: "Install nginx and ssl-cert"
   apt:
     name: "{{ item }}"
     state: "latest"
+    default_release: "{{ ansible_distribution_release }}-backports"
     update_cache: yes
   with_items:
     - "nginx"
