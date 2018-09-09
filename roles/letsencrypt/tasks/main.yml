@@ -2,8 +2,8 @@
 - name: "Install letsencrypt certbot"
   apt:
     name: "python-certbot-nginx"
-    state: "latest"
     default_release: "{{ ansible_distribution_release }}-backports"
+    state: "latest"
 
 - name: "Create {{ letsencrypt_challenge_directory }} directory"
   file:

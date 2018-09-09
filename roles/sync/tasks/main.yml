@@ -2,8 +2,8 @@
 - name: "Install Syncthing"
   apt:
     name: "syncthing"
+    default_release: "{{ ansible_distribution_release }}-backports"
     state: "latest"
-    update_cache: yes
 
 - name: "Create {{ syncthing_user }} user"
   user:

@@ -3,7 +3,6 @@
   apt:
     name: "netdata"
     state: "latest"
-    update_cache: yes
 
 - name: "Copy Netdata settings"
   template:

@@ -2,9 +2,8 @@
 - name: "Install nginx and ssl-cert"
   apt:
     name: "{{ item }}"
-    state: "latest"
     default_release: "{{ ansible_distribution_release }}-backports"
-    update_cache: yes
+    state: "latest"
   with_items:
     - "nginx"
     - "ssl-cert"

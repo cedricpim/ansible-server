@@ -3,7 +3,6 @@
   apt:
     name: "monit"
     state: "latest"
-    update_cache: yes
 
 - name: "Copy Monit settings"
   template:

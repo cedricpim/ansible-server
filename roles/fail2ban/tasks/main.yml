@@ -3,7 +3,6 @@
   apt:
     name: "fail2ban"
     state: "latest"
-    update_cache: yes
 
 - name: "Copy Fail2Ban settings"
   template:

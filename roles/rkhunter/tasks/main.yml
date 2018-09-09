@@ -3,7 +3,6 @@
   apt:
     name: "rkhunter"
     state: "latest"
-    update_cache: yes
 
 - name: "Create Rkhunter directories"
   file:

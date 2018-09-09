@@ -10,7 +10,6 @@
   apt:
     name: "vdirsyncer"
     state: "latest"
-    update_cache: yes
 
 - name: "Create Vdirsyncer directories"
   file:
