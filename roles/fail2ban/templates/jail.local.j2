@@ -102,7 +102,7 @@ filter = %(__name__)s
 destemail = {{ fail2ban_alert_email }}
 
 # Sender email address used solely for some actions
-sender = fail2ban@localhost
+sender = {{ fail2ban_sender }}
 
 # E-mail action. Since 0.8.1 Fail2Ban uses sendmail MTA for the
 # mailing. Change mta configuration parameter to mail if you want to

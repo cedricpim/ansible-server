@@ -22,7 +22,7 @@
 
 - name: "Create Syncthing service directory"
   file:
-    path: "/etc/systemd/system/syncthing@{{ syncthing_user }}.service.d"
+    path: "{{ systemd_directory }}/syncthing@{{ syncthing_user }}.service.d"
     owner: "root"
     group: "root"
     mode: "0755"
@@ -31,7 +31,7 @@
 - name: "Override Syncthing user"
   template:
     src: "systemd/override.conf.j2"
-    dest: "/etc/systemd/system/syncthing@{{ syncthing_user }}.service.d/override.conf"
+    dest: "{{ systemd_directory }}/syncthing@{{ syncthing_user }}.service.d/override.conf"
     owner: "root"
     group: "root"
     mode: "0644"

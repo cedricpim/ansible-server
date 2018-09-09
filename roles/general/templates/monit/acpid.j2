@@ -14,6 +14,6 @@ check file acpid_bin with path "/usr/sbin/acpid"
   group acpid
   include /etc/monit/templates/rootbin
 
-check file acpid_rc with path "/lib/systemd/system/acpid.service"
+check file acpid_rc with path "{{ systemd_directory }}/acpid.service"
   group acpid
   include /etc/monit/templates/rootrc

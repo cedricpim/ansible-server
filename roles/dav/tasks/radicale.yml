@@ -56,7 +56,7 @@
 - name: "Copy Radicale systemd"
   template:
     src: "radicale/radicale.service.j2"
-    dest: "/etc/systemd/system/radicale.service"
+    dest: "{{ systemd_directory }}/radicale.service"
     mode: "0644"
   notify:
     - "Reload daemon"

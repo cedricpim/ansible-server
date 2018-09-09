@@ -2,7 +2,6 @@
 monit_config_directory: "/etc/monit"
 
 monit_port: "22122"
-monit_sender: "monit@localhost"
 monit_interval: "120"
 monit_bind_address: "localhost"
 monit_logfile: "/var/log/monit.log"
