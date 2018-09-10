@@ -3,7 +3,3 @@
   systemd:
     name: "syncthing@{{ syncthing_user }}"
     state: "restarted"
-
-- name: "Reload daemon"
-  systemd:
-    daemon_reload: yes

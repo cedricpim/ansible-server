@@ -25,7 +25,6 @@
     owner: "{{ dav_user }}"
     group: "{{ dav_user }}"
     mode: "0600"
-  notify: "Restart Vdirsyncer timer"
 
 - include_role:
     name: "general"
@@ -44,9 +43,7 @@
   with_items:
     - "vdirsyncer.service"
     - "vdirsyncer.timer"
-  notify:
-    - "Reload daemon"
-    - "Restart Vdirsyncer timer"
+  notify: "Restart Vdirsyncer"
 
 - name: "Discover collections"
   shell: "yes | vdiscover"

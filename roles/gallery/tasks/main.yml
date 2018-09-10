@@ -46,9 +46,7 @@
     src: "sigal/sigal.service.j2"
     dest: "{{ systemd_directory }}/sigal.service"
     mode: "0644"
-  notify:
-    - "Reload daemon"
-    - "Restart Sigal"
+  notify: "Restart Sigal"
 
 - name: "Start/Enable Sigal"
   systemd:

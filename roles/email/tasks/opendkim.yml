@@ -25,9 +25,7 @@
   command: "opendkim-genkey -r -h sha256 -d mail.{{ server }} -s mail"
   args:
     chdir: "{{ email_opendkim_config_directory }}"
-  notify:
-    - "Start OpenDKIM"
-    - "Reload OpenDKIM"
+  notify: "Reload OpenDKIM"
   when: opendkim_keys is defined and opendkim_keys.stat.islnk is not defined
 
 - name: "Set correct permissions"
@@ -43,9 +41,7 @@
     chdir: "{{ email_opendkim_config_directory }}"
     creates: "{{ email_opendkim_config_directory }}/mail"
     removes: "{{ email_opendkim_config_directory }}/mail.private"
-  notify:
-    - "Start OpenDKIM"
-    - "Reload OpenDKIM"
+  notify: "Reload OpenDKIM"
 
 - name: "Copy Tables for OpenDKIM"
   template:
@@ -58,18 +54,14 @@
     - "KeyTable"
     - "SigningTable"
     - "TrustedHosts"
-  notify:
-    - "Start OpenDKIM"
-    - "Reload OpenDKIM"
+  notify: "Reload OpenDKIM"
 
 - name: "Copy OpenDKIM settings"
   template:
     src: "opendkim/opendkim.conf.j2"
     dest: "/etc/opendkim.conf"
     mode: "0644"
-  notify:
-    - "Start OpenDKIM"
-    - "Reload OpenDKIM"
+  notify: "Reload OpenDKIM"
 
 - name: "Create spool directory on Postfix for OpenDKIM"
   file:
@@ -80,6 +72,7 @@
     state: "directory"
 
 - name: "Start/Enable OpenDKIM"
-  block:
-    - systemd: name="opendkim" state="started" enabled=yes
-    - systemd: name="opendkim" state="reloaded"
+  systemd:
+    name: "opendkim"
+    state: "started"
+    enabled: yes

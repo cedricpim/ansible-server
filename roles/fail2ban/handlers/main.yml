@@ -1,9 +1,4 @@
 ---
-- name: "Start Fail2Ban"
-  systemd:
-    name: "fail2ban"
-    state: "started"
-
 - name: "Reload Fail2Ban"
   systemd:
     name: "fail2ban"

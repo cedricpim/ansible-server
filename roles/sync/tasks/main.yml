@@ -35,15 +35,14 @@
     owner: "root"
     group: "root"
     mode: "0644"
-  notify:
-    - "Reload daemon"
-    - "Restart Syncthing"
+  notify: "Restart Syncthing"
 
 - name: "Start/Enable Syncthing"
   systemd:
     name: "syncthing@{{ syncthing_user }}"
     state: "started"
     enabled: yes
+    daemon_reload: yes
 
 - name: "Update Syncthing port"
   lineinfile:

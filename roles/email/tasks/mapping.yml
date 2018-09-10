@@ -8,9 +8,7 @@
 
 - name: "Hash {{ mapping }}"
   command: "postmap {{ email_postfix_config_directory }}/{{ mapping }}"
-  notify:
-    - "Start Postfix"
-    - "Reload Postfix"
+  notify: "Reload Postfix"
   when:
     - template_mapping is defined
     - template_mapping.changed

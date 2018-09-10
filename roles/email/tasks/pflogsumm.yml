@@ -18,7 +18,11 @@
   with_items:
     - "pflogsumm.service"
     - "pflogsumm.timer"
+  notify: "Restart Pflogsumm"
 
-- name: "Restart/Enable Pflogsumm services"
-  block:
-    - systemd: name="pflogsumm.timer" state="started" enabled=yes daemon_reload=yes
+- name: "Restart/Enable Pflogsumm"
+  systemd:
+    name: "pflogsumm.timer"
+    state: "started"
+    enabled: yes
+    daemon_reload: yes

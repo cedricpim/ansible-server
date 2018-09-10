@@ -39,9 +39,7 @@
     src: "nginx/{{ conf }}.j2"
     dest: "{{ nginx_config_directory }}/conf.d/{{ conf }}"
     mode: "0644"
-  notify:
-    - "Start Nginx"
-    - "Reload Nginx"
+  notify: "Reload Nginx"
   when:
     - nginx_check.rc == 0
     - letsencrypt_cert is defined
@@ -62,9 +60,7 @@
     src: "nginx/{{ credentials }}.j2"
     dest: "{{ nginx_config_directory }}/conf/{{ credentials }}"
     mode: "0644"
-  notify:
-    - "Start Nginx"
-    - "Reload Nginx"
+  notify: "Reload Nginx"
   when:
     - credentials is defined
     - nginx_check.rc == 0

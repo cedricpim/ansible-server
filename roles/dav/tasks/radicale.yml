@@ -19,7 +19,7 @@
     name: "radicale"
     state: "latest"
     executable: "pip3"
-  notify: "Restart Radicale"
+  notify: "Reload Radicale"
 
 - name: "Create Radicale directories"
   file:
@@ -44,7 +44,7 @@
   with_items:
     - "config"
     - "logging"
-  notify: "Restart Radicale"
+  notify: "Reload Radicale"
 
 - include_role:
     name: "dav"
@@ -58,11 +58,9 @@
     src: "radicale/radicale.service.j2"
     dest: "{{ systemd_directory }}/radicale.service"
     mode: "0644"
-  notify:
-    - "Reload daemon"
-    - "Restart Radicale"
+  notify: "Restart Radicale"
 
-- name: "Start/Enable Radicale"
+- name: "Enable Radicale"
   systemd:
     name: "radicale"
     state: "started"

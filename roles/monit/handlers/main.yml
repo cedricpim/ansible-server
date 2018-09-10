@@ -1,9 +1,4 @@
 ---
-- name: "Start Monit"
-  systemd:
-    name: "monit"
-    state: "started"
-
 - name: "Reload Monit"
   systemd:
     name: "monit"

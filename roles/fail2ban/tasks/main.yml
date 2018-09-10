@@ -9,9 +9,7 @@
     src: "jail.local.j2"
     dest: "{{ fail2ban_config_directory }}/jail.local"
     mode: "0644"
-  notify:
-    - "Start Fail2Ban"
-    - "Reload Fail2Ban"
+  notify: "Reload Fail2Ban"
 
 - name: "Ensure required log files exist"
   file:

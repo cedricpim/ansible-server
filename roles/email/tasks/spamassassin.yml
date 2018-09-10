@@ -31,8 +31,8 @@
     - "spamassassin"
     - "spamass-milter"
   notify:
-    - "Start SpamAssassin"
     - "Reload SpamAssassin"
+    - "Restart spamass-milter"
 
 - name: "Copy SpamAssassin milter settings"
   template:
@@ -43,8 +43,8 @@
     - "init.pre"
     - "local.cf"
   notify:
-    - "Start SpamAssassin"
     - "Reload SpamAssassin"
+    - "Restart spamass-milter"
 
 - name: "Create spool directory on Postfix for SpamAssassin"
   file:
@@ -110,19 +110,18 @@
   with_items:
     - "sa-learn.service"
     - "sa-learn.timer"
+  notify: "Restart sa-learn"
 
 - name: "Restart/Enable SpamAssassin services"
-  block:
-    - systemd: name="spamassassin" state="started" enabled=yes daemon_reload=yes
-    - systemd: name="spamassassin" state="reloaded"
-
-- name: "Restart/Enable SpamAssassin services"
-  block:
-    - systemd: name="spamass-milter" state="started" enabled=yes daemon_reload=yes
-
-- name: "Restart/Enable SpamAssassin services"
-  block:
-    - systemd: name="sa-learn.timer" state="started" enabled=yes daemon_reload=yes
+  systemd:
+    name: "{{ item }}"
+    state: "started"
+    enabled: yes
+    daemon_reload: yes
+  with_items:
+    - "spamassassin"
+    - "spamass-milter"
+    - "sa-learn.timer"
 
 - include_role:
     name: "monit"

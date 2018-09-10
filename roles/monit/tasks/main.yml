@@ -9,9 +9,7 @@
     src: "monitrc.j2"
     dest: "{{ monit_config_directory }}/monitrc"
     mode: "0600"
-  notify:
-    - "Start Monit"
-    - "Reload Monit"
+  notify: "Reload Monit"
 
 - include_role:
     name: "monit"

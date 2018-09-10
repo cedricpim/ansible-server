@@ -1,14 +1,15 @@
 ---
+- name: "Reload Radicale"
+  systemd:
+    name: "radicale"
+    state: "reloaded"
+
 - name: "Restart Radicale"
   systemd:
     name: "radicale"
     state: "restarted"
 
-- name: "Restart Vdirsyncer timer"
+- name: "Restart Vdirsyncer"
   systemd:
-    name: "vdirsyncer.timer"
+    name: "vdirsyncer"
     state: "restarted"
-
-- name: "Reload daemon"
-  systemd:
-    daemon_reload: yes

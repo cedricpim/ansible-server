@@ -3,7 +3,3 @@
   systemd:
     name: "systemon"
     state: "restarted"
-
-- name: "Reload daemon"
-  systemd:
-    daemon_reload: yes

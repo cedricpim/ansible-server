@@ -39,9 +39,7 @@
     src: "systemon.service.j2"
     dest: "{{ systemd_directory }}/systemon.service"
     mode: "0755"
-  notify:
-    - "Reload daemon"
-    - "Restart Systemon"
+  notify: "Restart Systemon"
 
 - name: "Start/Enable Systemon"
   systemd:

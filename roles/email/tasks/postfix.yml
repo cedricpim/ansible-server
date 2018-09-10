@@ -19,9 +19,7 @@
     src: "postfix/mailname.j2"
     dest: "/etc/mailname"
     mode: "0644"
-  notify:
-    - "Start Postfix"
-    - "Reload Postfix"
+  notify: "Reload Postfix"
 
 - name: "Copy Postfix settings"
   template:
@@ -31,9 +29,7 @@
   with_items:
     - "main"
     - "master"
-  notify:
-    - "Start Postfix"
-    - "Reload Postfix"
+  notify: "Reload Postfix"
 
 - include_role:
     name: "email"
@@ -47,9 +43,10 @@
     loop_var: "mapping"
 
 - name: "Start/Enable Postfix"
-  block:
-    - systemd: name="postfix" state="started" enabled=yes
-    - systemd: name="postfix" state="reloaded"
+  systemd:
+    name: "postfix"
+    state: "started"
+    enabled: yes
 
 - include_role:
     name: "monit"

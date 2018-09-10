@@ -48,9 +48,7 @@
 
     - name: "Hash aliases"
       command: "newaliases"
-      notify:
-        - "Start Postfix"
-        - "Reload Postfix"
+      notify: "Reload Postfix"
       when:
         - template_aliases is defined
         - template_aliases.changed
@@ -59,3 +57,13 @@
       systemd:
         name: "systemon"
         state: "restarted"
+
+  handlers:
+    - name: "Reload Postfix"
+      systemd:
+        name: "postfix"
+        state: "reloaded"
+      register: postfix_service_reload
+      failed_when:
+        - postfix_service_reload.failed
+        - not "Could not find the requested service" in postfix_service_reload.msg
