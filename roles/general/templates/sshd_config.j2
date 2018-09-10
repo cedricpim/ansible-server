@@ -29,8 +29,8 @@ Protocol 2
 UsePrivilegeSeparation yes
 
 # Lifetime and size of ephemeral version 1 server key
-#KeyRegenerationInterval 3600
-#ServerKeyBits 1024
+KeyRegenerationInterval 3600
+ServerKeyBits 1024
 
 # Ciphers and keying
 #RekeyLimit default none
@@ -94,12 +94,12 @@ ChallengeResponseAuthentication no
 # If you just want the PAM account and session checks to run without
 # PAM authentication, then enable this but set PasswordAuthentication
 # and ChallengeResponseAuthentication to 'no'.
-#UsePAM yes
+UsePAM yes
 
 #AllowAgentForwarding yes
 #AllowTcpForwarding yes
 #GatewayPorts no
-#X11Forwarding yes
+X11Forwarding yes
 #X11DisplayOffset 10
 #X11UseLocalhost yes
 #PermitTTY yes

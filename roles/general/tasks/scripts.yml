@@ -2,7 +2,7 @@
 - name: "Create directory for scripts"
   file:
     path: "{{ general_scripts_directory }}"
-    mode: "0755"
+    mode: "02775"
     state: "directory"
 
 - name: "Copy server custom scripts"
