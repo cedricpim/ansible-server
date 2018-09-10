@@ -35,13 +35,21 @@
       changed_when: no
       register: users
 
+    - name: "Check is newaliases command exists"
+      command: "command -v newaliases"
+      failed_when: no
+      changed_when: no
+      register: newaliases_exist
+
     - name: "Copy aliases"
       template:
         src: "aliases.j2"
         dest: "/etc/aliases"
         mode: "0644"
       register: template_aliases
-      when: users is defined
+      when:
+        - users is defined
+        - newaliases_exist.rc == 0
 
     - name: "Hash aliases"
       command: "newaliases"
