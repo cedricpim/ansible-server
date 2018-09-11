@@ -1,17 +1,17 @@
 ---
-- name: "Install Netdata"
+- name: "install Netdata"
   apt:
     name: "netdata"
     state: "latest"
 
-- name: "Copy Netdata settings"
+- name: "copy Netdata settings"
   template:
     src: "netdata.conf.j2"
     dest: "{{ netdata_config_directory }}/netdata.conf"
     mode: "0600"
-  notify: "Restart Netdata"
+  notify: "restart Netdata"
 
-- name: "Start/enable Netdata"
+- name: "start/enable Netdata"
   systemd:
     name: "netdata"
     state: "started"

@@ -1,17 +1,17 @@
 ---
-- name: "Install Fail2Ban"
+- name: "install Fail2Ban"
   apt:
     name: "fail2ban"
     state: "latest"
 
-- name: "Copy Fail2Ban settings"
+- name: "copy Fail2Ban settings"
   template:
     src: "jail.local.j2"
     dest: "{{ fail2ban_config_directory }}/jail.local"
     mode: "0644"
-  notify: "Reload Fail2Ban"
+  notify: "reload Fail2Ban"
 
-- name: "Ensure required log files exist"
+- name: "ensure required log files exist"
   file:
     path: "{{ item.path }}"
     owner: "{{ item.owner }}"
@@ -23,7 +23,7 @@
     - { path: "/var/log/mail.warn", owner: "root", group: "adm" }
     - { path: "/var/log/mail.log", owner: "root", group: "adm" }
 
-- name: "Start/Enable Fail2Ban"
+- name: "start/Enable Fail2Ban"
   systemd:
     name: "fail2ban"
     state: "started"

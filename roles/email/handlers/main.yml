@@ -1,35 +1,35 @@
 ---
-- name: "Reload OpenDKIM"
+- name: "reload OpenDKIM"
   systemd:
     name: "opendkim"
     state: "reloaded"
 
-- name: "Reload SpamAssassin"
+- name: "reload SpamAssassin"
   systemd:
     name: "spamassassin"
     state: "reloaded"
 
-- name: "Restart spamass-milter"
+- name: "restart spamass-milter"
   systemd:
     name: "spamass-milter"
     state: "restarted"
 
-- name: "Restart sa-learn"
+- name: "restart sa-learn"
   systemd:
     name: "sa-learn.timer"
     state: "restarted"
 
-- name: "Reload Postfix"
+- name: "reload Postfix"
   systemd:
     name: "postfix"
     state: "reloaded"
 
-- name: "Reload Dovecot"
+- name: "reload Dovecot"
   systemd:
     name: "dovecot"
     state: "reloaded"
 
-- name: "Restart Pflogsumm"
+- name: "restart Pflogsumm"
   systemd:
     name: "pflogsumm.timer"
     state: "restarted"

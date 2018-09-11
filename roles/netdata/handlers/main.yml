@@ -1,5 +1,5 @@
 ---
-- name: "Restart Netdata"
+- name: "restart Netdata"
   systemd:
     name: "netdata"
     state: "restarted"

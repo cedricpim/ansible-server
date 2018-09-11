@@ -1,5 +1,5 @@
 ---
-- name: "Install Pflogsumm"
+- name: "install Pflogsumm"
   apt:
     name: "pflogsumm"
     state: "latest"
@@ -10,7 +10,7 @@
   vars:
     script: "ppflogsumm"
 
-- name: "Copy Pflogsumm systemd"
+- name: "copy Pflogsumm systemd"
   template:
     src: "pflogsumm/{{ item }}.j2"
     dest: "{{ systemd_directory }}/{{ item }}"
@@ -18,9 +18,9 @@
   with_items:
     - "pflogsumm.service"
     - "pflogsumm.timer"
-  notify: "Restart Pflogsumm"
+  notify: "restart Pflogsumm"
 
-- name: "Restart/Enable Pflogsumm"
+- name: "restart/Enable Pflogsumm"
   systemd:
     name: "pflogsumm.timer"
     state: "started"

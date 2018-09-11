@@ -1,5 +1,5 @@
 ---
-- name: "Restart Sigal"
+- name: "restart Sigal"
   systemd:
     name: "sigal"
     state: "restarted"

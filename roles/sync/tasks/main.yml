@@ -1,18 +1,18 @@
 ---
-- name: "Install Syncthing"
+- name: "install Syncthing"
   apt:
     name: "syncthing"
     default_release: "{{ ansible_distribution_release }}-backports"
     state: "latest"
 
-- name: "Create {{ syncthing_user }} user"
+- name: "create {{ syncthing_user }} user"
   user:
     name: "{{ syncthing_user }}"
     shell: "/bin/false"
     state: "present"
     create_home: no
 
-- name: "Create Syncthing folder"
+- name: "create Syncthing folder"
   file:
     path: "{{ syncthing_config_directory }}"
     owner: "{{ syncthing_user }}"
@@ -20,7 +20,7 @@
     mode: "0755"
     state: "directory"
 
-- name: "Create Syncthing service directory"
+- name: "create Syncthing service directory"
   file:
     path: "{{ systemd_directory }}/syncthing@{{ syncthing_user }}.service.d"
     owner: "root"
@@ -28,34 +28,34 @@
     mode: "0755"
     state: "directory"
 
-- name: "Override Syncthing user"
+- name: "override Syncthing user"
   template:
     src: "systemd/override.conf.j2"
     dest: "{{ systemd_directory }}/syncthing@{{ syncthing_user }}.service.d/override.conf"
     owner: "root"
     group: "root"
     mode: "0644"
-  notify: "Restart Syncthing"
+  notify: "restart Syncthing"
 
-- name: "Start/Enable Syncthing"
+- name: "start/Enable Syncthing"
   systemd:
     name: "syncthing@{{ syncthing_user }}"
     state: "started"
     enabled: yes
     daemon_reload: yes
 
-- name: "Wait until the file {{ syncthing_config_directory }}/config.xml is present"
+- name: "wait until the file {{ syncthing_config_directory }}/config.xml is present"
   wait_for:
     path: "{{ syncthing_config_directory }}/config.xml"
     state: "present"
 
-- name: "Update Syncthing port"
+- name: "update Syncthing port"
   lineinfile:
     path: "{{ syncthing_config_directory }}/config.xml"
     regexp: '^(\s+)<address>127\.0\.0\.1'
     line: '\1<address>127.0.0.1:{{ syncthing_port }}</address>'
     backrefs: yes
-  notify: "Restart Syncthing"
+  notify: "restart Syncthing"
 
 - include_role:
     name: "nginx"

@@ -1,5 +1,5 @@
 ---
-- name: "Create {{ email_user }} user"
+- name: "create {{ email_user }} user"
   user:
     name: "{{ email_user }}"
     uid: "{{ email_user_uid }}"

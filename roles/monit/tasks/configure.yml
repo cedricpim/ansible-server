@@ -1,28 +1,28 @@
 ---
-- name: "Check if monit is installed"
+- name: "check if monit is installed"
   shell: "dpkg-query -W -f='${Status}' monit | grep 'install ok installed'"
   failed_when: no
   changed_when: no
   register: monit_check
 
-- name: "Create Monit directories"
+- name: "create Monit directories"
   block:
     - file: path="{{ monit_config_directory }}/conf-available" mode="0755" state="directory"
     - file: path="{{ monit_config_directory }}/conf-enabled" mode="0755" state="directory"
   when: monit_check.rc == 0
 
-- name: "Copy {{ conf }} configuration"
+- name: "copy {{ conf }} configuration"
   template:
     src: "monit/{{ conf }}.j2"
     dest: "{{ monit_config_directory }}/conf-available/{{ conf }}"
     mode: "0644"
-  notify: "Reload Monit"
+  notify: "reload Monit"
   when: monit_check.rc == 0
 
-- name: "Symlink {{ conf }} configuration"
+- name: "symlink {{ conf }} configuration"
   file:
     src: "{{ monit_config_directory }}/conf-available/{{ conf }}"
     dest: "{{ monit_config_directory }}/conf-enabled/{{ conf }}"
     state: "link"
-  notify: "Reload Monit"
+  notify: "reload Monit"
   when: monit_check.rc == 0

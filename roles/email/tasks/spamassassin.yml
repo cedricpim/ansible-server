@@ -1,5 +1,5 @@
 ---
-- name: "Install SpamAssassin"
+- name: "install SpamAssassin"
   apt:
     name: "{{ item }}"
     state: "latest"
@@ -9,20 +9,20 @@
     - "pyzor"
     - "razor"
 
-- name: "Create SpamAssassin user"
+- name: "create SpamAssassin user"
   user:
     name: "{{ email_spamassassin_user }}"
     home: "{{ email_spamassassin_home }}"
     state: "present"
 
-- name: "Add SpamAssassin group to spamass-milter user"
+- name: "add SpamAssassin group to spamass-milter user"
   user:
     name: "spamass-milter"
     groups: "{{ email_spamassassin_user }}"
     append: yes
     state: "present"
 
-- name: "Copy SpamAssassin settings"
+- name: "copy SpamAssassin settings"
   template:
     src: "spamassassin/{{ item }}.j2"
     dest: "/etc/default/{{ item }}"
@@ -34,13 +34,13 @@
     - "Reload SpamAssassin"
     - "Restart spamass-milter"
 
-- name: "Create SpamAssassin directory"
+- name: "create SpamAssassin directory"
   file:
     path: "{{ email_spamassassin_config_directory }}"
     mode: "0755"
     state: "directory"
 
-- name: "Copy SpamAssassin milter settings"
+- name: "copy SpamAssassin milter settings"
   template:
     src: "spamassassin/{{ item }}.j2"
     dest: "{{ email_spamassassin_config_directory }}/{{ item }}"
@@ -52,7 +52,7 @@
     - "Reload SpamAssassin"
     - "Restart spamass-milter"
 
-- name: "Create spool directory on Postfix for SpamAssassin"
+- name: "create spool directory on Postfix for SpamAssassin"
   file:
     path: "{{ email_postfix_spool }}/spamassassin"
     owner: "{{ email_spamassassin_user }}"
@@ -60,14 +60,14 @@
     mode: "0755"
     state: "directory"
 
-- name: "Update SpamAssassin rules"
+- name: "update SpamAssassin rules"
   command: "sa-update --verbose"
   register: spamassassin_sa_update
   failed_when:
     - spamassassin_sa_update.failed
     - not "Update finished" in spamassassin_sa_update.stdout
 
-- name: "Create global Bayesian filter and SpamAssassin Add-on folders"
+- name: "create global Bayesian filter and SpamAssassin Add-on folders"
   file:
     path: "{{ email_spamassassin_home }}/{{ item }}"
     owner: "{{ email_spamassassin_user }}"
@@ -79,23 +79,23 @@
     - ".razor"
     - ".pyzor"
 
-- name: "Run Pyzor add-on"
+- name: "run Pyzor add-on"
   command: "pyzor --homedir {{ email_spamassassin_home }}/.pyzor discover"
 
-- name: "Run Razor add-on"
+- name: "run Razor add-on"
   command: "razor-admin -home={{ email_spamassassin_home }}/.razor {{ item }}"
   with_items:
     - "-register"
     - "-create"
     - "-discover"
 
-- name: "Set Razor home directory"
+- name: "set Razor home directory"
   lineinfile:
     path: "{{ email_spamassassin_home }}/.razor/razor-agent.conf"
     line: 'razorhome = {{ email_spamassassin_home }}/.razor'
     state: "present"
 
-- name: "Set correct permissions"
+- name: "set correct permissions"
   file:
     path: "{{ email_spamassassin_home }}"
     owner: "{{ email_spamassassin_user }}"
@@ -108,7 +108,7 @@
   vars:
     script: "slearn"
 
-- name: "Copy sa-learn systemd"
+- name: "copy sa-learn systemd"
   template:
     src: "spamassassin/{{ item }}.j2"
     dest: "{{ systemd_directory }}/{{ item }}"
@@ -116,9 +116,9 @@
   with_items:
     - "sa-learn.service"
     - "sa-learn.timer"
-  notify: "Restart sa-learn"
+  notify: "restart sa-learn"
 
-- name: "Restart/Enable SpamAssassin services"
+- name: "restart/Enable SpamAssassin services"
   systemd:
     name: "{{ item }}"
     state: "started"

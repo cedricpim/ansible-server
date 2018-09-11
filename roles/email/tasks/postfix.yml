@@ -1,5 +1,5 @@
 ---
-- name: "Install Postfix"
+- name: "install Postfix"
   apt:
     name: "{{ item }}"
     state: "latest"
@@ -7,21 +7,21 @@
     - "postfix"
     - "ssl-cert"
 
-- name: "Add user postfix to group opendkim"
+- name: "add user postfix to group opendkim"
   user:
     name: "{{ email_postfix_user }}"
     groups: "{{ email_opendkim_user }}"
     append: yes
     state: "present"
 
-- name: "Copy mailname file"
+- name: "copy mailname file"
   template:
     src: "postfix/mailname.j2"
     dest: "/etc/mailname"
     mode: "0644"
-  notify: "Reload Postfix"
+  notify: "reload Postfix"
 
-- name: "Copy Postfix settings"
+- name: "copy Postfix settings"
   template:
     src: "postfix/{{ item }}.cf.j2"
     dest: "{{ email_postfix_config_directory }}/{{ item }}.cf"
@@ -29,7 +29,7 @@
   with_items:
     - "main"
     - "master"
-  notify: "Reload Postfix"
+  notify: "reload Postfix"
 
 - include_role:
     name: "email"
@@ -42,7 +42,7 @@
   loop_control:
     loop_var: "mapping"
 
-- name: "Start/Enable Postfix"
+- name: "start/Enable Postfix"
   systemd:
     name: "postfix"
     state: "started"

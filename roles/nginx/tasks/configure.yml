@@ -1,16 +1,16 @@
 ---
-- name: "Check if nginx is installed"
+- name: "check if nginx is installed"
   shell: "dpkg-query -W -f='${Status}' nginx | grep 'install ok installed'"
   failed_when: no
   changed_when: no
   register: nginx_check
 
-- name: "Check if certificate already exists"
+- name: "check if certificate already exists"
   stat:
     path: "{{ letsencrypt_config_directory }}/live/{{ server }}/cert.pem"
   register: letsencrypt_cert
 
-- name: "Create {{ nginx_user }} user"
+- name: "create {{ nginx_user }} user"
   user:
     name: "{{ nginx_user }}"
     shell: "/bin/false"
@@ -21,7 +21,7 @@
     - letsencrypt_cert is defined
     - letsencrypt_cert.stat.exists
 
-- name: "Create Nginx directories for individual configurations"
+- name: "create Nginx directories for individual configurations"
   file:
     path: "{{ item }}"
     mode: "0755"
@@ -34,18 +34,18 @@
     - letsencrypt_cert is defined
     - letsencrypt_cert.stat.exists
 
-- name: "Copy default server settings"
+- name: "copy default server settings"
   template:
     src: "nginx/{{ conf }}.j2"
     dest: "{{ nginx_config_directory }}/conf.d/{{ conf }}"
     mode: "0644"
-  notify: "Reload Nginx"
+  notify: "reload Nginx"
   when:
     - nginx_check.rc == 0
     - letsencrypt_cert is defined
     - letsencrypt_cert.stat.exists
 
-- name: "Create {{ nginx_config_directory }}/conf for credentials"
+- name: "create {{ nginx_config_directory }}/conf for credentials"
   file:
     path: "{{ nginx_config_directory }}/conf"
     mode: "0755"
@@ -55,12 +55,12 @@
     - letsencrypt_cert is defined
     - letsencrypt_cert.stat.exists
 
-- name: "Copy credentials"
+- name: "copy credentials"
   template:
     src: "nginx/{{ credentials }}.j2"
     dest: "{{ nginx_config_directory }}/conf/{{ credentials }}"
     mode: "0644"
-  notify: "Reload Nginx"
+  notify: "reload Nginx"
   when:
     - credentials is defined
     - nginx_check.rc == 0

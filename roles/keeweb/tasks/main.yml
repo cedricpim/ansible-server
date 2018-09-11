@@ -1,10 +1,10 @@
 ---
-- name: "Install git"
+- name: "install git"
   apt:
     name: "git"
     state: "latest"
 
-- name: "Create {{ nginx_content_directory }} directory"
+- name: "create {{ nginx_content_directory }} directory"
   file:
     path: "{{ nginx_content_directory }}"
     owner: "{{ nginx_user }}"
@@ -12,7 +12,7 @@
     mode: "0600"
     state: "directory"
 
-- name: "Clone KeeWeb"
+- name: "clone KeeWeb"
   git:
     repo: "https://github.com/keeweb/keeweb.git"
     dest: "{{ nginx_content_directory }}/keeweb"

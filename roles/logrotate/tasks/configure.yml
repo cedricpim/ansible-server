@@ -1,18 +1,18 @@
 ---
-- name: "Check if Logrotate is installed"
+- name: "check if Logrotate is installed"
   shell: "dpkg-query -W -f='${Status}' logrotate | grep 'install ok installed'"
   failed_when: no
   changed_when: no
   register: logrotate_check
 
-- name: "Create Logrotate directory"
+- name: "create Logrotate directory"
   file:
     path: "{{ logrotate_config_directory }}"
     mode: "0755"
     state: "directory"
   when: logrotate_check.rc == 0
 
-- name: "Copy {{ conf }} configuration"
+- name: "copy {{ conf }} configuration"
   template:
     src: "logrotate/{{ conf }}.j2"
     dest: "{{ logrotate_config_directory }}/{{ conf }}"

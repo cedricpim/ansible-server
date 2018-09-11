@@ -3,12 +3,12 @@
   become: yes
 
   pre_tasks:
-    - name: "Update backports apt sources"
+    - name: "update backports apt sources"
       apt_repository:
         repo: "deb http://ftp.debian.org/debian {{ ansible_distribution_release }}-backports main"
         state: "present"
 
-    - name: "Update current packages"
+    - name: "update current packages"
       apt:
         upgrade: yes
         update_cache: yes
@@ -30,18 +30,18 @@
     - { role: "email", tags: "email" }
 
   post_tasks:
-    - name: "Get list of users"
+    - name: "get list of users"
       command: "cut -d: -f1 /etc/passwd"
       changed_when: no
       register: users
 
-    - name: "Check is newaliases command exists"
+    - name: "check is newaliases command exists"
       command: "command -v newaliases"
       failed_when: no
       changed_when: no
       register: newaliases_exist
 
-    - name: "Copy aliases"
+    - name: "copy aliases"
       template:
         src: "aliases.j2"
         dest: "/etc/aliases"
@@ -51,14 +51,14 @@
         - users is defined
         - newaliases_exist.rc == 0
 
-    - name: "Hash aliases"
+    - name: "hash aliases"
       command: "newaliases"
-      notify: "Reload Postfix"
+      notify: "reload Postfix"
       when:
         - template_aliases is defined
         - template_aliases.changed
 
-    - name: "Restart Systemon"
+    - name: "restart Systemon"
       systemd:
         name: "systemon"
         state: "restarted"
@@ -67,16 +67,16 @@
         - systemon_service.failed
         - not "Could not find the requested service" in systemon_service.msg
 
-    - name: "Remove dependencies that are no longer required"
+    - name: "remove dependencies that are no longer required"
       apt:
         autoremove: yes
 
-    - name: "Remove useless packages from the cache"
+    - name: "remove useless packages from the cache"
       apt:
         autoclean: yes
 
   handlers:
-    - name: "Reload Postfix"
+    - name: "reload Postfix"
       systemd:
         name: "postfix"
         state: "reloaded"

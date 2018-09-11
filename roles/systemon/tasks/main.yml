@@ -1,5 +1,5 @@
 ---
-- name: "Install Python2, Git and other dependencies"
+- name: "install Python2, Git and other dependencies"
   apt:
     name: "{{ item }}"
     state: "latest"
@@ -15,35 +15,35 @@
     - "build-essential"
     - "sendmail"
 
-- name: "Download Systemon"
+- name: "download Systemon"
   git:
     repo: "https://github.com/cedricpim/systemon.git"
     dest: "{{ systemon_directory }}/systemon"
     update: yes
   register: systemon_repo
 
-- name: "Install Systemon"
+- name: "install Systemon"
   command: "python2 setup.py install"
   args:
     chdir: "{{ systemon_directory }}/systemon"
-  notify: "Restart Systemon"
+  notify: "restart Systemon"
   when: systemon_repo is defined and systemon_repo is changed
 
-- name: "Copy Systemon settings"
+- name: "copy Systemon settings"
   template:
     src: "systemon.j2"
     dest: "{{ systemon_config_directory }}/systemon"
     mode: "0644"
-  notify: "Restart Systemon"
+  notify: "restart Systemon"
 
-- name: "Copy Systemon systemd"
+- name: "copy Systemon systemd"
   template:
     src: "systemon.service.j2"
     dest: "{{ systemd_directory }}/systemon.service"
     mode: "0755"
-  notify: "Restart Systemon"
+  notify: "restart Systemon"
 
-- name: "Start/Enable Systemon"
+- name: "start/Enable Systemon"
   systemd:
     name: "systemon"
     state: "started"

@@ -1,5 +1,5 @@
 ---
-- name: "Install Dovecot"
+- name: "install Dovecot"
   apt:
     name: "{{ item }}"
     default_release: "{{ ansible_distribution_release }}-backports"
@@ -9,7 +9,7 @@
     - "dovecot-common"
     - "dovecot-imapd"
 
-- name: "Copy Dovecot settings"
+- name: "copy Dovecot settings"
   template:
     src: "dovecot/{{ item }}.j2"
     dest: "{{ email_dovecot_config_directory }}/conf.d/{{ item }}"
@@ -21,16 +21,16 @@
     - "10-ssl.conf"
     - "15-mailboxes.conf"
     - "auth-system.conf.ext"
-  notify: "Reload Dovecot"
+  notify: "reload Dovecot"
 
-- name: "Copy Dovecot credentials"
+- name: "copy Dovecot credentials"
   template:
     src: "dovecot/passwd.db.j2"
     dest: "{{ email_dovecot_config_directory }}/passwd.db"
     mode: "0644"
-  notify: "Reload Dovecot"
+  notify: "reload Dovecot"
 
-- name: "Start/Enable Dovecot"
+- name: "start/Enable Dovecot"
   systemd:
     name: "dovecot"
     state: "started"

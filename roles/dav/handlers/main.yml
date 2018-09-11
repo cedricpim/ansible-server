@@ -1,10 +1,10 @@
 ---
-- name: "Restart Radicale"
+- name: "restart Radicale"
   systemd:
     name: "radicale"
     state: "restarted"
 
-- name: "Restart Vdirsyncer"
+- name: "restart Vdirsyncer"
   systemd:
     name: "vdirsyncer"
     state: "restarted"

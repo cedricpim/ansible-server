@@ -1,11 +1,11 @@
 ---
-- name: "Install letsencrypt certbot"
+- name: "install letsencrypt certbot"
   apt:
     name: "python-certbot-nginx"
     default_release: "{{ ansible_distribution_release }}-backports"
     state: "latest"
 
-- name: "Create {{ letsencrypt_challenge_directory }} directory"
+- name: "create {{ letsencrypt_challenge_directory }} directory"
   file:
     path: "{{ letsencrypt_challenge_directory }}"
     owner: "{{ nginx_user }}"
@@ -13,12 +13,12 @@
     mode: "0755"
     state: "directory"
 
-- name: "Check if certificate already exists"
+- name: "check if certificate already exists"
   stat:
     path: "{{ letsencrypt_config_directory }}/live/{{ server }}/cert.pem"
   register: letsencrypt_cert
 
-- name: "Generate certificates"
+- name: "generate certificates"
   block:
     - template: src="conf.d/placeholder.conf.j2" dest="{{ nginx_config_directory }}/conf.d/placeholder.conf" mode="0644"
     - service: name="nginx" state="started"
@@ -30,7 +30,7 @@
     - letsencrypt_cert is defined
     - not letsencrypt_cert.stat.exists
 
-- name: "Update SSL certificates on nginx"
+- name: "update SSL certificates on nginx"
   block:
     - template: src="conf.d/letsencrypt.conf.j2" dest="{{ nginx_config_directory }}/conf.d/letsencrypt.conf" mode="0644"
     - lineinfile: path="{{ nginx_config_directory }}/conf.d/default.conf" regexp="ssl_certificate" state="absent"
