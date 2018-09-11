@@ -4,6 +4,7 @@
     name: "{{ item }}"
     state: "latest"
   with_items:
+    - "spamassassin"
     - "spamass-milter"
     - "pyzor"
     - "razor"
@@ -11,7 +12,6 @@
 - name: "Create SpamAssassin user"
   user:
     name: "{{ email_spamassassin_user }}"
-    shell: "/bin/false"
     home: "{{ email_spamassassin_home }}"
     state: "present"
 
@@ -33,6 +33,12 @@
   notify:
     - "Reload SpamAssassin"
     - "Restart spamass-milter"
+
+- name: "Create SpamAssassin directory"
+  file:
+    path: "{{ email_spamassassin_config_directory }}"
+    mode: "0755"
+    state: "directory"
 
 - name: "Copy SpamAssassin milter settings"
   template:
