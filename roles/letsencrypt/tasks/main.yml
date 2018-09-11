@@ -10,7 +10,7 @@
     path: "{{ letsencrypt_challenge_directory }}"
     owner: "{{ nginx_user }}"
     group: "{{ nginx_user }}"
-    mode: "0600"
+    mode: "0755"
     state: "directory"
 
 - name: "Check if certificate already exists"
