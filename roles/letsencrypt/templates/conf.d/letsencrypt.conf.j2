@@ -1,7 +1,7 @@
 {{ ansible_managed | comment }}
 
 ssl_certificate {{ letsencrypt_config_directory }}/live/{{ server }}/fullchain.pem;
-ssl_certificate_key {{ letsencrypt_config_directory }}live/{{ server }}/privkey.pem;
+ssl_certificate_key {{ letsencrypt_config_directory }}/live/{{ server }}/privkey.pem;
 
 server {
   listen      80;
