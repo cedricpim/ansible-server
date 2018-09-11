@@ -2,6 +2,7 @@
 
 user  {{ nginx_user }};
 worker_processes  1;
+include /etc/nginx/modules-enabled/*.conf;
 
 error_log  {{ nginx_log_directory }}/error.log warn;
 pid        {{ nginx_pidfile }};

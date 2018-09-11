@@ -80,11 +80,19 @@
   notify: "Reload Nginx"
   when: st_letsencrypt is defined and not st_letsencrypt.stat.exists
 
+# FIX: https://bugs.launchpad.net/ubuntu/+source/nginx/+bug/1581864
+- name: "Override Nginx service"
+  block:
+    - file: path="{{ systemd_directory }}/nginx.service.d" owner="root" group="root" mode="0755" state="directory"
+    - template: src="systemd/override.conf.j2" dest="{{ systemd_directory }}/nginx.service.d/override.conf" owner="root" group="root" mode="0644"
+      notify: "Restart Nginx"
+
 - name: "Enable/start nginx"
   systemd:
     name: "nginx"
     state: "started"
     enabled: yes
+    daemon_reload: yes
 
 - include_role:
     name: "monit"
