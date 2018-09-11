@@ -56,29 +56,30 @@
     - "{{ nginx_config_directory }}/conf.d"
     - "{{ nginx_config_directory }}/conf"
 
-- name: "copy default server settings"
-  template:
-    src: "conf.d/default.conf.j2"
-    dest: "{{ nginx_config_directory }}/conf.d/default.conf"
-    mode: "0644"
-  notify: "reload Nginx"
-
 - name: "check for letsencrypt configuration"
   stat:
     path: "{{ nginx_config_directory }}/conf.d/letsencrypt.conf"
   register: st_letsencrypt
 
-- name: "add placeholder certificates"
-  lineinfile:
-    path: "{{ nginx_config_directory }}/conf.d/default.conf"
-    regexp: '{{ item }}'
-    line: "  {{ item }};"
-    insertafter: "server_name"
-  with_items:
-    - "ssl_certificate_key /etc/ssl/private/ssl-cert-snakeoil.key"
-    - "ssl_certificate /etc/ssl/certs/ssl-cert-snakeoil.pem"
+- name: "copy default server settings without certificates"
+  template:
+    src: "conf.d/default-without-certificates.conf.j2"
+    dest: "{{ nginx_config_directory }}/conf.d/default.conf"
+    mode: "0644"
   notify: "reload Nginx"
-  when: st_letsencrypt is defined and not st_letsencrypt.stat.exists
+  when:
+    - st_letsencrypt is defined
+    - st_letsencrypt.stat.islnk is defined
+
+- name: "copy default server settings with certificates"
+  template:
+    src: "conf.d/default-with-certificates.conf.j2"
+    dest: "{{ nginx_config_directory }}/conf.d/default.conf"
+    mode: "0644"
+  notify: "reload Nginx"
+  when:
+    - st_letsencrypt is defined
+    - st_letsencrypt.stat.islnk is not defined
 
 # FIX: https://bugs.launchpad.net/ubuntu/+source/nginx/+bug/1581864
 - name: "override Nginx service"
