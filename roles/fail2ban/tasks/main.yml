@@ -17,7 +17,7 @@
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
     mode: "0640"
-    state: "touch"
+    state: "file"
   with_items:
     - { path: "{{ monit_logfile }}", owner: "root", group: "root" }
     - { path: "/var/log/mail.warn", owner: "root", group: "adm" }
