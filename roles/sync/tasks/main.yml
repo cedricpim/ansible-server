@@ -44,6 +44,11 @@
     enabled: yes
     daemon_reload: yes
 
+- name: "Wait until the file {{ syncthing_config_directory }}/config.xml is present"
+  wait_for:
+    path: "{{ syncthing_config_directory }}/config.xml"
+    state: "present"
+
 - name: "Update Syncthing port"
   lineinfile:
     path: "{{ syncthing_config_directory }}/config.xml"
