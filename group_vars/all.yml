@@ -1,7 +1,7 @@
 ---
 general_scripts_directory: "/usr/local/bin"
 
-systemd_directory: "/lib/systemd/system"
+systemd_directory: "/etc/systemd/system"
 
 nginx_user: "nginx"
 nginx_config_directory: "/etc/nginx"
