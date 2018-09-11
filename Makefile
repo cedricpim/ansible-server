@@ -7,7 +7,7 @@ ROOT ?=
 
 $(if ${CHECK},   $(eval ANSIBLE_OPTS += --check))
 $(if ${VERBOSE}, $(eval ANSIBLE_OPTS += -${VERBOSE}))
-$(if ${TAGS},    $(eval ansible_opts += --tags ${TAGS}))
+$(if ${TAGS},    $(eval ANSIBLE_OPTS += --tags ${TAGS}))
 
 setup:
 	$(eval ANSIBLE_OPTS += --vault-password-file vaulted_vars/system.txt)
