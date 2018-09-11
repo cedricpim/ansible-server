@@ -1,9 +1,4 @@
 ---
-- name: "Reload Radicale"
-  systemd:
-    name: "radicale"
-    state: "reloaded"
-
 - name: "Restart Radicale"
   systemd:
     name: "radicale"

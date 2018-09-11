@@ -19,7 +19,7 @@
     name: "radicale"
     state: "latest"
     executable: "pip3"
-  notify: "Reload Radicale"
+  notify: "Restart Radicale"
 
 - name: "Create Radicale directories"
   file:
@@ -44,7 +44,7 @@
   with_items:
     - "config"
     - "logging"
-  notify: "Reload Radicale"
+  notify: "Restart Radicale"
 
 - include_role:
     name: "dav"
