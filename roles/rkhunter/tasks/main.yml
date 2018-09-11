@@ -24,6 +24,10 @@
 
 - name: "Update Rkhunter"
   command: "rkhunter --update"
+  register: rkhunter_update
+  failed_when:
+    - rkhunter_update.failed
+    - not "Updated" in rkhunter_update.stdout
 
 - include_role:
     name: "logrotate"
