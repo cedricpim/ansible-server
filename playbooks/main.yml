@@ -20,6 +20,12 @@
         force_apt_get: yes
       tags: "always"
 
+    - name: "get list of users before running roles"
+      command: "cut -d: -f1 /etc/passwd"
+      changed_when: no
+      register: pre_passwd_users
+      tags: "always"
+
   roles:
     - { role: "logrotate", tags: "logrotate" }
     - { role: "webserver", tags: "webserver" }
@@ -75,6 +81,7 @@
       failed_when:
         - systemon_service.failed
         - not "Could not find the requested service" in systemon_service.msg
+      when: pre_passwd_users.stdout_lines != passwd_users.stdout_lines
       tags: "always"
 
     - name: "remove dependencies that are no longer required"
