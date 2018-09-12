@@ -13,7 +13,6 @@
     - "libffi-dev"
     - "libssl-dev"
     - "build-essential"
-    - "sendmail"
 
 - name: "download Systemon"
   git:
