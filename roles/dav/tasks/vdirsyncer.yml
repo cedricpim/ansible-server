@@ -25,6 +25,7 @@
     owner: "{{ dav_user }}"
     group: "{{ dav_user }}"
     mode: "0600"
+  register: vdirsyncer_settings
 
 - include_role:
     name: "general"
@@ -50,11 +51,17 @@
   environment:
     LC_ALL: "{{ dav_vdirsyncer_locale }}"
     LANG: "{{ dav_vdirsyncer_locale }}"
+  when:
+    - vdirsyncer_settings is defined
+    - vdirsyncer_settings.changed
 
 - name: "run Vdirsyncer oneshot service"
   systemd:
     name: "vdirsyncer"
     state: "started"
+  when:
+    - vdirsyncer_settings is defined
+    - vdirsyncer_settings.changed
 
 - name: "start/Enable Vdirsyncer"
   systemd:
