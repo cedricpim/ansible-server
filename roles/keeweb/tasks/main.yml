@@ -4,18 +4,18 @@
     name: "git"
     state: "latest"
 
-- name: "create {{ nginx_content_directory }} directory"
+- name: "create {{ webserver_nginx_content_directory }} directory"
   file:
-    path: "{{ nginx_content_directory }}"
-    owner: "{{ nginx_user }}"
-    group: "{{ nginx_user }}"
+    path: "{{ webserver_nginx_content_directory }}"
+    owner: "{{ webserver_nginx_user }}"
+    group: "{{ webserver_nginx_user }}"
     mode: "0755"
     state: "directory"
 
 - name: "clone KeeWeb"
   git:
     repo: "https://github.com/keeweb/keeweb.git"
-    dest: "{{ nginx_content_directory }}/keeweb"
+    dest: "{{ webserver_nginx_content_directory }}/keeweb"
 
 - include_role:
     name: "nginx"

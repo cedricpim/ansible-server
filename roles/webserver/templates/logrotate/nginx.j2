@@ -1,0 +1,15 @@
+{{ ansible_managed | comment }}
+
+{{ webserver_nginx_log_directory }}/*.log {
+  daily
+  missingok
+  rotate 2
+  compress
+  delaycompress
+  notifempty
+  create 0640 {{ webserver_nginx_user }} adm
+  sharedscripts
+  postrotate
+    /bin/kill -HUP `cat {{ webserver_nginx_pidfile }} 2>/dev/null` 2> /dev/null || true
+  endscript
+}

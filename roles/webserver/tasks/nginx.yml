@@ -1,5 +1,5 @@
 ---
-- name: "install nginx and ssl-cert"
+- name: "install Nginx and ssl-cert"
   apt:
     name: "{{ item }}"
     default_release: "{{ ansible_distribution_release }}-backports"
@@ -8,42 +8,42 @@
     - "nginx"
     - "ssl-cert"
 
-- name: "create {{ nginx_user }} user"
+- name: "create {{ webserver_nginx_user }} user"
   user:
-    name: "{{ nginx_user }}"
+    name: "{{ webserver_nginx_user }}"
     shell: "/bin/false"
     createhome: no
     state: "present"
 
-- name: "create {{ nginx_content_directory }} directory"
+- name: "create {{ webserver_nginx_content_directory }} directory"
   file:
-    path: "{{ nginx_content_directory }}"
-    owner: "{{ nginx_user }}"
-    group: "{{ nginx_user }}"
+    path: "{{ webserver_nginx_content_directory }}"
+    owner: "{{ webserver_nginx_user }}"
+    group: "{{ webserver_nginx_user }}"
     mode: "0755"
     state: "directory"
 
-- name: "ensure {{ nginx_log_directory }} permissions are set"
+- name: "ensure {{ webserver_nginx_log_directory }} permissions are set"
   file:
-    path: "{{ nginx_log_directory }}"
-    owner: "{{ nginx_user }}"
-    group: "{{ nginx_user }}"
+    path: "{{ webserver_nginx_log_directory }}"
+    owner: "{{ webserver_nginx_user }}"
+    group: "{{ webserver_nginx_user }}"
     mode: "0755"
     state: "directory"
 
 - name: "check if DHE parameter exists"
   stat:
-    path: "{{ nginx_ssl_dhparam }}"
+    path: "{{ webserver_nginx_ssl_dhparam }}"
   register: dhe_parameter
 
 - name: "generate a stronger DHE parameter"
-  command: "openssl dhparam -out {{ nginx_ssl_dhparam }} 4096"
+  command: "openssl dhparam -out {{ webserver_nginx_ssl_dhparam }} 4096"
   when: dhe_parameter is defined and dhe_parameter.stat.islnk is not defined
 
 - name: "copy main settings"
   template:
     src: "nginx.conf.j2"
-    dest: "{{ nginx_config_directory }}/nginx.conf"
+    dest: "{{ webserver_nginx_config_directory }}/nginx.conf"
     mode: "0644"
   notify: "reload Nginx"
 
@@ -53,18 +53,18 @@
     mode: "0755"
     state: "directory"
   with_items:
-    - "{{ nginx_config_directory }}/conf.d"
-    - "{{ nginx_config_directory }}/conf"
+    - "{{ webserver_nginx_config_directory }}/conf.d"
+    - "{{ webserver_nginx_config_directory }}/conf"
 
 - name: "check for letsencrypt configuration"
   stat:
-    path: "{{ nginx_config_directory }}/conf.d/letsencrypt.conf"
+    path: "{{ webserver_nginx_config_directory }}/conf.d/letsencrypt.conf"
   register: st_letsencrypt
 
 - name: "copy default server settings without certificates"
   template:
     src: "conf.d/default-without-certificates.conf.j2"
-    dest: "{{ nginx_config_directory }}/conf.d/default.conf"
+    dest: "{{ webserver_nginx_config_directory }}/conf.d/default.conf"
     mode: "0644"
   notify: "reload Nginx"
   when:
@@ -74,7 +74,7 @@
 - name: "copy default server settings with certificates"
   template:
     src: "conf.d/default-with-certificates.conf.j2"
-    dest: "{{ nginx_config_directory }}/conf.d/default.conf"
+    dest: "{{ webserver_nginx_config_directory }}/conf.d/default.conf"
     mode: "0644"
   notify: "reload Nginx"
   when:
@@ -94,15 +94,3 @@
     state: "started"
     enabled: yes
     daemon_reload: yes
-
-- include_role:
-    name: "monit"
-    tasks_from: "configure"
-  vars:
-    conf: "nginx"
-
-- include_role:
-    name: "logrotate"
-    tasks_from: "configure"
-  vars:
-    conf: "nginx"

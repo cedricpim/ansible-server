@@ -3,8 +3,8 @@
 server {
   listen      {{ ansible_default_ipv4.address }}:443 ssl;
   server_name netdata.{{ server }};
-  access_log  {{ nginx_log_directory }}/netdata.access.log;
-  error_log   {{ nginx_log_directory }}/netdata.error.log;
+  access_log  {{ webserver_nginx_log_directory }}/netdata.access.log;
+  error_log   {{ webserver_nginx_log_directory }}/netdata.error.log;
 
   location / {
     auth_basic           "Restricted Area";

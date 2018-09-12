@@ -1,3 +1,0 @@
----
-letsencrypt_challenge_directory: "/var/www/letsencrypt"
-letsencrypt_config_directory: "/etc/letsencrypt"

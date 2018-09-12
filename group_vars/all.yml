@@ -3,13 +3,13 @@ general_scripts_directory: "/usr/local/bin"
 
 systemd_directory: "/etc/systemd/system"
 
-nginx_user: "nginx"
-nginx_config_directory: "/etc/nginx"
-nginx_log_directory: "/var/log/nginx"
-nginx_content_directory: "/var/www"
-nginx_pidfile: "/var/run/nginx.pid"
+webserver_nginx_user: "nginx"
+webserver_nginx_config_directory: "/etc/nginx"
+webserver_nginx_log_directory: "/var/log/nginx"
+webserver_nginx_content_directory: "/var/www"
+webserver_nginx_pidfile: "/var/run/nginx.pid"
 
-letsencrypt_config_directory: "/etc/letsencrypt"
+webserver_letsencrypt_config_directory: "/etc/letsencrypt"
 
 monit_directory: "/etc/monit"
 monit_logfile: "/var/log/monit.log"

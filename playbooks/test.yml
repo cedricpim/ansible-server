@@ -19,7 +19,7 @@
   roles:
     - { role: "general", tags: "general" }
     - { role: "logrotate", tags: "logrotate" }
-    - { role: "nginx", tags: "nginx" }
+    - { role: "webserver", tags: "webserver" }
     - { role: "monit", tags: "monit" }
     - { role: "keeweb", tags: "keeweb" }
     - { role: "netdata", tags: "netdata" }

@@ -5,8 +5,8 @@ general_user: "{{ vault_general_user }}"
 general_password: "{{ vault_general_password }}"
 general_sshd_ports: "{{ vault_general_sshd_ports }}"
 
-letsencrypt_domains: "{{ vault_letsencrypt_domains }}"
-letsencrypt_email: "{{ vault_letsencrypt_email }}"
+webserver_letsencrypt_domains: "{{ vault_webserver_letsencrypt_domains }}"
+webserver_letsencrypt_email: "{{ vault_webserver_letsencrypt_email }}"
 
 monit_port: "{{ vault_monit_port }}"
 monit_credentials: "{{ vault_monit_credentials }}"

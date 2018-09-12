@@ -1,0 +1,53 @@
+---
+- name: "install LetsEncrypt certbot"
+  apt:
+    name: "python-certbot-nginx"
+    default_release: "{{ ansible_distribution_release }}-backports"
+    state: "latest"
+
+- name: "create {{ webserver_letsencrypt_challenge_directory }} directory"
+  file:
+    path: "{{ webserver_letsencrypt_challenge_directory }}"
+    owner: "{{ webserver_nginx_user }}"
+    group: "{{ webserver_nginx_user }}"
+    mode: "0755"
+    state: "directory"
+
+- name: "check if certificate already exists"
+  stat:
+    path: "{{ webserver_letsencrypt_config_directory }}/live/{{ server }}/cert.pem"
+  register: letsencrypt_cert
+
+- import_tasks: "generate_certificates.yml"
+  when:
+    - letsencrypt_cert is defined
+    - not letsencrypt_cert.stat.exists
+
+- name: "add template for https"
+  template:
+    src: "conf.d/letsencrypt.conf.j2"
+    dest: "{{ webserver_nginx_config_directory }}/conf.d/letsencrypt.conf"
+    mode: "0644"
+  vars:
+    https: yes
+  register: letsencrypt_template
+
+- name: "update default configuration on Nginx for SSL certificates"
+  template:
+    src: "conf.d/default-without-certificates.conf.j2"
+    dest: "{{ webserver_nginx_config_directory }}/conf.d/default.conf"
+    mode: "0644"
+  register: default_template
+
+- name: "reload Nginx"
+  systemd:
+    name: "nginx"
+    state: "reloaded"
+  when: (default_template is defined and default_template.changed) or
+        (letsencrypt_template is defined and letsencrypt_template.changed)
+
+- name: "start/enable certbot"
+  systemd:
+    name: "certbot.timer"
+    state: "started"
+    enabled: yes

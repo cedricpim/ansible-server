@@ -22,8 +22,7 @@
 
   roles:
     - { role: "logrotate", tags: "logrotate" }
-    - { role: "nginx", tags: "nginx" }
-    - { role: "letsencrypt", tags: "letsencrypt" }
+    - { role: "webserver", tags: "webserver" }
     - { role: "monit", tags: "monit" }
     - { role: "keeweb", tags: "keeweb" }
     - { role: "netdata", tags: "netdata" }

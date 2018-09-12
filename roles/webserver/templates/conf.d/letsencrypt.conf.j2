@@ -1,0 +1,21 @@
+{{ ansible_managed | comment }}
+
+{% if https %}
+ssl_certificate {{ webserver_letsencrypt_config_directory }}/live/{{ server }}/fullchain.pem;
+ssl_certificate_key {{ webserver_letsencrypt_config_directory }}/live/{{ server }}/privkey.pem;
+{% endif %}
+
+server {
+  listen      80;
+  server_name "~^(.+\.)?{{ server }}$";
+
+  location /.well-known/acme-challenge {
+    root {{ webserver_letsencrypt_challenge_directory }};
+  }
+
+{% if https %}
+  if ($request_uri !~* "well-known/acme-challenge") {
+    return 301 https://$host$request_uri;
+  }
+{% endif %}
+}

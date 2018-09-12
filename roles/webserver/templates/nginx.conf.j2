@@ -1,18 +1,18 @@
 {{ ansible_managed | comment }}
 
-user  {{ nginx_user }};
+user  {{ webserver_nginx_user }};
 worker_processes  1;
 include /etc/nginx/modules-enabled/*.conf;
 
-error_log  {{ nginx_log_directory }}/error.log warn;
-pid        {{ nginx_pidfile }};
+error_log  {{ webserver_nginx_log_directory }}/error.log warn;
+pid        {{ webserver_nginx_pidfile }};
 
 events {
   worker_connections  1024;
 }
 
 http {
-  include       {{ nginx_config_directory }}/mime.types;
+  include       {{ webserver_nginx_config_directory }}/mime.types;
   default_type  application/octet-stream;
 
   log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
@@ -26,15 +26,15 @@ http {
   keepalive_timeout  65;
 
   # More strict protocol permissions and ciphers
-  ssl_dhparam  {{ nginx_ssl_dhparam }};
-  ssl_ciphers  "{{ nginx_ssl_ciphers }}";
-  ssl_protocols  {{ nginx_ssl_protocols | join(" ") }};
-  ssl_session_cache  {{ nginx_ssl_session_cache }};
+  ssl_dhparam  {{ webserver_nginx_ssl_dhparam }};
+  ssl_ciphers  "{{ webserver_nginx_ssl_ciphers }}";
+  ssl_protocols  {{ webserver_nginx_ssl_protocols | join(" ") }};
+  ssl_session_cache  {{ webserver_nginx_ssl_session_cache }};
   ssl_prefer_server_ciphers  on;
 
   # Set HTTP Strict Transport Security
   add_header  Strict-Transport-Security "max-age=63072000; includeSubdomains; ";
   add_header  X-Frame-Options "DENY";
 
-  include {{ nginx_config_directory }}/conf.d/*.conf;
+  include {{ webserver_nginx_config_directory }}/conf.d/*.conf;
 }

@@ -3,8 +3,8 @@
 # Some general options
 protocols = imap sieve
 ssl = yes
-ssl_cert = <{{ letsencrypt_config_directory }}/live/{{ server }}/fullchain.pem
-ssl_key = <{{ letsencrypt_config_directory }}/live/{{ server }}/privkey.pem
+ssl_cert = <{{ webserver_letsencrypt_config_directory }}/live/{{ server }}/fullchain.pem
+ssl_key = <{{ webserver_letsencrypt_config_directory }}/live/{{ server }}/privkey.pem
 ssl_client_ca_dir = /etc/ssl/certs
 ssl_cipher_list = ALL:!LOW:!SSLv2:!EXP:!aNULL
 mail_home = {{ email_directory }}/%d/%n

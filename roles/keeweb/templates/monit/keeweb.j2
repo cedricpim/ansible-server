@@ -1,7 +1,7 @@
 {{ ansible_managed | comment }}
 
-check process keeweb.{{ server }} with pidfile {{ nginx_pidfile }}
-  group {{ nginx_user }}
+check process keeweb.{{ server }} with pidfile {{ webserver_nginx_pidfile }}
+  group {{ webserver_nginx_user }}
   start program = "/usr/sbin/service nginx start"
   stop program  = "/usr/sbin/service nginx stop"
   if failed host keeweb.{{ server }} port 80  protocol http  request "/" status = 301 then restart

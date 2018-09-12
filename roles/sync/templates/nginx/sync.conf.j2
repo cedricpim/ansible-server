@@ -3,8 +3,8 @@
 server {
   listen      {{ ansible_default_ipv4.address }}:443 ssl;
   server_name sync.{{ server }};
-  access_log  {{ nginx_log_directory }}/sync.access.log;
-  error_log   {{ nginx_log_directory }}/sync.error.log;
+  access_log  {{ webserver_nginx_log_directory }}/sync.access.log;
+  error_log   {{ webserver_nginx_log_directory }}/sync.error.log;
 
   location / {
     auth_basic           "Restricted Area";

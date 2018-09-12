@@ -8,7 +8,7 @@ server {
   ssl_certificate_key /etc/ssl/private/ssl-cert-snakeoil.key;
 
   location / {
-    root   {{ nginx_content_directory }}/html;
+    root   {{ webserver_nginx_content_directory }}/html;
     index  index.html index.htm;
   }
 

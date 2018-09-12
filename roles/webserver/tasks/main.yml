@@ -1,0 +1,15 @@
+---
+- import_tasks: "nginx.yml"
+- import_tasks: "letsencrypt.yml"
+
+- include_role:
+    name: "monit"
+    tasks_from: "configure"
+  vars:
+    conf: "nginx"
+
+- include_role:
+    name: "logrotate"
+    tasks_from: "configure"
+  vars:
+    conf: "nginx"

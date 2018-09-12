@@ -1,0 +1,16 @@
+---
+- name: "add template for http"
+  template:
+    src: "conf.d/letsencrypt.conf.j2"
+    dest: "{{ webserver_nginx_config_directory }}/conf.d/letsencrypt.conf"
+    mode: "0644"
+  vars:
+    https: no
+
+- name: "reload Nginx"
+  systemd:
+    name: "nginx"
+    state: "reloaded"
+
+- name: "generate certificates"
+  command: "certbot certonly --noninteractive --agree-tos --email {{ webserver_letsencrypt_email }} --webroot -w {{ webserver_letsencrypt_challenge_directory }} -d {{ webserver_letsencrypt_domains | join(',') }}"

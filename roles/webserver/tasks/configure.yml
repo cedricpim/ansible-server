@@ -7,12 +7,12 @@
 
 - name: "check if certificate already exists"
   stat:
-    path: "{{ letsencrypt_config_directory }}/live/{{ server }}/cert.pem"
+    path: "{{ webserver_letsencrypt_config_directory }}/live/{{ server }}/cert.pem"
   register: letsencrypt_cert
 
-- name: "create {{ nginx_user }} user"
+- name: "create {{ webserver_nginx_user }} user"
   user:
-    name: "{{ nginx_user }}"
+    name: "{{ webserver_nginx_user }}"
     shell: "/bin/false"
     createhome: no
     state: "present"
@@ -27,8 +27,8 @@
     mode: "0755"
     state: "directory"
   with_items:
-    - "{{ nginx_config_directory }}/conf.d"
-    - "{{ nginx_config_directory }}/conf"
+    - "{{ webserver_nginx_config_directory }}/conf.d"
+    - "{{ webserver_nginx_config_directory }}/conf"
   when:
     - nginx_check.rc == 0
     - letsencrypt_cert is defined
@@ -37,7 +37,7 @@
 - name: "copy default server settings"
   template:
     src: "nginx/{{ conf }}.j2"
-    dest: "{{ nginx_config_directory }}/conf.d/{{ conf }}"
+    dest: "{{ webserver_nginx_config_directory }}/conf.d/{{ conf }}"
     mode: "0644"
   notify: "reload Nginx"
   when:
@@ -45,9 +45,9 @@
     - letsencrypt_cert is defined
     - letsencrypt_cert.stat.exists
 
-- name: "create {{ nginx_config_directory }}/conf for credentials"
+- name: "create {{ webserver_nginx_config_directory }}/conf for credentials"
   file:
-    path: "{{ nginx_config_directory }}/conf"
+    path: "{{ webserver_nginx_config_directory }}/conf"
     mode: "0755"
     state: "directory"
   when:
@@ -58,7 +58,7 @@
 - name: "copy credentials"
   template:
     src: "nginx/{{ credentials }}.j2"
-    dest: "{{ nginx_config_directory }}/conf/{{ credentials }}"
+    dest: "{{ webserver_nginx_config_directory }}/conf/{{ credentials }}"
     mode: "0644"
   notify: "reload Nginx"
   when:
