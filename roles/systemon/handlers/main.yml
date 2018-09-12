@@ -1,5 +1,0 @@
----
-- name: "restart Systemon"
-  systemd:
-    name: "systemon"
-    state: "restarted"

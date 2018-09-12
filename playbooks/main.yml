@@ -11,12 +11,14 @@
       apt_repository:
         repo: "deb http://ftp.debian.org/debian {{ ansible_distribution_release }}-backports main"
         state: "present"
+      tags: "always"
 
     - name: "update current packages"
       apt:
         upgrade: yes
         update_cache: yes
         force_apt_get: yes
+      tags: "always"
 
   roles:
     - { role: "logrotate", tags: "logrotate" }
@@ -38,12 +40,14 @@
       command: "cut -d: -f1 /etc/passwd"
       changed_when: no
       register: users
+      tags: "always"
 
     - name: "check is newaliases command exists"
       command: "command -v newaliases"
       failed_when: no
       changed_when: no
       register: newaliases_exist
+      tags: "always"
 
     - name: "copy aliases"
       template:
@@ -54,6 +58,7 @@
       when:
         - users is defined
         - newaliases_exist.rc == 0
+      tags: "always"
 
     - name: "hash aliases"
       command: "newaliases"
@@ -61,6 +66,7 @@
       when:
         - template_aliases is defined
         - template_aliases.changed
+      tags: "always"
 
     - name: "restart Systemon"
       systemd:
@@ -70,14 +76,17 @@
       failed_when:
         - systemon_service.failed
         - not "Could not find the requested service" in systemon_service.msg
+      tags: "always"
 
     - name: "remove dependencies that are no longer required"
       apt:
         autoremove: yes
+      tags: "always"
 
     - name: "remove useless packages from the cache"
       apt:
         autoclean: yes
+      tags: "always"
 
   handlers:
     - name: "reload Postfix"

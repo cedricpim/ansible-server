@@ -26,7 +26,6 @@
   command: "python2 setup.py install"
   args:
     chdir: "{{ systemon_directory }}/systemon"
-  notify: "restart Systemon"
   when: systemon_repo is defined and systemon_repo is changed
 
 - name: "copy Systemon settings"
@@ -34,14 +33,12 @@
     src: "systemon.j2"
     dest: "{{ systemon_config_directory }}/systemon"
     mode: "0644"
-  notify: "restart Systemon"
 
 - name: "copy Systemon systemd"
   template:
     src: "systemon.service.j2"
     dest: "{{ systemd_directory }}/systemon.service"
     mode: "0755"
-  notify: "restart Systemon"
 
 - name: "start/Enable Systemon"
   systemd:
