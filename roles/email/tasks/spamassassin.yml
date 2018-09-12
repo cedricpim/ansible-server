@@ -6,8 +6,19 @@
   with_items:
     - "spamassassin"
     - "spamass-milter"
-    - "pyzor"
-    - "razor"
+  register: spamassassin_package
+
+- name: "install Pyzor add-ons"
+  apt:
+    name: "pyzor"
+    state: "latest"
+  register: pyzor_package
+
+- name: "install Razor add-ons"
+  apt:
+    name: "razor"
+    state: "latest"
+  register: razor_package
 
 - name: "create SpamAssassin user"
   user:
@@ -65,7 +76,11 @@
   register: spamassassin_sa_update
   failed_when:
     - spamassassin_sa_update.failed
-    - not "Update finished" in spamassassin_sa_update.stdout
+    - not "no fresh updates were available" in spamassassin_sa_update.stdout
+  notify: "reload SpamAssassin"
+  when:
+    - spamassassin_package is defined
+    - spamassassin_package.changed
 
 - name: "create global Bayesian filter and SpamAssassin Add-on folders"
   file:
@@ -81,6 +96,9 @@
 
 - name: "run Pyzor add-on"
   command: "pyzor --homedir {{ email_spamassassin_home }}/.pyzor discover"
+  when:
+    - pyzor_package is defined
+    - pyzor_package.changed
 
 - name: "run Razor add-on"
   command: "razor-admin -home={{ email_spamassassin_home }}/.razor {{ item }}"
@@ -88,6 +106,9 @@
     - "-register"
     - "-create"
     - "-discover"
+  when:
+    - razor_package is defined
+    - razor_package.changed
 
 - name: "set Razor home directory"
   lineinfile:
