@@ -21,6 +21,7 @@
   with_items:
     - { directory: "{{ rkhunter_config_directory }}", filename: "rkhunter.conf" }
     - { directory: "{{ rkhunter_default_directory }}", filename: "rkhunter" }
+  register: rkhunter_settings
 
 - name: "update Rkhunter"
   command: "rkhunter --update"
@@ -28,6 +29,9 @@
   failed_when:
     - rkhunter_update.failed
     - not "Updated" in rkhunter_update.stdout
+  when:
+    - rkthunter_settings is defined
+    - rkthunter_settings.changed
 
 - include_role:
     name: "logrotate"
