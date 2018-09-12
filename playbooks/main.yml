@@ -39,13 +39,12 @@
     - name: "get list of users"
       command: "cut -d: -f1 /etc/passwd"
       changed_when: no
-      register: users
+      register: passwd_users
       tags: "always"
 
     - name: "check is newaliases command exists"
-      command: "command -v newaliases"
-      failed_when: no
-      changed_when: no
+      stat:
+        path: "/usr/sbin/newaliases"
       register: newaliases_exist
       tags: "always"
 
@@ -56,8 +55,9 @@
         mode: "0644"
       register: template_aliases
       when:
-        - users is defined
-        - newaliases_exist.rc == 0
+        - passwd_users is defined
+        - newaliases_exist is defined
+        - newaliases_exist.stat.islnk is defined
       tags: "always"
 
     - name: "hash aliases"
