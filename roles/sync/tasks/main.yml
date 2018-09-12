@@ -58,14 +58,14 @@
   notify: "restart Syncthing"
 
 - include_role:
-    name: "nginx"
+    name: "webserver"
     tasks_from: "configure"
   vars:
     conf: "sync.conf"
     credentials: "htpasswd.sync"
 
 - include_role:
-    name: "nginx"
+    name: "webserver"
     tasks_from: "configure"
   vars:
     conf: "personal.conf"

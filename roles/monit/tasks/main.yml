@@ -27,7 +27,7 @@
     enabled: yes
 
 - include_role:
-    name: "nginx"
+    name: "webserver"
     tasks_from: "configure"
   vars:
     conf: "monit.conf"

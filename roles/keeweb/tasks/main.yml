@@ -18,7 +18,7 @@
     dest: "{{ webserver_nginx_content_directory }}/keeweb"
 
 - include_role:
-    name: "nginx"
+    name: "webserver"
     tasks_from: "configure"
   vars:
     conf: "keeweb.conf"
