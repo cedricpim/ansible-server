@@ -8,7 +8,7 @@
   template:
     src: "netdata.conf.j2"
     dest: "{{ netdata_config_directory }}/netdata.conf"
-    mode: "0600"
+    mode: "0644"
   notify: "restart Netdata"
 
 - name: "start/enable Netdata"
