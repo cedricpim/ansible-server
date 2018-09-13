@@ -25,7 +25,9 @@
   command: "opendkim-genkey -r -h sha256 -d mail.{{ server }} -s mail"
   args:
     chdir: "{{ email_opendkim_config_directory }}"
-  notify: "reload OpenDKIM"
+  notify:
+    - "reload OpenDKIM"
+    - "display message about OpenDKIM keys"
   when: opendkim_keys is defined and opendkim_keys.stat.islnk is not defined
 
 - name: "set correct permissions"

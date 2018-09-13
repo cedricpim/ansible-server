@@ -4,6 +4,13 @@
     name: "opendkim"
     state: "reloaded"
 
+- name: "display message about OpenDKIM keys"
+  debug:
+    msg:
+      - "Please run"
+      - "ssh -p {{ general_sshd_ports[0] }} -t {{ general_user }}@{{ ansible_default_ipv4.address }} 'cat {{ email_opendkim_config_directory }}/mail.txt'"
+      - "and add the result to the register"
+
 - name: "reload SpamAssassin"
   systemd:
     name: "spamassassin"
