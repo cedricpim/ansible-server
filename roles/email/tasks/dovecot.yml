@@ -9,6 +9,11 @@
     - "dovecot-common"
     - "dovecot-imapd"
 
+- name: "check if certificate already exists"
+  stat:
+    path: "{{ webserver_letsencrypt_config_directory }}/live/{{ server }}/cert.pem"
+  register: letsencrypt_cert
+
 - name: "copy Dovecot settings"
   template:
     src: "dovecot/{{ item }}.j2"
