@@ -82,11 +82,17 @@
   block:
     - file: path="{{ systemd_directory }}/nginx.service.d" owner="root" group="root" mode="0755" state="directory"
     - template: src="systemd/override.conf.j2" dest="{{ systemd_directory }}/nginx.service.d/override.conf" owner="root" group="root" mode="0644"
-      notify: "restart Nginx"
+      register: nginx_override
 
-- name: "enable/start nginx"
+- name: "restart Nginx"
+  systemd:
+    name: "nginx"
+    state: "restarted"
+    daemon_reload: yes
+  when: nginx_override is defined and nginx_override is changed
+
+- name: "enable/start Nginx"
   systemd:
     name: "nginx"
     state: "started"
     enabled: yes
-    daemon_reload: yes
