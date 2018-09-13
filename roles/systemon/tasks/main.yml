@@ -7,6 +7,7 @@
     - "python"
     - "python-pip"
     - "python-setuptools"
+    - "python-dev"
     - "git"
     - "pkg-config"
     - "libsystemd-dev"
@@ -22,10 +23,13 @@
   register: systemon_repo
 
 - name: "install Systemon"
-  command: "python2 setup.py install"
-  args:
-    chdir: "{{ systemon_directory }}/systemon"
-  when: systemon_repo is defined and systemon_repo is changed
+  block:
+    - command: "python2 setup.py install"
+      args:
+        chdir: "{{ systemon_directory }}/systemon"
+      when: systemon_repo is defined and systemon_repo is changed
+  rescue:
+    - file: path="{{ systemon_directory }}/systemon" state="absent"
 
 - name: "copy Systemon settings"
   template:
