@@ -16,6 +16,16 @@
   git:
     repo: "https://github.com/keeweb/keeweb.git"
     dest: "{{ webserver_nginx_content_directory }}/keeweb"
+  register: keeweb_repo
+
+- name: "ensure {{ webserver_nginx_content_directory }}/keeweb permissions are set"
+  file:
+    path: "{{ webserver_nginx_content_directory }}/keeweb"
+    owner: "{{ webserver_nginx_user }}"
+    group: "{{ webserver_nginx_user }}"
+    state: "directory"
+    recurse: yes
+  when: keeweb_repo is defined and keeweb_repo.changed
 
 - include_role:
     name: "webserver"
