@@ -11,17 +11,13 @@
     mode: "0644"
   notify: "reload Fail2Ban"
 
-- name: "ensure required log files exist"
-  file:
-    path: "{{ item.path }}"
-    owner: "{{ item.owner }}"
-    group: "{{ item.group }}"
-    mode: "0640"
-    state: "file"
+- include_tasks: "check_file.yml"
   with_items:
     - { path: "{{ monit_logfile }}", owner: "root", group: "root" }
     - { path: "/var/log/mail.warn", owner: "root", group: "adm" }
     - { path: "/var/log/mail.log", owner: "root", group: "adm" }
+  loop_control:
+    loop_var: "file"
 
 - name: "start/Enable Fail2Ban"
   systemd:

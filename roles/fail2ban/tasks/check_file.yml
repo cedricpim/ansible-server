@@ -1,0 +1,14 @@
+---
+- name: "check {{ file.path }}"
+  stat:
+    path: "{{ file.path }}"
+  register: required_file
+
+- name: "ensure {{ file.path }} exist"
+  file:
+    path: "{{ file.path }}"
+    owner: "{{ file.owner }}"
+    group: "{{ file.group }}"
+    mode: "0640"
+    state: "touch"
+  when: required_file is defined and required_file.stat.islnk is not defined
