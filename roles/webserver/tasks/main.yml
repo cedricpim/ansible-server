@@ -1,6 +1,7 @@
 ---
 - import_tasks: "nginx.yml"
 - import_tasks: "letsencrypt.yml"
+  when: group_names[0] != "vagrant"
 
 - include_role:
     name: "monit"

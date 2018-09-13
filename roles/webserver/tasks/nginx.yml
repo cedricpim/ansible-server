@@ -56,10 +56,10 @@
     - "{{ webserver_nginx_config_directory }}/conf.d"
     - "{{ webserver_nginx_config_directory }}/conf"
 
-- name: "check for letsencrypt configuration"
+- name: "check for Let's Encrypt certificates"
   stat:
-    path: "{{ webserver_nginx_config_directory }}/conf.d/letsencrypt.conf"
-  register: st_letsencrypt
+    path: "{{ webserver_letsencrypt_config_directory }}/live/{{ server }}/cert.pem"
+  register: letsencrypt_cert
 
 - name: "copy default server settings without certificates"
   template:
@@ -67,7 +67,7 @@
     dest: "{{ webserver_nginx_config_directory }}/conf.d/default.conf"
     mode: "0644"
   notify: "reload Nginx"
-  when: st_letsencrypt is defined and st_letsencrypt.stat.islnk is defined
+  when: letsencrypt_cert is defined and letsencrypt_cert.stat.islnk is defined
 
 - name: "copy default server settings with certificates"
   template:
@@ -75,7 +75,7 @@
     dest: "{{ webserver_nginx_config_directory }}/conf.d/default.conf"
     mode: "0644"
   notify: "reload Nginx"
-  when: st_letsencrypt is defined and st_letsencrypt.stat.islnk is not defined
+  when: letsencrypt_cert is defined and letsencrypt_cert.stat.islnk is not defined
 
 # FIX: https://bugs.launchpad.net/ubuntu/+source/nginx/+bug/1581864
 - name: "override Nginx service"

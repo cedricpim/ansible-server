@@ -18,7 +18,7 @@
     state: "present"
   when:
     - nginx_check.rc == 0
-    - letsencrypt_cert is defined and letsencrypt_cert.stat.islnk
+    - letsencrypt_cert is defined and letsencrypt_cert.stat.islnk is defined
 
 - name: "create Nginx directories for individual configurations"
   file:
@@ -30,7 +30,7 @@
     - "{{ webserver_nginx_config_directory }}/conf"
   when:
     - nginx_check.rc == 0
-    - letsencrypt_cert is defined and letsencrypt_cert.stat.islnk
+    - letsencrypt_cert is defined and letsencrypt_cert.stat.islnk is defined
 
 - name: "copy default server settings"
   template:
@@ -40,7 +40,7 @@
   notify: "reload Nginx"
   when:
     - nginx_check.rc == 0
-    - letsencrypt_cert is defined and letsencrypt_cert.stat.islnk
+    - letsencrypt_cert is defined and letsencrypt_cert.stat.islnk is defined
 
 - name: "create {{ webserver_nginx_config_directory }}/conf for credentials"
   file:
@@ -49,7 +49,7 @@
     state: "directory"
   when:
     - nginx_check.rc == 0
-    - letsencrypt_cert is defined and letsencrypt_cert.stat.islnk
+    - letsencrypt_cert is defined and letsencrypt_cert.stat.islnk is defined
 
 - name: "copy credentials"
   template:
@@ -60,4 +60,4 @@
   when:
     - credentials is defined
     - nginx_check.rc == 0
-    - letsencrypt_cert is defined and letsencrypt_cert.stat.islnk
+    - letsencrypt_cert is defined and letsencrypt_cert.stat.islnk is defined
