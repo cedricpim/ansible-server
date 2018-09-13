@@ -46,9 +46,7 @@
     - "logging"
   notify: "restart Radicale"
 
-- include_role:
-    name: "dav"
-    tasks_from: "prepare_collection"
+- include_tasks: "prepare_collection.yml"
   with_items: "{{ dav_collections }}"
   loop_control:
     loop_var: "collection"

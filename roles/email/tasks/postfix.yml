@@ -31,9 +31,7 @@
     - "master"
   notify: "reload Postfix"
 
-- include_role:
-    name: "email"
-    tasks_from: "mapping"
+- include_tasks: "mapping.yml"
   with_items:
     - "virtual-mailbox-domains"
     - "virtual-mailbox-users"
