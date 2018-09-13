@@ -22,8 +22,7 @@
     state: "present"
     create: yes
   when:
-    - collection_property is defined
-    - collection_property.stat.islnk is not defined
+    - collection_property is defined and collection_property.stat.islnk is not defined
     - collection.type != "VADDRESSBOOK"
 
 - name: "create {{ collection }} property for addressbook"
@@ -36,6 +35,5 @@
     state: "present"
     create: yes
   when:
-    - collection_property is defined
-    - collection_property.stat.islnk is not defined
+    - collection_property is defined and collection_property.stat.islnk is not defined
     - collection.type == "VADDRESSBOOK"

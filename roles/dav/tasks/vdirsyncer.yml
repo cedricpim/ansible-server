@@ -51,17 +51,13 @@
   environment:
     LC_ALL: "{{ dav_vdirsyncer_locale }}"
     LANG: "{{ dav_vdirsyncer_locale }}"
-  when:
-    - vdirsyncer_settings is defined
-    - vdirsyncer_settings.changed
+  when: vdirsyncer_settings is defined and vdirsyncer_settings.changed
 
 - name: "run Vdirsyncer oneshot service"
   systemd:
     name: "vdirsyncer"
     state: "started"
-  when:
-    - vdirsyncer_settings is defined
-    - vdirsyncer_settings.changed
+  when: vdirsyncer_settings is defined and vdirsyncer_settings.changed
 
 - name: "start/Enable Vdirsyncer"
   systemd:

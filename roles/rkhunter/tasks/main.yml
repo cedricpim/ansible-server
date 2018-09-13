@@ -29,9 +29,7 @@
   failed_when:
     - rkhunter_update.failed
     - not "Updated" in rkhunter_update.stdout
-  when:
-    - rkthunter_settings is defined
-    - rkthunter_settings.changed
+  when: rkthunter_settings is defined and rkthunter_settings.changed
 
 - include_role:
     name: "logrotate"

@@ -61,16 +61,13 @@
       register: template_aliases
       when:
         - passwd_users is defined
-        - newaliases_exist is defined
-        - newaliases_exist.stat.islnk is defined
+        - newaliases_exist is defined and newaliases_exist.stat.islnk is defined
       tags: "always"
 
     - name: "hash aliases"
       command: "newaliases"
       notify: "reload Postfix"
-      when:
-        - template_aliases is defined
-        - template_aliases.changed
+      when: template_aliases is defined and template_aliases.changed
       tags: "always"
 
     - name: "restart Systemon"

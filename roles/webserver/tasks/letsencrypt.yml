@@ -19,9 +19,7 @@
   register: letsencrypt_cert
 
 - import_tasks: "generate_certificates.yml"
-  when:
-    - letsencrypt_cert is defined
-    - not letsencrypt_cert.stat.exists
+  when: letsencrypt_cert is defined and letsencrypt_cert.stat.islnk is not defined
 
 - name: "add template for https"
   template:
