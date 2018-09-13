@@ -17,14 +17,23 @@
 
 - name: "create {{ webserver_nginx_content_directory }} directory"
   file:
-    path: "{{ webserver_nginx_content_directory }}"
+    path: "{{ webserver_nginx_content_directory }}/html"
     owner: "{{ webserver_nginx_user }}"
     group: "{{ webserver_nginx_user }}"
     mode: "0755"
     state: "directory"
   register: nginx_content_directory
 
-- name: "create {{ webserver_nginx_content_directory }} directory"
+- name: "copy main page placeholder"
+  template:
+    src: "index.html.j2"
+    dest: "{{ webserver_nginx_content_directory }}/html/index.html"
+    owner: "{{ webserver_nginx_user }}"
+    group: "{{ webserver_nginx_user }}"
+    mode: "0644"
+    force: no
+
+- name: "set permissions of {{ webserver_nginx_content_directory }}"
   file:
     path: "{{ webserver_nginx_content_directory }}"
     owner: "{{ webserver_nginx_user }}"

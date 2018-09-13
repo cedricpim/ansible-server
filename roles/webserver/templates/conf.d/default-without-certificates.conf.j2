@@ -1,7 +1,7 @@
 {{ ansible_managed | comment }}
 
 server {
-  listen      443 ssl;
+  listen      {{ ansible_default_ipv4.address }}:443 ssl;
   server_name {{ server }};
 
   location / {
