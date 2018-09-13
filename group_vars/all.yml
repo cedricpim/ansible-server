@@ -1,6 +1,8 @@
 ---
 general_scripts_directory: "/usr/local/bin"
 
+logs_directory: "/var/log"
+
 systemd_directory: "/etc/systemd/system"
 
 webserver_nginx_user: "nginx"
@@ -8,7 +10,6 @@ webserver_nginx_config_directory: "/etc/nginx"
 webserver_nginx_log_directory: "/var/log/nginx"
 webserver_nginx_content_directory: "/var/www"
 webserver_nginx_pidfile: "/var/run/nginx.pid"
-
 webserver_letsencrypt_config_directory: "/etc/letsencrypt"
 
 monit_directory: "/etc/monit"

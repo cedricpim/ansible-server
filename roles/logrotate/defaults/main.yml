@@ -1,3 +1,2 @@
 ---
 logrotate_config_directory: "/etc/logrotate.d"
-logs_directory: "/var/log"
