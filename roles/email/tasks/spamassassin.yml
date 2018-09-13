@@ -42,8 +42,8 @@
     - "spamassassin"
     - "spamass-milter"
   notify:
-    - "Reload SpamAssassin"
-    - "Restart spamass-milter"
+    - "reload SpamAssassin"
+    - "restart spamass-milter"
 
 - name: "create SpamAssassin directory"
   file:
@@ -60,8 +60,8 @@
     - "init.pre"
     - "local.cf"
   notify:
-    - "Reload SpamAssassin"
-    - "Restart spamass-milter"
+    - "reload SpamAssassin"
+    - "restart spamass-milter"
 
 - name: "create spool directory on Postfix for SpamAssassin"
   file:
