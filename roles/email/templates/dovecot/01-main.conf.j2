@@ -21,15 +21,6 @@ protocol imap {
   imap_client_workarounds = delay-newmail tb-extra-mailbox-sep
 }
 
-service imap-login {
-  inet_listener imap {
-    port = 0
-  }
-  inet_listener imaps {
-    port = 993
-  }
-}
-
 # Authentication
 service auth-worker {
   # Forbid to access /etc/shadow
