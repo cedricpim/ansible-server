@@ -11,18 +11,18 @@ check process spamassassin with pidfile /var/run/spamd.pid
    depends on milter_bin
    depends on milter_rc
 
-check file spamassassin_bin with path "/usr/bin/spamassassin"
+check file spamassassin_bin with path /usr/bin/spamassassin
   group mail
   include /etc/monit/templates/rootbin
 
-check file spamassassin_rc with path "{{ systemd_directory }}/spamassassin.service"
+check file spamassassin_rc with path /lib/systemd/system/spamassassin.service
   group mail
   include /etc/monit/templates/rootrc
 
-check file milter_bin with path "/usr/sbin/spamass-milter"
+check file milter_bin with path /usr/sbin/spamass-milter
   group mail
   include /etc/monit/templates/rootbin
 
-check file milter_rc with path "/etc/init.d/spamass-milter"
+check file milter_rc with path /etc/init.d/spamass-milter
   group mail
   include /etc/monit/templates/rootbin

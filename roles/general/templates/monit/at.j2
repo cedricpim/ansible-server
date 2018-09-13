@@ -9,10 +9,10 @@ check process atd with pidfile "/var/run/atd.pid"
   depends on atd_bin
   depends on atd_rc
 
-check file atd_bin with path "/usr/sbin/atd"
+check file atd_bin with path /usr/sbin/atd
   group atd
   include /etc/monit/templates/rootbin
 
-check file atd_rc with path "{{ systemd_directory }}/atd.service"
+check file atd_rc with path /lib/systemd/system/atd.service
   group atd
   include /etc/monit/templates/rootrc

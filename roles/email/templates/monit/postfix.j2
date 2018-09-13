@@ -12,7 +12,7 @@ check process postfix with pidfile {{ email_postfix_spool }}/pid/master.pid
   depend master_cf
   depend main_cf
 
-check file postfix_rc with path "{{ systemd_directory }}/postfix.service"
+check file postfix_rc with path /lib/systemd/system/postfix.service
   group postfix
   include /etc/monit/templates/rootrc
 
