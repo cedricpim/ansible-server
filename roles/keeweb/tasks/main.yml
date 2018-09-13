@@ -16,6 +16,7 @@
   git:
     repo: "https://github.com/keeweb/keeweb.git"
     dest: "{{ webserver_nginx_content_directory }}/keeweb"
+    version: "gh-pages"
   register: keeweb_repo
 
 - name: "ensure {{ webserver_nginx_content_directory }}/keeweb permissions are set"
