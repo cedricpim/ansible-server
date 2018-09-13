@@ -46,10 +46,23 @@
     - "logging"
   notify: "restart Radicale"
 
-- include_tasks: "prepare_collection.yml"
-  with_items: "{{ dav_collections }}"
-  loop_control:
-    loop_var: "collection"
+- name: "prepare property files for collections"
+  block:
+    - file:
+        path: "{{ dav_radicale_collections_directory }}/collection-root/{{ dav_radicale_collection }}/{{ item.id }}"
+        owner: "{{ dav_user }}"
+        group: "{{ dav_user }}"
+        mode: "0750"
+        state: "directory"
+      with_items: "{{ dav_collections }}"
+    - template:
+        src: "radicale/radicale.props.j2"
+        dest: "{{ dav_radicale_collections_directory }}/collection-root/{{ dav_radicale_collection }}/{{ item.id }}/.Radicale.props"
+        owner: "{{ dav_user }}"
+        group: "{{ dav_user }}"
+        mode: "0600"
+        force: no
+      with_items: "{{ dav_collections }}"
 
 - name: "copy Radicale systemd"
   template:

@@ -1,0 +1,5 @@
+{% if item.type != "VADDRESSBOOK" %}
+{"D:displayname": "{{ item.title }}", "ICAL:calendar-color": "{{ item.color }}", "tag": "{{ item.type }}"}
+{% else %}
+{"D:displayname": "{{ item.title }}", "tag": "{{ item.type }}"}
+{% endif %}
