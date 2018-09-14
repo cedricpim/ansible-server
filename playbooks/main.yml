@@ -26,6 +26,12 @@
       register: pre_passwd_users
       tags: "always"
 
+    - name: "get list of services before running roles"
+      command: "systemctl list-unit-files"
+      changed_when: no
+      register: pre_systemd_services
+      tags: "always"
+
   roles:
     - { role: "logrotate", tags: "logrotate" }
     - { role: "webserver", tags: "webserver" }
@@ -41,13 +47,13 @@
     - { role: "email", tags: "email" }
 
   post_tasks:
-    - name: "get list of users"
+    - name: "get list of users after running roles"
       command: "cut -d: -f1 /etc/passwd"
       changed_when: no
-      register: passwd_users
+      register: post_passwd_users
       tags: "always"
 
-    - name: "check is newaliases command exists"
+    - name: "check if newaliases command exists"
       stat:
         path: "/usr/bin/newaliases"
       register: newaliases_exist
@@ -58,17 +64,25 @@
         src: "aliases.j2"
         dest: "/etc/aliases"
         mode: "0644"
+      vars:
+        users: "{{ post_passwd_users.stdout_lines }}"
       register: template_aliases
       when:
-        - passwd_users is defined
         - newaliases_exist is defined and newaliases_exist.stat.islnk is defined
-        - pre_passwd_users.stdout_lines != passwd_users.stdout_lines
+        - pre_passwd_users is defined and post_passwd_users is defined
+        - pre_passwd_users.stdout_lines != post_passwd_users.stdout_lines
       tags: "always"
 
     - name: "hash aliases"
       command: "newaliases"
       notify: "reload Postfix"
       when: template_aliases is defined and template_aliases.changed
+      tags: "always"
+
+    - name: "get list of services after running roles"
+      command: "systemctl list-unit-files"
+      changed_when: no
+      register: post_systemd_services
       tags: "always"
 
     - name: "restart Systemon"
@@ -79,6 +93,9 @@
       failed_when:
         - systemon_service.failed
         - not "Could not find the requested service" in systemon_service.msg
+      when:
+        - pre_systemd_services is defined and post_systemd_services is defined
+        - pre_systemd_services.stdout_lines != post_systemd_services.stdout_lines
       tags: "always"
 
     - name: "remove dependencies that are no longer required"

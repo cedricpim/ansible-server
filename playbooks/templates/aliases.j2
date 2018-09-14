@@ -1,5 +1,5 @@
 {{ ansible_managed | comment }}
 
-{% for passwd_user in passwd_users.stdout_lines %}
-{{ passwd_user }}: {{ email_webmaster }}
+{% for user in users %}
+{{ user }}: {{ email_webmaster }}
 {% endfor %}
