@@ -1,8 +1,17 @@
 ---
+- name: "add release PGP keys for Syncthing"
+  apt_key:
+    url: "https://syncthing.net/release-key.txt"
+    state: "present"
+
+- name: "add source for Syncthing"
+  apt_repository:
+    repo: "deb http://apt.syncthing.net/ syncthing stable"
+    state: "present"
+
 - name: "install Syncthing"
   apt:
     name: "syncthing"
-    default_release: "{{ ansible_distribution_release }}-backports"
     state: "latest"
 
 - name: "create {{ syncthing_user }} user"
