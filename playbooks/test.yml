@@ -34,7 +34,6 @@
     - { role: "webserver", tags: "webserver" }
     - { role: "monit", tags: "monit" }
     - { role: "keeweb", tags: "keeweb" }
-    - { role: "netdata", tags: "netdata" }
     - { role: "dav", tags: "dav" }
     - { role: "gallery", tags: "gallery" }
     - { role: "sync", tags: "sync" }
@@ -42,6 +41,7 @@
     - { role: "fail2ban", tags: "fail2ban" }
     - { role: "systemon", tags: "systemon" }
     - { role: "email", tags: "email" }
+    - { role: "netdata", tags: "netdata" }
 
   post_tasks:
     - name: "get list of users after running roles"

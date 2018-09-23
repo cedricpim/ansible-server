@@ -32,6 +32,14 @@ service auth-worker {
   user = $default_internal_user
 }
 
+# Used by netdata
+service stats {
+  inet_listener {
+    address = 127.0.0.1
+    port = {{ email_dovecot_stats_port }}
+  }
+}
+
 service auth {
   # IMPORTANT: Match the path to smtpd_sasl_path of Postfix auth
   unix_listener {{ email_postfix_spool }}/{{ email_smtpd_sasl_path }} {

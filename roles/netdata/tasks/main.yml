@@ -1,14 +1,49 @@
 ---
-- name: "install Netdata"
+- name: "install Netdata and utilities"
   apt:
-    name: "netdata"
+    name: "{{ item }}"
     state: "latest"
+  with_items:
+    - "netdata"
+    - "iw"
+    - "fping"
+    - "python-dnspython"
+    - "nsd"
+
+- name: "add required groups to Netdata"
+  user:
+    name: "netdata"
+    groups:
+      - "nginx"
+      - "adm"
+      - "proxy"
 
 - name: "copy Netdata settings"
   template:
-    src: "netdata.conf.j2"
-    dest: "{{ netdata_config_directory }}/netdata.conf"
+    src: "{{ item }}.j2"
+    dest: "{{ netdata_config_directory }}/{{ item }}"
     mode: "0644"
+  with_items:
+    - "netdata.conf"
+    - "python.d.conf"
+  notify: "restart Netdata"
+
+- name: "create Netdata Python directory"
+  file:
+    path: "{{ netdata_config_directory }}/python.d"
+    mode: "0755"
+    state: "directory"
+
+- name: "copy Netdata Python settings"
+  template:
+    src: "python.d/{{ item }}.conf.j2"
+    dest: "{{ netdata_config_directory }}/python.d/{{ item }}.conf"
+    mode: "0644"
+  with_items:
+    - "postfix"
+    - "web_log"
+    - "dovecot"
+    - "nginx"
   notify: "restart Netdata"
 
 - name: "start/enable Netdata"
@@ -23,6 +58,12 @@
   vars:
     conf: "netdata.conf"
     credentials: "htpasswd.netdata"
+
+- include_role:
+    name: "webserver"
+    tasks_from: "configure"
+  vars:
+    conf: "localhost.conf"
 
 - include_role:
     name: "monit"

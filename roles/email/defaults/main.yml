@@ -8,6 +8,7 @@ email_postfix_config_directory: "/etc/postfix"
 email_postfix_spool: "/var/spool/postfix"
 
 email_dovecot_config_directory: "/etc/dovecot"
+email_dovecot_stats_port: "24242"
 email_smtpd_sasl_path: "private/dovecot-auth"
 
 email_opendkim_user: "opendkim"

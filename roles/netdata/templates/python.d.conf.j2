@@ -1,0 +1,72 @@
+{{ ansible_managed | comment }}
+
+# netdata python.d.plugin configuration
+#
+# This file is in YaML format.
+# Generally the format is:
+#
+# name: value
+#
+
+# Enable / disable the whole python.d.plugin (all its modules)
+enabled: yes
+
+# Prevent log flood
+# Define how many log messages can be written to log file in one log_interval
+logs_per_interval: 200
+
+# Define how long is one logging interval (in seconds)
+log_interval: 3600
+
+# ----------------------------------------------------------------------
+# Enable / Disable python.d.plugin modules
+#default_run: yes
+#
+# If "default_run" = "yes" the default for all modules is enabled (yes).
+# Setting any of these to "no" will disable it.
+#
+# If "default_run" = "no" the default for all modules is disabled (no).
+# Setting any of these to "yes" will enable it.
+
+apache_cache: no
+apache: no
+bind_rndc: no
+cpufreq: no
+cpuidle: no
+dovecot: yes
+elasticsearch: no
+
+# this is just an example
+example: no
+
+exim: no
+fail2ban: yes
+freeradius: no
+
+# gunicorn_log has been replaced by web_log
+gunicorn_log: no
+
+haproxy: no
+hddtemp: no
+ipfs: no
+isc_dhcpd: no
+mdstat: no
+memcached: no
+mysql: no
+nginx: yes
+
+# nginx_log has been replaced by web_log
+nginx_log: no
+
+ovpn_status_log: no
+phpfpm: no
+postfix: yes
+postgres: no
+redis: no
+retroshare: no
+sensors: no
+smartd_log: no
+squid: no
+tomcat: no
+varnish: no
+web_log: yes
