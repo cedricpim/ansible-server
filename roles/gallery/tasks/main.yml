@@ -21,6 +21,13 @@
     executable: "pip3"
   notify: "restart Sigal"
 
+- name: "create Sigal pictures source directory"
+  file:
+    path: "{{ gallery_sigal_pictures_source }}"
+    owner: "{{ general_user }}"
+    group: "{{ general_user }}"
+    state: "directory"
+
 - name: "create Sigal configuration directory"
   file:
     path: "{{ item }}"
