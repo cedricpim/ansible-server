@@ -1,8 +1,12 @@
 ---
-- name: "install Fail2Ban"
+- name: "install Fail2Ban and dependencies"
   apt:
-    name: "fail2ban"
+    name: "{{ item }}"
+    default_release: "{{ ansible_distribution_release }}-backports"
     state: "latest"
+  with_items:
+    - "fail2ban"
+    - "whois"
 
 - name: "copy Fail2Ban settings"
   template:
