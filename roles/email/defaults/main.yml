@@ -14,6 +14,7 @@ email_smtpd_sasl_path: "private/dovecot-auth"
 email_opendkim_user: "opendkim"
 email_opendkim_config_directory: "/etc/opendkim"
 email_opendkim_sock: "opendkim/opendkim.sock"
+email_opendkim_subdomain: "mail"
 
 email_spamassassin_user: "debian-spamd"
 email_spamassassin_home: "/var/lib/spamassassin"

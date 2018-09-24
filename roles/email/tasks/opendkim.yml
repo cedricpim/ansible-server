@@ -18,11 +18,11 @@
 
 - name: "check if keys have been generated"
   stat:
-    path: "{{ email_opendkim_config_directory }}/mail.txt"
+    path: "{{ email_opendkim_config_directory }}/{{ email_opendkim_subdomain }}.txt"
   register: opendkim_keys
 
 - name: "generate DKIM pair of keys"
-  command: "opendkim-genkey -r -h sha256 -d mail.{{ server }} -s mail"
+  command: "opendkim-genkey -r -h sha256 -d {{ server }} -s {{ email_opendkim_subdomain }}"
   args:
     chdir: "{{ email_opendkim_config_directory }}"
   notify:
@@ -37,12 +37,12 @@
     group: "{{ email_opendkim_user }}"
     recurse: yes
 
-- name: "rename mail.private to mail"
-  command: "mv mail.private mail"
+- name: "rename {{ email_opendkim_subdomain }}.private to {{ email_opendkim_subdomain }}"
+  command: "mv {{ email_opendkim_subdomain }}.private {{ email_opendkim_subdomain }}"
   args:
     chdir: "{{ email_opendkim_config_directory }}"
-    creates: "{{ email_opendkim_config_directory }}/mail"
-    removes: "{{ email_opendkim_config_directory }}/mail.private"
+    creates: "{{ email_opendkim_config_directory }}/{{ email_opendkim_subdomain }}"
+    removes: "{{ email_opendkim_config_directory }}/{{ email_opendkim_subdomain }}.private"
   notify: "reload OpenDKIM"
 
 - name: "copy Tables for OpenDKIM"
