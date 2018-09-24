@@ -1,6 +1,4 @@
 ---
-server: "{{ vault_server }}"
-
 general_user: "{{ vault_general_user }}"
 general_password: "{{ vault_general_password }}"
 general_sshd_ports: "{{ vault_general_sshd_ports }}"
@@ -10,7 +8,6 @@ webserver_letsencrypt_email: "{{ vault_webserver_letsencrypt_email }}"
 
 monit_port: "{{ vault_monit_port }}"
 monit_credentials: "{{ vault_monit_credentials }}"
-monit_alert_email: "{{ vault_monit_alert_email }}"
 
 keeweb_credentials: "{{ vault_keeweb_credentials }}"
 
@@ -30,12 +27,6 @@ syncthing_port: "{{ vault_syncthing_port }}"
 sync_credentials: "{{ vault_sync_credentials }}"
 sync_personal_credentials: "{{ vault_sync_personal_credentials }}"
 sync_personal_file: "{{ vault_sync_personal_file }}"
-
-rkhunter_alert_email: "{{ vault_rkhunter_alert_email }}"
-
-fail2ban_alert_email: "{{ vault_fail2ban_alert_email }}"
-
-systemon_smtp_to: "{{ vault_systemon_smtp_to }}"
 
 email_webmaster: "{{ vault_email_webmaster }}"
 email_virtual_mailbox_users: "{{ vault_email_virtual_mailbox_users }}"

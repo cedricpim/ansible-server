@@ -1,6 +1,6 @@
 {{ ansible_managed | comment }}
 
-{{ email_webmaster }}  {{ email_webmaster }}
+{{ email_webmaster }}@{{ server }}  {{ email_webmaster }}@{{ server }}
 {% for virtual_mailbox_user in email_virtual_mailbox_users %}
-{{ virtual_mailbox_user.email }}  {{ virtual_mailbox_user.real_email }}
+{{ virtual_mailbox_user.email }}@{{ server }}  {{ virtual_mailbox_user.real_email }}@{{ server }}
 {% endfor %}

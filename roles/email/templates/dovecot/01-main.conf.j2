@@ -51,7 +51,7 @@ service auth {
 
 # LDA configuration
 protocol lda {
-  postmaster_address = {{ email_webmaster }}
+  postmaster_address = {{ email_webmaster }}@{{ server }}
   mail_plugins = sieve
   quota_full_tempfail = yes
   deliver_log_format = msgid=%m: %$

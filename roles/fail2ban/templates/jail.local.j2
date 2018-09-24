@@ -99,7 +99,7 @@ filter = %(__name__)s
 
 # Destination email address used solely for the interpolations in
 # jail.{conf,local,d/*} configuration files.
-destemail = {{ fail2ban_alert_email }}
+destemail = {{ email_webmaster }}@{{ server }}
 
 # Sender email address used solely for some actions
 sender = {{ fail2ban_sender }}

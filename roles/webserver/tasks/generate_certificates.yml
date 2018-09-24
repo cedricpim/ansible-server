@@ -12,5 +12,9 @@
     name: "nginx"
     state: "reloaded"
 
+- name: "prepare domains"
+  set_fact:
+    domains: "{{ webserver_letsencrypt_domains | map('regex_replace', '^(.*)$', '\\1.' + server ) | list + [ server ] }}"
+
 - name: "generate certificates"
-  command: "certbot certonly --noninteractive --agree-tos --email {{ webserver_letsencrypt_email }} --webroot -w {{ webserver_letsencrypt_challenge_directory }} -d {{ webserver_letsencrypt_domains | join(',') }}"
+  command: "certbot certonly --noninteractive --agree-tos --email {{ webserver_letsencrypt_email }} --webroot -w {{ webserver_letsencrypt_challenge_directory }} -d {{ domains | reverse | join(',') }}"

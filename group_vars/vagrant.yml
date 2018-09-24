@@ -1,6 +1,4 @@
 ---
-server: "localhost"
-
 general_user: "vagrant-local"
 general_password: "$6$gaagXYxRAIVVCA$rUek2lqIML2u5YBkFxMj.DOwC.ELGfI1K7iMyvlyH7bB4s9R/3MVmnEKoFV6hoWRSOH.78SAbrtlXd1rqBTXT0"
 general_sshd_ports:
@@ -9,7 +7,6 @@ general_sshd_ports:
 monit_port: "22122"
 monit_credentials: "monit:monit"
 monit_bind_address: "0.0.0.0"
-monit_alert_email: "vagrant@local"
 
 keeweb_credentials: "vagrant:YYzo3ZBykz1oI"
 
@@ -55,23 +52,18 @@ sync_credentials: "vagrant:YYzo3ZBykz1oI"
 sync_personal_credentials: "vagrant:YYzo3ZBykz1oI"
 sync_personal_file: "vagrant.txt"
 
-rkhunter_alert_email: "vagrant@local"
+email_webmaster: "webmaster"
 
-fail2ban_alert_email: "vagrant@local"
-
-systemon_smtp_to: "vagrant@local"
-
-email_webmaster: "webmaster@local"
 email_virtual_mailbox_users:
-  - { email: "vagrant@local", real_email: "vagrant@local" }
-  - { email: "vagrant-virtual@local", real_email: "vagrant@local" }
+  - { email: "vagrant", real_email: "vagrant" }
+  - { email: "vagrant-virtual", real_email: "vagrant" }
 email_virtuals:
-  - { email: "vagrant-virtual@local", real_email: "vagrant@local" }
+  - { email: "vagrant-virtual", real_email: "vagrant" }
 email_virtual_regexs:
-  - { regex: "/vagrant\\+.+@local/", real_email: "vagrant@local" }
+  - { regex: "/vagrant\\+.+/", real_email: "vagrant" }
 email_credentials:
-  - { email: "webmaster@local", pass: "xsoV/zOL9Ncz360Kz02xhLy+1aqXiw2bG+7qkcHbLq1+GOqsBAfXlS7OHtBuQroSXGHRu96IOPBgK/yqZmo1AB/NePc=" }
-  - { email: "vagrant@local", pass: "lpiJyM6PEEZaoXHratE+NIUwTBErtWVqoZOhSJVa+O1Wl9ykwwIhkQ0CA6KpIFtWYsTkWh9EPLp6WgvpCtPw2Ilq7TQ=" }
+  - { email: "webmaster", pass: "xsoV/zOL9Ncz360Kz02xhLy+1aqXiw2bG+7qkcHbLq1+GOqsBAfXlS7OHtBuQroSXGHRu96IOPBgK/yqZmo1AB/NePc=" }
+  - { email: "vagrant", pass: "lpiJyM6PEEZaoXHratE+NIUwTBErtWVqoZOhSJVa+O1Wl9ykwwIhkQ0CA6KpIFtWYsTkWh9EPLp6WgvpCtPw2Ilq7TQ=" }
 email_mailboxes:
   - { name: "Starred", auto: "subscribe", special_use: "\\Flagged" }
   - { name: "Drafts", auto: "subscribe", special_use: "\\Drafts" }
@@ -82,13 +74,13 @@ email_mailboxes:
   - { name: "Travel/Tickets", auto: "subscribe" }
   - { name: "Sign Ups", auto: "subscribe" }
 email_sieve_filters: |
-  if header :contains "From" "work@localhost" {
+  if header :contains "From" "work@{{ server }}" {
     fileinto :create "Work";
     keep;
   }
 
-  if anyof (header :contains "To" "travels@localhost",
-            header :contains "From" "travels-express@localhost") {
+  if anyof (header :contains "To" "travels@{{ server }}",
+            header :contains "From" "travels-express@{{ server }}") {
     fileinto :create "Travels";
     keep;
   }

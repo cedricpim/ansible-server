@@ -1,5 +1,5 @@
 {{ ansible_managed | comment }}
 
 {% for virtual in email_virtual_regexs %}
-{{ virtual.regex }}  {{ virtual.real_email }}
+{{ virtual.regex }}@{{ server | regex_replace('\\.', '\\.') }}/  {{ virtual.real_email }}@{{ server }}
 {% endfor %}

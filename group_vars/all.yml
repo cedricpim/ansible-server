@@ -17,3 +17,5 @@ monit_logfile: "/var/log/monit.log"
 monit_sender: "monit@localhost"
 
 fail2ban_sender: "fail2ban@localhost"
+
+email_webmaster: "root"

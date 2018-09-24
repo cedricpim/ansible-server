@@ -1,5 +1,5 @@
 {{ ansible_managed | comment }}
 
 {% for user in users %}
-{{ user }}: {{ email_webmaster }}
+{{ user }}: {{ email_webmaster }}@{{ server }}
 {% endfor %}

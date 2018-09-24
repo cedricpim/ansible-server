@@ -2,7 +2,7 @@
 
 SYSTEMON_ARGS="--all-units --notifier smtp \
 --smtp-to {{ systemon_smtp_from }} \
---smtp-from {{ systemon_smtp_to }} \
+--smtp-from {{ email_webmaster }}@{{ server }} \
 --smtp-host {{ systemon_smtp_host }} \
 --smtp-port {{ systemon_smtp_port }} \
 --smtp-subject {{ systemon_smtp_subject | quote }}"
