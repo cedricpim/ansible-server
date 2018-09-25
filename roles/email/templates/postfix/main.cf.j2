@@ -41,13 +41,38 @@ mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128
 
 ## Customized smtpd parameters
 smtpd_banner = $myhostname ESMTP
+smtpd_delay_reject = yes
 smtpd_helo_required = yes
-smtpd_helo_restrictions = permit_mynetworks, permit_sasl_authenticated, permit
-smtpd_recipient_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination
-smtpd_sender_restrictions = reject_unknown_sender_domain, reject_sender_login_mismatch
-smtpd_sender_login_maps = $virtual_mailbox_maps
-# smtpd_helo_restrictions = permit_mynetworks, reject_non_fqdn_helo_hostname, reject_invalid_helo_hostname, reject_unknown_helo_hostname, permit
-# smtpd_recipient_restrictions = reject_unknown_client_hostname, reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_unauth_pipelining, permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination, reject_invalid_hostname, reject_non_fqdn_sender
+
+smtpd_client_restrictions =
+  permit_mynetworks,
+  warn_if_reject reject_unauth_pipelining,
+  warn_if_reject reject_unknown_client_hostname
+
+smtpd_helo_restrictions =
+  warn_if_reject reject_non_fqdn_helo_hostname,
+  warn_if_reject reject_invalid_helo_hostname,
+  warn_if_reject reject_unknown_helo_hostname
+
+smtpd_sender_restrictions =
+  reject_unknown_sender_domain,
+  reject_sender_login_mismatch,
+  warn_if_reject reject_non_fqdn_sender
+
+smtpd_recipient_restrictions =
+  permit_mynetworks,
+  permit_sasl_authenticated,
+  warn_if_reject reject_non_fqdn_recipient,
+  warn_if_reject reject_unknown_recipient_domain,
+  reject_rbl_client {{ email_postfix_rbl }}
+
+smtpd_relay_restrictions =
+  permit_mynetworks,
+  permit_sasl_authenticated,
+  reject_unauth_destination
+
+smtpd_data_restrictions =
+  warn_if_reject reject_unauth_pipelining
 
 ## Dealing with rejection: use permanent 550 errors to stop retries
 unknown_address_reject_code = 550
@@ -76,6 +101,8 @@ virtual_alias_maps = hash:{{ email_postfix_config_directory }}/virtual regexp:{{
 virtual_mailbox_domains = hash:{{ email_postfix_config_directory }}/virtual-mailbox-domains
 virtual_mailbox_maps = hash:{{ email_postfix_config_directory }}/virtual-mailbox-users
 virtual_transport = dovecot
+smtpd_sender_login_maps = $virtual_mailbox_maps
+
 
 ## This setting will generate an error if you restart Postfix before
 ## adding the appropriate service definition in master.cf, so make
@@ -99,5 +126,4 @@ smtp_tls_security_level = may
 postscreen_greet_action = enforce
 postscreen_dnsbl_action = enforce
 postscreen_access_list = permit_mynetworks
-postscreen_dnsbl_sites = zen.spamhaus.org, b.barracudacentral.org, bl.spamcop.net
-smtpd_relay_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination
+postscreen_dnsbl_sites = {{ email_postfix_rbl }}, b.barracudacentral.org, bl.spamcop.net
