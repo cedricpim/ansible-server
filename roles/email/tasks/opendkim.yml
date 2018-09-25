@@ -67,11 +67,14 @@
 
 - name: "create spool directory on Postfix for OpenDKIM"
   file:
-    path: "{{ email_postfix_spool }}/opendkim"
-    owner: "{{ email_opendkim_user }}"
+    path: "{{ item.path }}"
+    owner: "{{ item.owner }}"
     group: "root"
     mode: "0755"
     state: "directory"
+  with_items:
+    - { path: "{{ email_postfix_spool }}", owner: "root" }
+    - { path: "{{ email_postfix_spool }}/opendkim", owner: "{{ email_opendkim_user }}" }
 
 - name: "start/Enable OpenDKIM"
   systemd:
