@@ -9,12 +9,12 @@ server {
     auth_basic           "Restricted Area";
     auth_basic_user_file conf/htpasswd.personal;
 
-    root {{ syncthing_config_directory }}/general/files;
+    root {{ syncthing_directory }}/general/files;
   }
 
   # Download public files
   location /public/ {
-    root {{ syncthing_config_directory }}/general;
+    root {{ syncthing_directory }}/general;
 
     if ($uri ~ "/public/index") { return 403; }
 

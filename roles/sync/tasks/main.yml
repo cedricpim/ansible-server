@@ -21,13 +21,16 @@
     state: "present"
     create_home: no
 
-- name: "create Syncthing folder"
+- name: "create Syncthing folders"
   file:
-    path: "{{ syncthing_config_directory }}"
+    path: "{{ item }}"
     owner: "{{ syncthing_user }}"
     group: "{{ syncthing_user }}"
     mode: "0755"
     state: "directory"
+  with_items:
+    - "{{ syncthing_config_directory }}"
+    - "{{ syncthing_directory }}"
 
 - name: "create Syncthing service directory"
   file:
