@@ -53,9 +53,10 @@
 
 - name: "copy credentials"
   template:
-    src: "nginx/{{ credentials }}.j2"
-    dest: "{{ webserver_nginx_config_directory }}/conf/{{ credentials }}"
+    src: "nginx/{{ item }}.j2"
+    dest: "{{ webserver_nginx_config_directory }}/conf/{{ item }}"
     mode: "0644"
+  with_items: "{{ credentials }}"
   notify: "reload Nginx"
   when:
     - credentials is defined

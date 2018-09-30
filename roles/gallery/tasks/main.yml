@@ -70,7 +70,8 @@
     tasks_from: "configure"
   vars:
     conf: "gallery.conf"
-    credentials: "htpasswd.gallery"
+    credentials:
+      - "htpasswd.gallery"
 
 - include_role:
     name: "monit"

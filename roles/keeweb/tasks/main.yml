@@ -33,7 +33,8 @@
     tasks_from: "configure"
   vars:
     conf: "keeweb.conf"
-    credentials: "htpasswd.keeweb"
+    credentials:
+      - "htpasswd.keeweb"
 
 - include_role:
     name: "monit"

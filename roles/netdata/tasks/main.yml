@@ -63,7 +63,8 @@
     tasks_from: "configure"
   vars:
     conf: "netdata.conf"
-    credentials: "htpasswd.netdata"
+    credentials:
+      - "htpasswd.netdata"
 
 - include_role:
     name: "webserver"

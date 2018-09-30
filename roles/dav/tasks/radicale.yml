@@ -83,7 +83,8 @@
     tasks_from: "configure"
   vars:
     conf: "dav.conf"
-    credentials: "htpasswd.dav"
+    credentials:
+      - "htpasswd.dav"
 
 - include_role:
     name: "monit"
