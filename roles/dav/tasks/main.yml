@@ -3,7 +3,7 @@
   user:
     name: "{{ dav_user }}"
     shell: "/bin/false"
-    home: "{{ dav_radicale_collections_directory }}"
+    home: "{{ dav_home }}"
     state: "present"
 
 - import_tasks: "radicale.yml"

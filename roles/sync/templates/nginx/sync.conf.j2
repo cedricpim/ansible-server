@@ -11,12 +11,12 @@ server {
     auth_basic           "Restricted Area for Legume";
     auth_basic_user_file conf/htpasswd.personal;
 
-    root {{ syncthing_directory }}/general;
+    root {{ syncthing_home }}/general;
   }
 
   # Download public files
   location /public/ {
-    root {{ syncthing_directory }}/general;
+    root {{ syncthing_home }}/general;
 
     if ($uri ~ "/public/index") { return 403; }
 

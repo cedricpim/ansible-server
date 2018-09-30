@@ -17,7 +17,7 @@
 
 [storage {{ collection.id }}_local]
   type = "filesystem"
-  path = "{{ dav_radicale_collections_directory }}/collection-root/{{ dav_radicale_collection }}/{{ collection.id }}"
+  path = "{{ dav_home }}/collection-root/{{ dav_radicale_collection }}/{{ collection.id }}"
   fileext = "{{ collection.fileext }}"
 
 [storage {{ collection.id }}_remote]

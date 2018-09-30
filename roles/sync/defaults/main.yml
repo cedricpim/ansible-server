@@ -1,5 +1,5 @@
 ---
 syncthing_user: "syncthing"
+syncthing_home: "/home/syncthing"
 syncthing_port: "8384"
 syncthing_config_directory: "/etc/syncthing"
-syncthing_directory: "/home/syncthing"

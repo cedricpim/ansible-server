@@ -18,7 +18,7 @@
   user:
     name: "{{ syncthing_user }}"
     shell: "/bin/false"
-    home: "{{ syncthing_directory }}"
+    home: "{{ syncthing_home }}"
     state: "present"
 
 - name: "create Syncthing configuration directory"

@@ -11,7 +11,7 @@
   user:
     name: "{{ gallery_sigal_user }}"
     shell: "/bin/false"
-    home: "{{ gallery_sigal_pictures_directory }}"
+    home: "{{ gallery_sigal_home }}"
     state: "present"
 
 - name: "install Sigal"
@@ -32,7 +32,7 @@
 - name: "copy favicon.ico"
   copy:
     src: "favicon.ico"
-    dest: "{{ gallery_sigal_pictures_directory }}/favicon.ico"
+    dest: "{{ gallery_sigal_home }}/favicon.ico"
     owner: "{{ gallery_sigal_user }}"
     group: "{{ gallery_sigal_user }}"
 

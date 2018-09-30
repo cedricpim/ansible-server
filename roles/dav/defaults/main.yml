@@ -1,12 +1,12 @@
 ---
 dav_user: "dav"
+dav_home: "/home/dav"
 
 dav_radicale_bind_address: "127.0.0.1"
 dav_radicale_port: "5232"
 dav_radicale_log_directory: "/var/log/radicale"
 dav_radicale_config_directory: "/etc/radicale"
 dav_radicale_pid_directory: "/var/run/radicale"
-dav_radicale_collections_directory: "/home/dav"
 dav_radicale_collection: "dav"
 
 dav_vdirsyncer_config_directory: "/etc/vdirsyncer"

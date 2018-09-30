@@ -11,7 +11,7 @@ fi
 # Sync calendars
 eval "$escalation /usr/bin/vdirsyncer -c {{ dav_vdirsyncer_config_directory }}/config sync --force-delete"
 
-base_dir={{ dav_radicale_collections_directory }}/collection-root/{{ dav_radicale_collection }}
+base_dir={{ dav_home }}/collection-root/{{ dav_radicale_collection }}
 
 {% for collection in dav_collections | rejectattr('reminder', 'undefined') %}
 # This is required a second time, so that we do not end up with duplicated events

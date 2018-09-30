@@ -41,7 +41,7 @@
 - name: "prepare property files for collections"
   block:
     - file:
-        path: "{{ dav_radicale_collections_directory }}/collection-root/{{ dav_radicale_collection }}/{{ item.id }}"
+        path: "{{ dav_home }}/collection-root/{{ dav_radicale_collection }}/{{ item.id }}"
         owner: "{{ dav_user }}"
         group: "{{ dav_user }}"
         mode: "0750"
@@ -49,7 +49,7 @@
       with_items: "{{ dav_collections }}"
     - template:
         src: "radicale/radicale.props.j2"
-        dest: "{{ dav_radicale_collections_directory }}/collection-root/{{ dav_radicale_collection }}/{{ item.id }}/.Radicale.props"
+        dest: "{{ dav_home }}/collection-root/{{ dav_radicale_collection }}/{{ item.id }}/.Radicale.props"
         owner: "{{ dav_user }}"
         group: "{{ dav_user }}"
         mode: "0600"
