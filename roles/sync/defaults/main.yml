@@ -2,4 +2,4 @@
 syncthing_user: "syncthing"
 syncthing_port: "8384"
 syncthing_config_directory: "/etc/syncthing"
-syncthing_directory: "/var/lib/syncthing"
+syncthing_directory: "/home/syncthing"

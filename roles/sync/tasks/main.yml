@@ -18,19 +18,16 @@
   user:
     name: "{{ syncthing_user }}"
     shell: "/bin/false"
+    home: "{{ syncthing_directory }}"
     state: "present"
-    create_home: no
 
-- name: "create Syncthing folders"
+- name: "create Syncthing configuration directory"
   file:
-    path: "{{ item }}"
+    path: "{{ syncthing_config_directory }}"
     owner: "{{ syncthing_user }}"
     group: "{{ syncthing_user }}"
     mode: "0755"
     state: "directory"
-  with_items:
-    - "{{ syncthing_config_directory }}"
-    - "{{ syncthing_directory }}"
 
 - name: "create Syncthing service directory"
   file:
@@ -74,14 +71,9 @@
     tasks_from: "configure"
   vars:
     conf: "sync.conf"
-    credentials: "htpasswd.sync"
-
-- include_role:
-    name: "webserver"
-    tasks_from: "configure"
-  vars:
-    conf: "personal.conf"
-    credentials: "htpasswd.personal"
+    credentials:
+      - "htpasswd.sync"
+      - "htpasswd.personal"
 
 - include_role:
     name: "monit"

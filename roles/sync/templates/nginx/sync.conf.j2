@@ -6,8 +6,26 @@ server {
   access_log  {{ webserver_nginx_log_directory }}/sync.access.log;
   error_log   {{ webserver_nginx_log_directory }}/sync.error.log;
 
+  # Download and send {{ sync_personal_file }} file
+  location = /files/{{ sync_personal_file }} {
+    auth_basic           "Restricted Area for Legume";
+    auth_basic_user_file conf/htpasswd.personal;
+
+    root {{ syncthing_directory }}/general;
+  }
+
+  # Download public files
+  location /public/ {
+    root {{ syncthing_directory }}/general;
+
+    if ($uri ~ "/public/index") { return 403; }
+
+    sendfile on;
+    sendfile_max_chunk 1m;
+  }
+
   location / {
-    auth_basic           "Restricted Area";
+    auth_basic           "Restricted Area for Sync";
     auth_basic_user_file conf/htpasswd.sync;
 
     proxy_set_header         X-Real-IP $remote_addr;
