@@ -7,13 +7,6 @@
     - "python3"
     - "python3-pip"
 
-- name: "create {{ dav_user }} user"
-  user:
-    name: "{{ dav_user }}"
-    shell: "/bin/false"
-    state: "present"
-    create_home: no
-
 - name: "install Radicale"
   pip:
     name: "radicale"
@@ -32,7 +25,6 @@
     - { path: "{{ dav_radicale_config_directory }}", mode: "0744" }
     - { path: "{{ dav_radicale_pid_directory }}", mode: "0744" }
     - { path: "{{ dav_radicale_log_directory }}", mode: "0755" }
-    - { path: "{{ dav_radicale_collections_directory }}", mode: "0750" }
 
 - name: "copy Radicale settings"
   template:
