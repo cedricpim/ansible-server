@@ -45,6 +45,13 @@
     - "nginx"
   notify: "restart Netdata"
 
+- name: "set correct recipient for email"
+  lineinfile:
+    path: "{{ netdata_config_directory }}/health_alarm_notify.conf"
+    regexp: 'DEFAULT_RECIPIENT_EMAIL='
+    line: 'DEFAULT_RECIPIENT_EMAIL={{ email_webmaster }}@{{ server }}'
+  notify: "restart Netdata"
+
 - name: "start/enable Netdata"
   systemd:
     name: "netdata"
