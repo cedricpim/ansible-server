@@ -16,13 +16,13 @@ UMask=0027
 # Optional security settings
 PrivateTmp=true
 ProtectSystem=strict
-ProtectHome=true
+ProtectHome=read-only
 PrivateDevices=true
 ProtectKernelTunables=true
 ProtectKernelModules=true
 ProtectControlGroups=true
 NoNewPrivileges=true
-ReadWritePaths={{ gallery_sigal_config_directory }} {{ gallery_sigal_pictures_directory }}
+ReadWritePaths=
 
 [Install]
 WantedBy=multi-user.target

@@ -1,7 +1,7 @@
 ---
 gallery_sigal_user: "sigal"
 gallery_sigal_config_directory: "/etc/sigal"
-gallery_sigal_pictures_directory: "/var/lib/sigal"
+gallery_sigal_pictures_directory: "/home/sigal"
 gallery_sigal_port: "8000"
 gallery_sigal_title: "Gallery"
 gallery_sigal_theme: "galleria"

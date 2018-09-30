@@ -25,8 +25,8 @@ sudo sigal build -v -c $conf_file $build_backup_dir $build_dir
 sudo rm -r $build_backup_dir
 
 # Add the changes to the main index file about title and favicon
-sudo sed -i 's/_build_backup/Gallery/' $build_dir/index.html
-sudo sed -i 's/<style>/<link rel="icon" href="static\/favicon.ico">\n    <style>/' $build_dir/index.html
+sudo sed -i 's/<title>.*/<title>{{ gallery_sigal_title }}<\/title>/' $build_dir/index.html
+sudo sed -i 's/<\/title>/<\/title>\n    <link rel="icon" href="favicon.ico">/' $build_dir/index.html
 
 # Pass over the ownership of the files
-sudo chown -R {{gallery_sigal_user }}: {{ gallery_sigal_pictures_directory }}
+sudo chown -R {{ gallery_sigal_user }}: $build_dir

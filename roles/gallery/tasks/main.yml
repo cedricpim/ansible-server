@@ -11,8 +11,8 @@
   user:
     name: "{{ gallery_sigal_user }}"
     shell: "/bin/false"
+    home: "{{ gallery_sigal_pictures_directory }}"
     state: "present"
-    create_home: no
 
 - name: "install Sigal"
   pip:
@@ -21,23 +21,20 @@
     executable: "pip3"
   notify: "restart Sigal"
 
-- name: "create Sigal pictures source directory"
-  file:
-    path: "{{ gallery_sigal_pictures_source }}"
-    owner: "{{ general_user }}"
-    group: "{{ general_user }}"
-    state: "directory"
-
 - name: "create Sigal configuration directory"
   file:
-    path: "{{ item }}"
+    path: "{{ gallery_sigal_config_directory }}"
     owner: "{{ gallery_sigal_user }}"
     group: "{{ gallery_sigal_user }}"
     mode: "0755"
     state: "directory"
-  with_items:
-    - "{{ gallery_sigal_config_directory }}"
-    - "{{ gallery_sigal_pictures_directory }}"
+
+- name: "copy favicon.ico"
+  copy:
+    src: "favicon.ico"
+    dest: "{{ gallery_sigal_pictures_directory }}/favicon.ico"
+    owner: "{{ gallery_sigal_user }}"
+    group: "{{ gallery_sigal_user }}"
 
 - name: "copy Sigal settings"
   template:
