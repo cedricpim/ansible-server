@@ -29,6 +29,7 @@
       tags: "always"
 
   roles:
+    - { role: "dns", tags: "dns" }
     - { role: "general", tags: "general" }
     - { role: "logrotate", tags: "logrotate" }
     - { role: "webserver", tags: "webserver" }

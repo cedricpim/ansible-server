@@ -1,0 +1,18 @@
+---
+- name: "install Openresolv"
+  apt:
+    name: "openresolv"
+    state: "latest"
+
+- name: "copy Openresolv settings"
+  template:
+    src: "openresolv/resolvconf.conf.j2"
+    dest: "{{ openresolv_config_directory }}/resolvconf.conf"
+    mode: "0644"
+  notify:
+    - "generate resolv.conf"
+    - "restart Unbound"
+
+- name: "generate resolv.conf"
+  command: "resolvconf -u"
+  notify: "restart Unbound"

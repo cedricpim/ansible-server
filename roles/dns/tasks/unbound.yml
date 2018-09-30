@@ -1,0 +1,43 @@
+---
+- name: "install Unbound"
+  apt:
+    name: "{{ item }}"
+    state: "latest"
+  with_items:
+    - "unbound"
+    - "unbound-host"
+
+- name: "download root.hints"
+  get_url:
+    url: "{{ unbound_roothints_url }}"
+    dest: "{{ unbound_config_directory }}/root.hints"
+
+- name: "copy root.hints timer and service"
+  template:
+    src: "unbound/{{ item }}.j2"
+    dest: "{{ systemd_directory }}/{{ item }}"
+    mode: "0755"
+  with_items:
+    - "roothints.service"
+    - "roothints.timer"
+  notify: "restart root.hints timer"
+
+- name: "start/enable roothints timer"
+  systemd:
+    name: "roothints"
+    state: "started"
+    enabled: yes
+    daemon_reload: yes
+
+- name: "copy Unbound settings"
+  template:
+    src: "unbound/unbound.conf.j2"
+    dest: "{{ unbound_config_directory }}//unbound.conf.d/unbound.conf"
+    mode: "0644"
+  notify: "restart Unbound"
+
+- name: "start/enable Unbound"
+  systemd:
+    name: "unbound"
+    state: "started"
+    enabled: yes

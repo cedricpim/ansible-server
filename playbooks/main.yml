@@ -33,6 +33,7 @@
       tags: "always"
 
   roles:
+    - { role: "dns", tags: "dns" }
     - { role: "logrotate", tags: "logrotate" }
     - { role: "webserver", tags: "webserver" }
     - { role: "monit", tags: "monit" }
