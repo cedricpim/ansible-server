@@ -10,7 +10,7 @@
 - name: "set authorized key from local user"
   authorized_key:
     user: "{{ general_user }}"
-    key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+    key: "{{ lookup('file', '~/.ssh/server_id_rsa.pub') }}"
     state: "present"
 
 - name: "add {{ general_user }} to sudoers"
