@@ -8,7 +8,6 @@
     - "iw"
     - "fping"
     - "python-dnspython"
-    - "nsd"
 
 - name: "add required groups to Netdata"
   user:
