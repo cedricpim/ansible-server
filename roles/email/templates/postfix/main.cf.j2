@@ -50,11 +50,13 @@ smtpd_client_restrictions =
   warn_if_reject reject_unknown_client_hostname
 
 smtpd_helo_restrictions =
+  permit_mynetworks,
   warn_if_reject reject_non_fqdn_helo_hostname,
   warn_if_reject reject_invalid_helo_hostname,
   warn_if_reject reject_unknown_helo_hostname
 
 smtpd_sender_restrictions =
+  permit_mynetworks,
   reject_unknown_sender_domain,
   reject_sender_login_mismatch,
   warn_if_reject reject_non_fqdn_sender
