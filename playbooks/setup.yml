@@ -6,5 +6,13 @@
     - "../vaulted_vars/system.yml"
     - "../group_vars/system.yml"
 
+  pre_tasks:
+    - name: "update current packages"
+      apt:
+        upgrade: yes
+        update_cache: yes
+        force_apt_get: yes
+      tags: "always"
+
   roles:
     - { role: "general", tags: "general" }

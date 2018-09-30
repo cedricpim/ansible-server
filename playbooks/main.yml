@@ -13,13 +13,6 @@
         state: "present"
       tags: "always"
 
-    - name: "update current packages"
-      apt:
-        upgrade: yes
-        update_cache: yes
-        force_apt_get: yes
-      tags: "always"
-
     - name: "get list of users before running roles"
       command: "cut -d: -f1 /etc/passwd"
       changed_when: no
