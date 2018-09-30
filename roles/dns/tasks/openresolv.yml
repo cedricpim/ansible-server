@@ -9,10 +9,9 @@
     src: "openresolv/resolvconf.conf.j2"
     dest: "{{ openresolv_config_directory }}/resolvconf.conf"
     mode: "0644"
-  notify:
-    - "generate resolv.conf"
-    - "restart Unbound"
+  register: resolvconf_settings
 
 - name: "generate resolv.conf"
   command: "resolvconf -u"
-  notify: "restart Unbound"
+  notify: "reload Unbound"
+  when: resolvconf_settings is defined and resolvconf_settings.changed

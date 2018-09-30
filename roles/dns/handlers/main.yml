@@ -1,13 +1,10 @@
 ---
-- name: "restart Unbound"
+- name: "reload Unbound"
   systemd:
     name: "unbound"
-    state: "restarted"
+    state: "reloaded"
 
 - name: "restart root.hints timer"
   systemd:
     name: "roothints.timer"
     state: "restarted"
-
-- name: "generate resolv.conf"
-  command: "resolvconf -u"

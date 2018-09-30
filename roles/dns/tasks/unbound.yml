@@ -24,7 +24,7 @@
 
 - name: "start/enable roothints timer"
   systemd:
-    name: "roothints"
+    name: "roothints.timer"
     state: "started"
     enabled: yes
     daemon_reload: yes
@@ -34,7 +34,7 @@
     src: "unbound/unbound.conf.j2"
     dest: "{{ unbound_config_directory }}//unbound.conf.d/unbound.conf"
     mode: "0644"
-  notify: "restart Unbound"
+  notify: "reload Unbound"
 
 - name: "start/enable Unbound"
   systemd:
