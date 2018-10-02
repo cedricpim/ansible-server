@@ -6,7 +6,10 @@ email_directory: "/var/mail/vmail"
 email_postfix_user: "postfix"
 email_postfix_config_directory: "/etc/postfix"
 email_postfix_spool: "/var/spool/postfix"
-email_postfix_rbl: "zen.spamhaus.org"
+email_postfix_rbls:
+  - "zen.spamhaus.org"
+  - "b.barracudacentral.org"
+  - "bl.spamcop.net"
 
 email_dovecot_config_directory: "/etc/dovecot"
 email_dovecot_stats_port: "24242"

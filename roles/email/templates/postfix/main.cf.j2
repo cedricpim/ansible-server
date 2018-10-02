@@ -65,8 +65,7 @@ smtpd_recipient_restrictions =
   permit_mynetworks,
   permit_sasl_authenticated,
   warn_if_reject reject_non_fqdn_recipient,
-  warn_if_reject reject_unknown_recipient_domain,
-  reject_rbl_client {{ email_postfix_rbl }}
+  warn_if_reject reject_unknown_recipient_domain
 
 smtpd_relay_restrictions =
   permit_mynetworks,
@@ -128,4 +127,4 @@ smtp_tls_security_level = may
 postscreen_greet_action = enforce
 postscreen_dnsbl_action = enforce
 postscreen_access_list = permit_mynetworks
-postscreen_dnsbl_sites = {{ email_postfix_rbl }}, b.barracudacentral.org, bl.spamcop.net
+postscreen_dnsbl_sites = {{ email_postfix_rbls | join(', ') }}
