@@ -28,6 +28,7 @@ email_spamassassin_languages:
   - "fr"
 email_spamassassin_locales:
   - "en"
+email_spamd_pidfile: "/var/run/spamd.pid"
 
 email_pflogsumm_sender: "pflogsumm@localhost"
 email_pflogsumm_receiver: "root@localhost"

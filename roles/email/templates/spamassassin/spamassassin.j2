@@ -32,7 +32,7 @@ OPTIONS="-x --max-children 5 \
 # Where should spamd write its PID to file? If you use the -u or
 # --username option above, this needs to be writable by that user.
 # Otherwise, the init script will not be able to shut spamd down.
-PIDFILE="/var/run/spamd.pid"
+PIDFILE="{{ email_spamd_pidfile }}"
 
 # Set nice level of spamd
 #NICE="--nicelevel 15"
