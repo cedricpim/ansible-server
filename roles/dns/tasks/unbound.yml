@@ -6,6 +6,7 @@
   with_items:
     - "unbound"
     - "unbound-host"
+    - "ldnsutils"
 
 - name: "download root.hints"
   get_url:
@@ -36,8 +37,28 @@
     mode: "0644"
   notify: "reload Unbound"
 
+- name: "create Unbound log directory"
+  file:
+    path: "{{ unbound_log_directory }}"
+    owner: "{{ unbound_user }}"
+    group: "{{ unbound_user }}"
+    mode: "0755"
+    state: "directory"
+
 - name: "start/enable Unbound"
   systemd:
     name: "unbound"
     state: "started"
     enabled: yes
+
+- include_role:
+    name: "monit"
+    tasks_from: "configure"
+  vars:
+    conf: "unbound"
+
+- include_role:
+    name: "logrotate"
+    tasks_from: "configure"
+  vars:
+    conf: "unbound"

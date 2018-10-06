@@ -1,0 +1,17 @@
+{{ ansible_managed | comment }}
+
+check process unbound with pidfile "{{ unbound_pidfile }}"
+  group dns
+  start program = "/usr/sbin/service unbound start"
+  stop program  = "/usr/sbin/service unbound stop"
+  if 5 restarts within 5 cycles then unmonitor
+  depends on unbound_bin
+  depends on unbound_rc
+
+check file unbound_bin with path /usr/sbin/unbound
+  group dns
+  include /etc/monit/templates/rootbin
+
+check file unbound_rc with path /lib/systemd/system/unbound.service
+  group dns
+  include /etc/monit/templates/rootrc

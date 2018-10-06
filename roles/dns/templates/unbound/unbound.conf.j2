@@ -1,70 +1,52 @@
 {{ ansible_managed | comment }}
 
-# Unbound configuration file for Debian.
-#
-# See the unbound.conf(5) man page.
-#
-# See /usr/share/doc/unbound/examples/unbound.conf for a commented
-# reference config file.
+## DNS Over TLS, Simple ENCRYPTED recursive caching DNS, TCP port 853
 server:
-# Enable logs
-verbosity: 1
-# Respond to DNS requests on all interfaces
-interface: 0.0.0.0
-# DNS request port, IP and protocol
-port: 53
-do-ip4: yes
-do-ip6: no
-do-udp: yes
-do-tcp: yes
+  # Enable logs
+  verbosity: 1
+  logfile: {{ unbound_log_directory }}/unbound.log
+  pidfile: "{{ unbound_pidfile }}"
+  # Respond to DNS requests on all interfaces
+  interface: 0.0.0.0
+  # DNS request port, IP and protocol
+  port: 53
+  do-ip4: yes
+  do-ip6: no
+  do-udp: yes
+  do-tcp: yes
 
-# Authorized IPs to access the DNS Server
-#access-control: 127.0.0.0/8 allow
-#access-control: 192.168.1.0/24 allow
-#access-control: 192.168.1.26
+  # Authorized IPs to access the DNS Server
+  #access-control: 127.0.0.0/8 allow
+  #access-control: 192.168.1.0/24 allow
 
-# Root servers information (To download here: ftp://ftp.internic.net/domain/named.cache)
-root-hints: "{{ unbound_config_directory }}/root.hints"
+  # Make sure your DNS Server treat your local network requests
+  private-address: 192.168.0.1/24
 
-# Hide DNS Server info
-hide-identity: yes
-hide-version: yes
+  # Root servers information (To download here: ftp://ftp.internic.net/domain/named.cache)
+  root-hints: "{{ unbound_config_directory }}/root.hints"
 
-# Improve the security of your DNS Server (Limit DNS Fraud and use DNSSEC)
-harden-glue: yes
-harden-dnssec-stripped: yes
+  # Hide DNS Server info
+  hide-identity: yes
+  hide-version: yes
 
-# Rewrite URLs written in CAPS
-use-caps-for-id: yes
+  # Improve the security of your DNS Server (Limit DNS Fraud and use DNSSEC)
+  # harden-glue: no
+  # harden-referral-path: yes
+  # harden-below-nxdomain: yes
 
-# TTL Min (Seconds)
-cache-min-ttl: 3600
-# TTL Max (Seconds)
-cache-max-ttl: 86400
-# Enable the prefetch
-prefetch: yes
+  # Rewrite URLs written in CAPS
+  use-caps-for-id: yes
 
-# Number of maximum threads to use
-num-threads: 2
+  # TTL Min (Seconds)
+  cache-min-ttl: 300
+  # TTL Max (Seconds)
+  cache-max-ttl: 14400
+  # Enable the prefetch
+  prefetch: yes
+  prefetch-key: yes
+  rrset-roundrobin: yes
+  so-reuseport: yes
+  minimal-responses: yes
 
-### Tweaks and optimizations
-# Number of slabs to use (Must be a multiple of num-threads value)
-msg-cache-slabs: 8
-rrset-cache-slabs: 8
-infra-cache-slabs: 8
-key-cache-slabs: 8
-# Cache and buffer size (in mb)
-rrset-cache-size: 51m
-msg-cache-size: 25m
-so-rcvbuf: 1m
-
-# Make sure your DNS Server treat your local network requests
-private-address: 192.168.0.1/24
-
-# Add an unwanted reply threshold to clean the cache and avoid when possible a DNS Poisoning
-unwanted-reply-threshold: 10000
-
-# Authorize or not the localhost requests
-do-not-query-localhost: no
-
-val-clean-additional: yes
+  # Number of maximum threads to use
+  num-threads: 2

@@ -1,0 +1,11 @@
+{{ ansible_managed | comment }}
+
+{{ unbound_log_directory }}/unbound.log {
+  weekly
+  rotate 7
+  create 0640 {{ unbound_user }} adm
+  missingok
+  compress
+  delaycompress
+  notifempty
+}

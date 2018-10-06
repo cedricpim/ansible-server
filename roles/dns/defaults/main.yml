@@ -1,6 +1,9 @@
 ---
+unbound_user: "unbound"
 unbound_config_directory: "/etc/unbound"
+unbound_pidfile: "/var/run/unbound.pid"
 unbound_roothints_url: "https://www.internic.net/domain/named.cache"
+unbound_log_directory: "/var/log/unbound"
 
 openresolv_config_directory: "/etc"
 openresolv_local_name_servers:
