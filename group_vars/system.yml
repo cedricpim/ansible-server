@@ -38,3 +38,8 @@ email_credentials: "{{ vault_email_credentials }}"
 email_mailboxes: "{{ vault_email_mailboxes }}"
 email_spamassassin_languages: "{{ vault_email_spamassassin_languages }}"
 email_sieve_filters: "{{ vault_email_sieve_filters }}"
+
+rvm1_rubies: "{{ vault_rvm1_rubies }}"
+rvm1_install_flags: "{{ vault_rvm1_install_flags }}"
+rvm1_install_path: "{{ vault_rvm1_install_path }}"
+rvm1_user: "{{ vault_rvm1_user }}"

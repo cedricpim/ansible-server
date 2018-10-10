@@ -84,3 +84,9 @@ email_sieve_filters: |
     fileinto :create "Travels";
     keep;
   }
+
+rvm1_rubies:
+  - "ruby-2.5.0"
+rvm1_install_flags: "--auto-dotfiles"
+rvm1_install_path: "/usr/local/rvm"
+rvm1_user: "root"
