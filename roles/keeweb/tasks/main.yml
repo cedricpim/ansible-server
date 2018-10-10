@@ -1,7 +1,13 @@
 ---
+- name: "ensure curl is installed"
+  apt:
+    name: "curl"
+    state: "latest"
+
 - name: "install git"
   apt:
     name: "git"
+    default_release: "{{ ansible_distribution_release }}-backports"
     state: "latest"
 
 - name: "create {{ webserver_nginx_content_directory }} directory"
