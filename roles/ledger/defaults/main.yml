@@ -1,0 +1,18 @@
+---
+ledger_user: "ledger"
+ledger_home: "/home/{{ ledger_user }}"
+
+ledger_rvm_ruby_version: "2.5.0"
+ledger_rvm_ruby_install_flags: "--auto-dotfiles --user-install"
+ledger_rvm_ruby_install_path: "{{ ledger_home }}/.rvm"
+ledger_rvm_user: "root"
+
+ledger_repo: "https://github.com/cedricpim/ledger.git"
+ledger_directory: "{{ ledger_home }}/ledger"
+
+ledger_config_directory: "{{ ledger_home }}/.config/ledger"
+
+ledger_file: "{{ ledger_config_directory }}/ledger.csv"
+ledger_networth: "{{ ledger_config_directory }}/networth.csv"
+ledger_backup_directory: "{{ ledger_home }}/backups/ledger"
+ledger_keep_days: "7"

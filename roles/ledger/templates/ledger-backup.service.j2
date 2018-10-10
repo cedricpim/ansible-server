@@ -1,0 +1,10 @@
+{{ ansible_managed | comment }}
+
+[Unit]
+Description=Ledger backup
+
+[Service]
+ExecStart=/bin/bash -lc 'bledger'
+User={{ ledger_user }}
+Group={{ ledger_user }}
+Type=oneshot

@@ -85,8 +85,11 @@ email_sieve_filters: |
     keep;
   }
 
-rvm1_rubies:
-  - "ruby-2.5.0"
-rvm1_install_flags: "--auto-dotfiles"
-rvm1_install_path: "/usr/local/rvm"
-rvm1_user: "root"
+ledger_password: "password"
+ledger_salt: "salt1234"
+ledger_exchange_api_key: "some_key"
+ledger_currency: "USD"
+ledger_investment_categories:
+  - "InvestmentCategory"
+ledger_reoccurrences:
+  - { day: "01", account: "Account", category: "Category", description: "Description", venue: "Venue", amount: "-100.00", currency: "EUR" }

@@ -1,0 +1,61 @@
+{{ ansible_managed | comment }}
+
+:ledger: {{ ledger_file }}
+
+:networth:
+  :file: {{ ledger_networth }}
+  :investments:
+{% for investment_category in ledger_investment_categories %}
+    - {{ investment_category }}
+{% endfor %}
+
+:exchange:
+  :api_key: "{{ ledger_exchange_api_key }}"
+  :cache_file: "/tmp/exchange-cache.json"
+  :ttl: 86400
+
+:fields:
+  :account:
+    :default: ""
+    :presence: true
+  :date:
+    :default: "<%= Date.today %>"
+    :presence: true
+  :category:
+    :default: ""
+    :presence: true
+  :description:
+    :default: ""
+    :presence: false
+  :venue:
+    :default: ""
+    :presence: false
+  :amount:
+    :default: ""
+    :presence: true
+  :currency:
+    :default: "{{ ledger_currency }}"
+    :presence: true
+  :processed:
+    :default: "yes"
+    :presence: true
+  :travel:
+    :default: ""
+    :presence: false
+
+:format:
+  :fields:
+    :money:
+      :ledger:
+        :sign_positive: true
+        :decimal_mark: "."
+        :thousands_separator: ""
+        :format: "%n%u"
+        :symbol: false
+
+:encryption:
+  :enabled: true
+  :algorithm: AES-256-CBC
+  :credentials:
+    :password: {{ ledger_password }}
+    :salt: {{ ledger_salt }}

@@ -39,6 +39,7 @@
     - { role: "systemon", tags: "systemon" }
     - { role: "email", tags: "email" }
     - { role: "netdata", tags: "netdata" }
+    - { role: "ledger", tags: "ledger" }
 
   post_tasks:
     - name: "get list of users after running roles"

@@ -1,0 +1,10 @@
+{{ ansible_managed | comment }}
+
+[Unit]
+Description=Store networth calculation
+
+[Service]
+ExecStart=/bin/bash -lc 'ledger networth -s'
+User={{ ledger_user }}
+Group={{ ledger_user }}
+Type=oneshot

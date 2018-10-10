@@ -1,0 +1,25 @@
+---
+- name: "download ledger repository"
+  git:
+    repo: "{{ ledger_repo }}"
+    dest: "{{ ledger_directory }}"
+    clone: yes
+    update: yes
+  register: ledger_repo
+  become: yes
+  remote_user: "{{ ledger_user }}"
+
+- name: "install ledger"
+  block:
+    - command: "/bin/bash -lc 'gem build ledger.gemspec'"
+      args:
+        chdir: "{{ ledger_directory }}"
+      register: ledger_gem
+    - command: "/bin/bash -lc \"gem install {{ ledger_gem.stdout | regex_findall('File: (.*)') | first }} --no-rdoc --no-ri\""
+      args:
+        chdir: "{{ ledger_directory }}"
+  rescue:
+    - file: path="{{ ledger_directory }}" state="absent"
+  when: ledger_repo is defined and ledger_repo is changed
+  become: yes
+  remote_user: "{{ ledger_user }}"

@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -eo pipefail
+IFS=$'\n\t'
+
+{{ ansible_managed | comment }}
+
+function expected_date() {
+  [ "$(date +'%d')" == "$1" ]
+}
+
+CURRENT_DATE="$(date +'%Y-%m-%d')"
+
+{% for rec in ledger_reoccurrences %}
+expected_date {{ rec.day | quote }} && ledger book -t -- {{ rec.account }} $CURRENT_DATE {{ rec.category | quote }} {{ rec.description | quote }} {{ rec.venue | quote }} {{ rec.amount }} {{ rec.currency }} yes ""
+{% endfor %}
+
+exit 0

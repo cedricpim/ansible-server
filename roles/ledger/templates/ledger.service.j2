@@ -1,0 +1,10 @@
+{{ ansible_managed | comment }}
+
+[Unit]
+Description=Ledger recurring expenses
+
+[Service]
+ExecStart=/bin/bash -lc 'rledger'
+User={{ ledger_user }}
+Group={{ ledger_user }}
+Type=oneshot
