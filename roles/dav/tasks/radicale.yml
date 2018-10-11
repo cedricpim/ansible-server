@@ -54,6 +54,7 @@
         mode: "0600"
         force: no
       with_items: "{{ dav_collections }}"
+  no_log: yes
 
 - name: "copy Radicale systemd"
   template:
