@@ -1,12 +1,11 @@
 ---
 - name: "install Sieve"
   apt:
-    name: "{{ item }}"
+    name:
+      - "dovecot-managesieved"
+      - "dovecot-sieve"
     default_release: "{{ ansible_distribution_release }}-backports"
     state: "latest"
-  with_items:
-    - "dovecot-managesieved"
-    - "dovecot-sieve"
 
 - name: "create Sieve folders"
   file:

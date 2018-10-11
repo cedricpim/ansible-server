@@ -1,13 +1,12 @@
 ---
 - name: "install Dovecot"
   apt:
-    name: "{{ item }}"
+    name:
+      - "dovecot-core"
+      - "dovecot-common"
+      - "dovecot-imapd"
     default_release: "{{ ansible_distribution_release }}-backports"
     state: "latest"
-  with_items:
-    - "dovecot-core"
-    - "dovecot-common"
-    - "dovecot-imapd"
 
 - name: "check if certificate already exists"
   stat:

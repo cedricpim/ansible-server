@@ -1,12 +1,11 @@
 ---
 - name: "install Nginx and ssl-cert"
   apt:
-    name: "{{ item }}"
+    name:
+      - "nginx"
+      - "ssl-cert"
     default_release: "{{ ansible_distribution_release }}-backports"
     state: "latest"
-  with_items:
-    - "nginx"
-    - "ssl-cert"
 
 - name: "create {{ webserver_nginx_user }} user"
   user:

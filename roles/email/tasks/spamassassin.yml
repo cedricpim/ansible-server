@@ -1,11 +1,10 @@
 ---
 - name: "install SpamAssassin"
   apt:
-    name: "{{ item }}"
+    name:
+      - "spamassassin"
+      - "spamass-milter"
     state: "latest"
-  with_items:
-    - "spamassassin"
-    - "spamass-milter"
   register: spamassassin_package
 
 - name: "install Pyzor add-ons"

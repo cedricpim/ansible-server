@@ -1,11 +1,10 @@
 ---
 - name: "install Pflogsumm and dependencies"
   apt:
-    name: "{{ item }}"
+    name:
+      - "pflogsumm"
+      - "procmail"
     state: "latest"
-  with_items:
-    - "pflogsumm"
-    - "procmail"
 
 - include_role:
     name: "general"

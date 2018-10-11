@@ -1,19 +1,18 @@
 ---
 - name: "install Python2, Git and other dependencies"
   apt:
-    name: "{{ item }}"
+    name:
+      - "python"
+      - "python-pip"
+      - "python-setuptools"
+      - "python-dev"
+      - "git"
+      - "pkg-config"
+      - "libsystemd-dev"
+      - "libffi-dev"
+      - "libssl-dev"
+      - "build-essential"
     state: "latest"
-  with_items:
-    - "python"
-    - "python-pip"
-    - "python-setuptools"
-    - "python-dev"
-    - "git"
-    - "pkg-config"
-    - "libsystemd-dev"
-    - "libffi-dev"
-    - "libssl-dev"
-    - "build-essential"
 
 - name: "download Systemon"
   git:

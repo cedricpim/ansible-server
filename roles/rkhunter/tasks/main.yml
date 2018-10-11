@@ -1,11 +1,10 @@
 ---
 - name: "install Rkhunter and dependencies"
   apt:
-    name: "{{ item }}"
+    name:
+      - "rkhunter"
+      - "mailutils"
     state: "latest"
-  with_items:
-    - "rkhunter"
-    - "mailutils"
 
 - name: "create Rkhunter directories"
   file:

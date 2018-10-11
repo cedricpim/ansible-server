@@ -1,12 +1,11 @@
 ---
 - name: "install Unbound"
   apt:
-    name: "{{ item }}"
+    name:
+      - "unbound"
+      - "unbound-host"
+      - "ldnsutils"
     state: "latest"
-  with_items:
-    - "unbound"
-    - "unbound-host"
-    - "ldnsutils"
 
 - name: "download root.hints"
   get_url:

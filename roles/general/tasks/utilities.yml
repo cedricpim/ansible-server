@@ -1,15 +1,14 @@
 ---
 - name: "install vim, curl and some other utilities"
   apt:
-    name: "{{ item }}"
+    name:
+      - "vim"
+      - "curl"
+      - "at"
+      - "acpid"
+      - "rsyslog"
+      - "htop"
     state: "latest"
-  with_items:
-    - "vim"
-    - "curl"
-    - "at"
-    - "acpid"
-    - "rsyslog"
-    - "htop"
 
 - name: "copy htop configuration file"
   template:

@@ -1,13 +1,12 @@
 ---
 - name: "install Netdata and utilities"
   apt:
-    name: "{{ item }}"
+    name:
+      - "netdata"
+      - "iw"
+      - "fping"
+      - "python-dnspython"
     state: "latest"
-  with_items:
-    - "netdata"
-    - "iw"
-    - "fping"
-    - "python-dnspython"
 
 - name: "add required groups to Netdata"
   user:

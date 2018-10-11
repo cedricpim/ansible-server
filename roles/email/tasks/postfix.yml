@@ -1,11 +1,10 @@
 ---
 - name: "install Postfix"
   apt:
-    name: "{{ item }}"
+    name:
+      - "postfix"
+      - "ssl-cert"
     state: "latest"
-  with_items:
-    - "postfix"
-    - "ssl-cert"
 
 - name: "add user postfix to group opendkim"
   user:

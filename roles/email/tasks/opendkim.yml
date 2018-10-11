@@ -1,12 +1,11 @@
 ---
 - name: "install OpenDKIM"
   apt:
-    name: "{{ item }}"
+    name:
+      - "opendkim"
+      - "opendkim-tools"
+      - "libmail-dkim-perl"
     state: "latest"
-  with_items:
-    - "opendkim"
-    - "opendkim-tools"
-    - "libmail-dkim-perl"
 
 - name: "create OpenDKIM folder"
   file:
