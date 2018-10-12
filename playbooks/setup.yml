@@ -7,7 +7,7 @@
     - "../group_vars/system.yml"
 
   pre_tasks:
-    - name: "update current packages"
+    - name: "Update current packages"
       apt:
         upgrade: yes
         update_cache: yes

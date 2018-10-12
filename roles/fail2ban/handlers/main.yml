@@ -1,5 +1,5 @@
 ---
-- name: "reload Fail2Ban"
+- name: "Reload Fail2Ban"
   systemd:
     name: "fail2ban"
     state: "reloaded"

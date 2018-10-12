@@ -1,12 +1,12 @@
 ---
-- name: "install Rkhunter and dependencies"
+- name: "Install Rkhunter and dependencies"
   apt:
     name:
       - "rkhunter"
       - "mailutils"
     state: "latest"
 
-- name: "create Rkhunter directories"
+- name: "Create Rkhunter directories"
   file:
     path: "{{ item }}"
     mode: "0755"
@@ -15,7 +15,7 @@
     - "{{ rkhunter_config_directory }}"
     - "{{ rkhunter_default_directory }}"
 
-- name: "copy Rkhunter settings"
+- name: "Copy Rkhunter settings"
   template:
     src: "{{ item.filename }}.j2"
     dest: "{{ item.directory }}/{{ item.filename }}"
@@ -25,7 +25,7 @@
     - { directory: "{{ rkhunter_default_directory }}", filename: "rkhunter" }
   register: rkhunter_settings
 
-- name: "update Rkhunter"
+- name: "Update Rkhunter"
   command: "rkhunter --update"
   register: rkhunter_update
   failed_when:

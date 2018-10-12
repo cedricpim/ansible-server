@@ -1,10 +1,10 @@
 ---
-- name: "reload Unbound"
+- name: "Reload Unbound"
   systemd:
     name: "unbound"
     state: "reloaded"
 
-- name: "restart root.hints timer"
+- name: "Restart root.hints timer"
   systemd:
     name: "roothints.timer"
     state: "restarted"

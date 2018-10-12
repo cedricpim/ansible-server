@@ -1,5 +1,5 @@
 ---
-- name: "install Nginx and ssl-cert"
+- name: "Install Nginx and ssl-cert"
   apt:
     name:
       - "nginx"
@@ -7,14 +7,14 @@
     default_release: "{{ ansible_distribution_release }}-backports"
     state: "latest"
 
-- name: "create {{ webserver_nginx_user }} user"
+- name: "Create {{ webserver_nginx_user }} user"
   user:
     name: "{{ webserver_nginx_user }}"
     shell: "/bin/false"
     createhome: no
     state: "present"
 
-- name: "create {{ webserver_nginx_content_directory }} directory"
+- name: "Create {{ webserver_nginx_content_directory }} directory"
   file:
     path: "{{ webserver_nginx_content_directory }}/html"
     owner: "{{ webserver_nginx_user }}"
@@ -23,7 +23,7 @@
     state: "directory"
   register: nginx_content_directory
 
-- name: "copy main page placeholder"
+- name: "Copy main page placeholder"
   template:
     src: "index.html.j2"
     dest: "{{ webserver_nginx_content_directory }}/html/index.html"
@@ -32,7 +32,7 @@
     mode: "0644"
     force: no
 
-- name: "set permissions of {{ webserver_nginx_content_directory }}"
+- name: "Set permissions of {{ webserver_nginx_content_directory }}"
   file:
     path: "{{ webserver_nginx_content_directory }}"
     owner: "{{ webserver_nginx_user }}"
@@ -41,7 +41,7 @@
     recurse: yes
   when: nginx_content_directory is defined and nginx_content_directory.changed
 
-- name: "ensure {{ webserver_nginx_log_directory }} permissions are set"
+- name: "Ensure {{ webserver_nginx_log_directory }} permissions are set"
   file:
     path: "{{ webserver_nginx_log_directory }}"
     owner: "{{ webserver_nginx_user }}"
@@ -49,23 +49,23 @@
     mode: "0755"
     state: "directory"
 
-- name: "check if DHE parameter exists"
+- name: "Check if DHE parameter exists"
   stat:
     path: "{{ webserver_nginx_ssl_dhparam }}"
   register: dhe_parameter
 
-- name: "generate a stronger DHE parameter"
+- name: "Generate a stronger DHE parameter"
   command: "openssl dhparam -out {{ webserver_nginx_ssl_dhparam }} 4096"
   when: dhe_parameter is defined and dhe_parameter.stat.islnk is not defined
 
-- name: "copy main settings"
+- name: "Copy main settings"
   template:
     src: "nginx.conf.j2"
     dest: "{{ webserver_nginx_config_directory }}/nginx.conf"
     mode: "0644"
-  notify: "reload Nginx"
+  notify: "Reload Nginx"
 
-- name: "create Nginx directories for individual configurations"
+- name: "Create Nginx directories for individual configurations"
   file:
     path: "{{ item }}"
     mode: "0755"
@@ -74,42 +74,42 @@
     - "{{ webserver_nginx_config_directory }}/conf.d"
     - "{{ webserver_nginx_config_directory }}/conf"
 
-- name: "check for Let's Encrypt certificates"
+- name: "Check for Let's Encrypt certificates"
   stat:
     path: "{{ webserver_letsencrypt_config_directory }}/live/{{ server }}/cert.pem"
   register: letsencrypt_cert
 
-- name: "copy default server settings without certificates"
+- name: "Copy default server settings without certificates"
   template:
     src: "conf.d/default-without-certificates.conf.j2"
     dest: "{{ webserver_nginx_config_directory }}/conf.d/default.conf"
     mode: "0644"
-  notify: "reload Nginx"
+  notify: "Reload Nginx"
   when: letsencrypt_cert is defined and letsencrypt_cert.stat.islnk is defined
 
-- name: "copy default server settings with certificates"
+- name: "Copy default server settings with certificates"
   template:
     src: "conf.d/default-with-certificates.conf.j2"
     dest: "{{ webserver_nginx_config_directory }}/conf.d/default.conf"
     mode: "0644"
-  notify: "reload Nginx"
+  notify: "Reload Nginx"
   when: letsencrypt_cert is defined and letsencrypt_cert.stat.islnk is not defined
 
 # FIX: https://bugs.launchpad.net/ubuntu/+source/nginx/+bug/1581864
-- name: "override Nginx service"
+- name: "Override Nginx service"
   block:
     - file: path="{{ systemd_directory }}/nginx.service.d" owner="root" group="root" mode="0755" state="directory"
     - template: src="systemd/override.conf.j2" dest="{{ systemd_directory }}/nginx.service.d/override.conf" owner="root" group="root" mode="0644"
       register: nginx_override
 
-- name: "restart Nginx"
+- name: "Restart Nginx"
   systemd:
     name: "nginx"
     state: "restarted"
     daemon_reload: yes
   when: nginx_override is defined and nginx_override is changed
 
-- name: "enable/start Nginx"
+- name: "Enable/start Nginx"
   systemd:
     name: "nginx"
     state: "started"

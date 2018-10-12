@@ -1,16 +1,16 @@
 ---
-- name: "install Logrotate"
+- name: "Install Logrotate"
   apt:
     name: "logrotate"
     state: "latest"
 
-- name: "copy Logrotate settings"
+- name: "Copy Logrotate settings"
   template:
     src: "logrotate.conf.j2"
     dest: "/etc/logrotate.conf"
     mode: "0644"
 
-- name: "create Logrotate directory"
+- name: "Create Logrotate directory"
   file:
     path: "{{ logrotate_config_directory }}"
     mode: "0755"

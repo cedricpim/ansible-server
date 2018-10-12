@@ -1,15 +1,15 @@
 ---
-- name: "install monit"
+- name: "Install monit"
   apt:
     name: "monit"
     state: "latest"
 
-- name: "copy Monit settings"
+- name: "Copy Monit settings"
   template:
     src: "monitrc.j2"
     dest: "{{ monit_config_directory }}/monitrc"
     mode: "0600"
-  notify: "reload Monit"
+  notify: "Reload Monit"
 
 - include_role:
     name: "monit"
@@ -20,7 +20,7 @@
   loop_control:
     loop_var: "conf"
 
-- name: "start/enable monit"
+- name: "Start/enable monit"
   systemd:
     name: "monit"
     state: "started"

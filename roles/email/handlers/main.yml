@@ -1,42 +1,42 @@
 ---
-- name: "reload OpenDKIM"
+- name: "Reload OpenDKIM"
   systemd:
     name: "opendkim"
     state: "reloaded"
 
-- name: "display message about OpenDKIM keys"
+- name: "Display message about OpenDKIM keys"
   debug:
     msg:
       - "Please run"
       - "ssh -p {{ general_sshd_ports[0] }} -t {{ general_user }}@{{ ansible_default_ipv4.address }} 'cat {{ email_opendkim_config_directory }}/mail.txt'"
       - "and add the result to the register"
 
-- name: "reload SpamAssassin"
+- name: "Reload SpamAssassin"
   systemd:
     name: "spamassassin"
     state: "reloaded"
 
-- name: "restart spamass-milter"
+- name: "Restart spamass-milter"
   systemd:
     name: "spamass-milter"
     state: "restarted"
 
-- name: "restart sa-learn"
+- name: "Restart sa-learn"
   systemd:
     name: "sa-learn.timer"
     state: "restarted"
 
-- name: "reload Postfix"
+- name: "Reload Postfix"
   systemd:
     name: "postfix"
     state: "reloaded"
 
-- name: "reload Dovecot"
+- name: "Reload Dovecot"
   systemd:
     name: "dovecot"
     state: "reloaded"
 
-- name: "restart Pflogsumm"
+- name: "Restart Pflogsumm"
   systemd:
     name: "pflogsumm.timer"
     state: "restarted"

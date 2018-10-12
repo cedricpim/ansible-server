@@ -1,16 +1,16 @@
 ---
-- name: "ensure curl is installed"
+- name: "Ensure curl is installed"
   apt:
     name: "curl"
     state: "latest"
 
-- name: "ensure git is installed"
+- name: "Ensure git is installed"
   apt:
     name: "git"
     default_release: "{{ ansible_distribution_release }}-backports"
     state: "latest"
 
-- name: "ensure ledger dependencies are installed"
+- name: "Ensure ledger dependencies are installed"
   apt:
     name:
       - "ruby"
@@ -30,20 +30,24 @@
     rvm1_install_flags: "{{ ledger_rvm_ruby_install_flags }}"
     rvm1_install_path: "{{ ledger_rvm_ruby_install_path }}"
     rvm1_user: "{{ ledger_rvm_user }}"
+  register: rvm_install
 
-- name: "import GPG key for {{ ledger_user }}"
+- name: "Import GPG key for {{ ledger_user }}"
   command: "gpg --recv-keys {{ rvm_gpg_key }}"
   become: yes
   remote_user: "{{ ledger_user }}"
+  when: rvm_install is defined and rvm_install.changed
 
-- name: "set dotfiles for {{ ledger_user }}"
+- name: "Set dotfiles for {{ ledger_user }}"
   command: "{{ ledger_rvm_ruby_install_path }}/bin/rvm get stable --auto-dotfiles"
   become: yes
   remote_user: "{{ ledger_user }}"
+  when: rvm_install is defined and rvm_install.changed
 
-- name: "set correct permissions"
+- name: "Set correct permissions"
   file:
     path: "{{ ledger_rvm_ruby_install_path }}"
     owner: "{{ ledger_user }}"
     group: "{{ ledger_user }}"
     recurse: yes
+  when: rvm_install is defined and rvm_install.changed

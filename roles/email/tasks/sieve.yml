@@ -1,5 +1,5 @@
 ---
-- name: "install Sieve"
+- name: "Install Sieve"
   apt:
     name:
       - "dovecot-managesieved"
@@ -7,7 +7,7 @@
     default_release: "{{ ansible_distribution_release }}-backports"
     state: "latest"
 
-- name: "create Sieve folders"
+- name: "Create Sieve folders"
   file:
     path: "{{ email_directory }}/{{ item }}"
     owner: "{{ email_user }}"
@@ -18,7 +18,7 @@
     - "sieve-before"
     - "sieve-after"
 
-- name: "copy Sieve before filter"
+- name: "Copy Sieve before filter"
   template:
     src: "sieve/before-master.sieve.j2"
     dest: "{{ email_directory }}/sieve-before/master.sieve"
@@ -27,7 +27,7 @@
     mode: "0644"
   register: before_filter_sieve
 
-- name: "compile before-filter Sieve"
+- name: "Compile before-filter Sieve"
   block:
     - command: "sievec {{ email_directory }}/sieve-before/master.sieve"
     - file: path="{{ email_directory }}/sieve-before/master.svbin" owner="{{ email_user }}" group="{{ email_user }}"

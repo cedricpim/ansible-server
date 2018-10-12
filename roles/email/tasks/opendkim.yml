@@ -1,5 +1,5 @@
 ---
-- name: "install OpenDKIM"
+- name: "Install OpenDKIM"
   apt:
     name:
       - "opendkim"
@@ -7,7 +7,7 @@
       - "libmail-dkim-perl"
     state: "latest"
 
-- name: "create OpenDKIM folder"
+- name: "Create OpenDKIM folder"
   file:
     path: "{{ email_opendkim_config_directory }}"
     owner: "{{ email_opendkim_user }}"
@@ -15,36 +15,36 @@
     mode: "0755"
     state: "directory"
 
-- name: "check if keys have been generated"
+- name: "Check if keys have been generated"
   stat:
     path: "{{ email_opendkim_config_directory }}/{{ email_opendkim_subdomain }}.txt"
   register: opendkim_keys
 
-- name: "generate DKIM pair of keys"
+- name: "Generate DKIM pair of keys"
   command: "opendkim-genkey -r -h sha256 -d {{ server }} -s {{ email_opendkim_subdomain }}"
   args:
     chdir: "{{ email_opendkim_config_directory }}"
   notify:
-    - "reload OpenDKIM"
-    - "display message about OpenDKIM keys"
+    - "Reload OpenDKIM"
+    - "Display message about OpenDKIM keys"
   when: opendkim_keys is defined and opendkim_keys.stat.islnk is not defined
 
-- name: "set correct permissions"
+- name: "Set correct permissions"
   file:
     path: "{{ email_opendkim_config_directory }}"
     owner: "{{ email_opendkim_user }}"
     group: "{{ email_opendkim_user }}"
     recurse: yes
 
-- name: "rename {{ email_opendkim_subdomain }}.private to {{ email_opendkim_subdomain }}"
+- name: "Rename {{ email_opendkim_subdomain }}.private to {{ email_opendkim_subdomain }}"
   command: "mv {{ email_opendkim_subdomain }}.private {{ email_opendkim_subdomain }}"
   args:
     chdir: "{{ email_opendkim_config_directory }}"
     creates: "{{ email_opendkim_config_directory }}/{{ email_opendkim_subdomain }}"
     removes: "{{ email_opendkim_config_directory }}/{{ email_opendkim_subdomain }}.private"
-  notify: "reload OpenDKIM"
+  notify: "Reload OpenDKIM"
 
-- name: "copy Tables for OpenDKIM"
+- name: "Copy Tables for OpenDKIM"
   template:
     src: "opendkim/{{ item }}.j2"
     dest: "{{ email_opendkim_config_directory }}/{{ item }}"
@@ -55,16 +55,16 @@
     - "KeyTable"
     - "SigningTable"
     - "TrustedHosts"
-  notify: "reload OpenDKIM"
+  notify: "Reload OpenDKIM"
 
-- name: "copy OpenDKIM settings"
+- name: "Copy OpenDKIM settings"
   template:
     src: "opendkim/opendkim.conf.j2"
     dest: "/etc/opendkim.conf"
     mode: "0644"
-  notify: "reload OpenDKIM"
+  notify: "Reload OpenDKIM"
 
-- name: "create spool directory on Postfix for OpenDKIM"
+- name: "Create spool directory on Postfix for OpenDKIM"
   file:
     path: "{{ item.path }}"
     owner: "{{ item.owner }}"
@@ -75,7 +75,7 @@
     - { path: "{{ email_postfix_spool }}", owner: "root" }
     - { path: "{{ email_postfix_spool }}/opendkim", owner: "{{ email_opendkim_user }}" }
 
-- name: "start/Enable OpenDKIM"
+- name: "Start/Enable OpenDKIM"
   systemd:
     name: "opendkim"
     state: "started"

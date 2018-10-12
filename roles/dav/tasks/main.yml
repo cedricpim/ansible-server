@@ -1,5 +1,5 @@
 ---
-- name: "create {{ dav_user }} user"
+- name: "Create {{ dav_user }} user"
   user:
     name: "{{ dav_user }}"
     shell: "/bin/false"

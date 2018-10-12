@@ -1,5 +1,5 @@
 ---
-- name: "create {{ general_user }} user"
+- name: "Create {{ general_user }} user"
   user:
     name: "{{ general_user }}"
     password: "{{ general_password }}"
@@ -7,13 +7,13 @@
     shell: "/bin/bash"
     state: "present"
 
-- name: "set authorized key from local user"
+- name: "Set authorized key from local user"
   authorized_key:
     user: "{{ general_user }}"
     key: "{{ lookup('file', '~/.ssh/server_id_rsa.pub') }}"
     state: "present"
 
-- name: "add {{ general_user }} to sudoers"
+- name: "Add {{ general_user }} to sudoers"
   lineinfile:
     path: "/etc/sudoers"
     regexp: '{{ general_user }} ALL=\(ALL\) ALL'
@@ -21,19 +21,19 @@
     validate: "visudo -cf %s"
     backup: yes
 
-- name: "set SSHD settings"
+- name: "Set SSHD settings"
   template:
     src: "sshd_config.j2"
     dest: "/etc/ssh/sshd_config"
     mode: "0644"
-  notify: "reload SSH"
+  notify: "Reload SSH"
 
-- name: "set systemd settings"
+- name: "Set systemd settings"
   template:
     src: "system.conf.j2"
     dest: "/etc/systemd/system.conf"
     mode: "0644"
-  notify: "restart server configuration"
+  notify: "Restart server configuration"
 
 - include_role:
     name: "general"

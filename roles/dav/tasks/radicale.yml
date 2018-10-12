@@ -1,5 +1,5 @@
 ---
-- name: "install python3 and pip3"
+- name: "Install python3 and pip3"
   apt:
     name:
       - "python3"
@@ -7,14 +7,14 @@
       - "python-setuptools"
     state: "latest"
 
-- name: "install Radicale"
+- name: "Install Radicale"
   pip:
     name: "radicale"
     state: "latest"
     executable: "pip3"
-  notify: "restart Radicale"
+  notify: "Restart Radicale"
 
-- name: "create Radicale directories"
+- name: "Create Radicale directories"
   file:
     path: "{{ item.path }}"
     owner: "{{ dav_user }}"
@@ -26,7 +26,7 @@
     - { path: "{{ dav_radicale_pid_directory }}", mode: "0744" }
     - { path: "{{ dav_radicale_log_directory }}", mode: "0755" }
 
-- name: "copy Radicale settings"
+- name: "Copy Radicale settings"
   template:
     src: "radicale/{{ item }}.j2"
     dest: "{{ dav_radicale_config_directory }}/{{ item }}"
@@ -36,9 +36,9 @@
   with_items:
     - "config"
     - "logging"
-  notify: "restart Radicale"
+  notify: "Restart Radicale"
 
-- name: "prepare property files for collections"
+- name: "Prepare property files for collections"
   block:
     - file:
         path: "{{ dav_home }}/collection-root/{{ dav_radicale_collection }}/{{ item.id }}"
@@ -57,14 +57,14 @@
       with_items: "{{ dav_collections }}"
   no_log: yes
 
-- name: "copy Radicale systemd"
+- name: "Copy Radicale systemd"
   template:
     src: "radicale/radicale.service.j2"
     dest: "{{ systemd_directory }}/radicale.service"
     mode: "0644"
-  notify: "restart Radicale"
+  notify: "Restart Radicale"
 
-- name: "enable Radicale"
+- name: "Enable Radicale"
   systemd:
     name: "radicale"
     state: "started"

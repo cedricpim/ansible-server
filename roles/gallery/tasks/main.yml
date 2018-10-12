@@ -1,26 +1,26 @@
 ---
-- name: "install python3 and pip3"
+- name: "Install python3 and pip3"
   apt:
     name:
       - "python3"
       - "python3-pip"
     state: "latest"
 
-- name: "create {{ gallery_sigal_user }} user"
+- name: "Create {{ gallery_sigal_user }} user"
   user:
     name: "{{ gallery_sigal_user }}"
     shell: "/bin/false"
     home: "{{ gallery_sigal_home }}"
     state: "present"
 
-- name: "install Sigal"
+- name: "Install Sigal"
   pip:
     name: "sigal"
     state: "latest"
     executable: "pip3"
-  notify: "restart Sigal"
+  notify: "Restart Sigal"
 
-- name: "create Sigal configuration directory"
+- name: "Create Sigal configuration directory"
   file:
     path: "{{ gallery_sigal_config_directory }}"
     owner: "{{ gallery_sigal_user }}"
@@ -28,30 +28,30 @@
     mode: "0755"
     state: "directory"
 
-- name: "copy favicon.ico"
+- name: "Copy favicon.ico"
   copy:
     src: "favicon.ico"
     dest: "{{ gallery_sigal_home }}/favicon.ico"
     owner: "{{ gallery_sigal_user }}"
     group: "{{ gallery_sigal_user }}"
 
-- name: "copy Sigal settings"
+- name: "Copy Sigal settings"
   template:
     src: "sigal/sigal.conf.py.j2"
     dest: "{{ gallery_sigal_config_directory }}/sigal.conf.py"
     owner: "{{ gallery_sigal_user }}"
     group: "{{ gallery_sigal_user }}"
     mode: "0644"
-  notify: "restart Sigal"
+  notify: "Restart Sigal"
 
-- name: "copy Sigal systemd"
+- name: "Copy Sigal systemd"
   template:
     src: "sigal/sigal.service.j2"
     dest: "{{ systemd_directory }}/sigal.service"
     mode: "0644"
-  notify: "restart Sigal"
+  notify: "Restart Sigal"
 
-- name: "start/Enable Sigal"
+- name: "Start/Enable Sigal"
   systemd:
     name: "sigal"
     state: "started"

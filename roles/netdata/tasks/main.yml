@@ -1,5 +1,5 @@
 ---
-- name: "install Netdata and utilities"
+- name: "Install Netdata and utilities"
   apt:
     name:
       - "netdata"
@@ -8,7 +8,7 @@
       - "python-dnspython"
     state: "latest"
 
-- name: "add required groups to Netdata"
+- name: "Add required groups to Netdata"
   user:
     name: "netdata"
     groups:
@@ -16,7 +16,7 @@
       - "adm"
       - "proxy"
 
-- name: "copy Netdata settings"
+- name: "Copy Netdata settings"
   template:
     src: "{{ item }}.j2"
     dest: "{{ netdata_config_directory }}/{{ item }}"
@@ -24,15 +24,15 @@
   with_items:
     - "netdata.conf"
     - "python.d.conf"
-  notify: "restart Netdata"
+  notify: "Restart Netdata"
 
-- name: "create Netdata Python directory"
+- name: "Create Netdata Python directory"
   file:
     path: "{{ netdata_config_directory }}/python.d"
     mode: "0755"
     state: "directory"
 
-- name: "copy Netdata Python settings"
+- name: "Copy Netdata Python settings"
   template:
     src: "python.d/{{ item }}.conf.j2"
     dest: "{{ netdata_config_directory }}/python.d/{{ item }}.conf"
@@ -42,16 +42,16 @@
     - "web_log"
     - "dovecot"
     - "nginx"
-  notify: "restart Netdata"
+  notify: "Restart Netdata"
 
-- name: "set correct recipient for email"
+- name: "Set correct recipient for email"
   lineinfile:
     path: "{{ netdata_config_directory }}/health_alarm_notify.conf"
     regexp: 'DEFAULT_RECIPIENT_EMAIL='
     line: 'DEFAULT_RECIPIENT_EMAIL={{ email_webmaster }}@{{ server }}'
-  notify: "restart Netdata"
+  notify: "Restart Netdata"
 
-- name: "start/enable Netdata"
+- name: "Start/enable Netdata"
   systemd:
     name: "netdata"
     state: "started"

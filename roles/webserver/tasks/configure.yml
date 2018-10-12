@@ -1,16 +1,16 @@
 ---
-- name: "check if nginx is installed"
+- name: "Check if nginx is installed"
   shell: "dpkg-query -W -f='${Status}' nginx | grep 'install ok installed'"
   failed_when: no
   changed_when: no
   register: nginx_check
 
-- name: "check if certificate already exists"
+- name: "Check if certificate already exists"
   stat:
     path: "{{ webserver_letsencrypt_config_directory }}/live/{{ server }}/cert.pem"
   register: letsencrypt_cert
 
-- name: "create {{ webserver_nginx_user }} user"
+- name: "Create {{ webserver_nginx_user }} user"
   user:
     name: "{{ webserver_nginx_user }}"
     shell: "/bin/false"
@@ -20,7 +20,7 @@
     - nginx_check.rc == 0
     - letsencrypt_cert is defined and letsencrypt_cert.stat.islnk is defined
 
-- name: "create Nginx directories for individual configurations"
+- name: "Create Nginx directories for individual configurations"
   file:
     path: "{{ item }}"
     mode: "0755"
@@ -32,17 +32,17 @@
     - nginx_check.rc == 0
     - letsencrypt_cert is defined and letsencrypt_cert.stat.islnk is defined
 
-- name: "copy default server settings"
+- name: "Copy default server settings"
   template:
     src: "nginx/{{ conf }}.j2"
     dest: "{{ webserver_nginx_config_directory }}/conf.d/{{ conf }}"
     mode: "0644"
-  notify: "reload Nginx"
+  notify: "Reload Nginx"
   when:
     - nginx_check.rc == 0
     - letsencrypt_cert is defined and letsencrypt_cert.stat.islnk is defined
 
-- name: "create {{ webserver_nginx_config_directory }}/conf for credentials"
+- name: "Create {{ webserver_nginx_config_directory }}/conf for credentials"
   file:
     path: "{{ webserver_nginx_config_directory }}/conf"
     mode: "0755"
@@ -51,13 +51,13 @@
     - nginx_check.rc == 0
     - letsencrypt_cert is defined and letsencrypt_cert.stat.islnk is defined
 
-- name: "copy credentials"
+- name: "Copy credentials"
   template:
     src: "nginx/{{ item }}.j2"
     dest: "{{ webserver_nginx_config_directory }}/conf/{{ item }}"
     mode: "0644"
   with_items: "{{ credentials }}"
-  notify: "reload Nginx"
+  notify: "Reload Nginx"
   when:
     - credentials is defined
     - nginx_check.rc == 0

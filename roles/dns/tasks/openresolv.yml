@@ -1,17 +1,17 @@
 ---
-- name: "install Openresolv"
+- name: "Install Openresolv"
   apt:
     name: "openresolv"
     state: "latest"
 
-- name: "copy Openresolv settings"
+- name: "Copy Openresolv settings"
   template:
     src: "openresolv/resolvconf.conf.j2"
     dest: "{{ openresolv_config_directory }}/resolvconf.conf"
     mode: "0644"
   register: resolvconf_settings
 
-- name: "generate resolv.conf"
+- name: "Generate resolv.conf"
   command: "resolvconf -u"
-  notify: "reload Unbound"
+  notify: "Reload Unbound"
   when: resolvconf_settings is defined and resolvconf_settings.changed

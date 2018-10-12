@@ -1,5 +1,5 @@
 ---
-- name: "install vim, curl and some other utilities"
+- name: "Install vim, curl and some other utilities"
   apt:
     name:
       - "vim"
@@ -10,7 +10,7 @@
       - "htop"
     state: "latest"
 
-- name: "copy htop configuration file"
+- name: "Copy htop configuration file"
   template:
     src: "htoprc.j2"
     dest: "/etc/htoprc"

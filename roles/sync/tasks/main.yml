@@ -1,27 +1,27 @@
 ---
-- name: "add release PGP keys for Syncthing"
+- name: "Add release PGP keys for Syncthing"
   apt_key:
     url: "https://syncthing.net/release-key.txt"
     state: "present"
 
-- name: "add source for Syncthing"
+- name: "Add source for Syncthing"
   apt_repository:
     repo: "deb http://apt.syncthing.net/ syncthing stable"
     state: "present"
 
-- name: "install Syncthing"
+- name: "Install Syncthing"
   apt:
     name: "syncthing"
     state: "latest"
 
-- name: "create {{ syncthing_user }} user"
+- name: "Create {{ syncthing_user }} user"
   user:
     name: "{{ syncthing_user }}"
     shell: "/bin/false"
     home: "{{ syncthing_home }}"
     state: "present"
 
-- name: "create Syncthing configuration directory"
+- name: "Create Syncthing configuration directory"
   file:
     path: "{{ syncthing_config_directory }}"
     owner: "{{ syncthing_user }}"
@@ -29,7 +29,7 @@
     mode: "0755"
     state: "directory"
 
-- name: "create Syncthing service directory"
+- name: "Create Syncthing service directory"
   file:
     path: "{{ systemd_directory }}/syncthing@{{ syncthing_user }}.service.d"
     owner: "root"
@@ -37,34 +37,34 @@
     mode: "0755"
     state: "directory"
 
-- name: "override Syncthing user"
+- name: "Override Syncthing user"
   template:
     src: "systemd/override.conf.j2"
     dest: "{{ systemd_directory }}/syncthing@{{ syncthing_user }}.service.d/override.conf"
     owner: "root"
     group: "root"
     mode: "0644"
-  notify: "restart Syncthing"
+  notify: "Restart Syncthing"
 
-- name: "start/Enable Syncthing"
+- name: "Start/Enable Syncthing"
   systemd:
     name: "syncthing@{{ syncthing_user }}"
     state: "started"
     enabled: yes
     daemon_reload: yes
 
-- name: "wait until the file {{ syncthing_config_directory }}/config.xml is present"
+- name: "Wait until the file {{ syncthing_config_directory }}/config.xml is present"
   wait_for:
     path: "{{ syncthing_config_directory }}/config.xml"
     state: "present"
 
-- name: "update Syncthing port"
+- name: "Update Syncthing port"
   lineinfile:
     path: "{{ syncthing_config_directory }}/config.xml"
     regexp: '^(\s+)<address>127\.0\.0\.1'
     line: '\1<address>127.0.0.1:{{ syncthing_port }}</address>'
     backrefs: yes
-  notify: "restart Syncthing"
+  notify: "Restart Syncthing"
 
 - include_role:
     name: "webserver"

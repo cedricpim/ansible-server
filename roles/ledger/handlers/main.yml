@@ -1,17 +1,17 @@
 ---
-- name: "restart ledger timer"
+- name: "Restart ledger timer"
   systemd:
     name: "ledger.timer"
     state: "restarted"
     daemon_reload: yes
 
-- name: "restart ledger-backup timer"
+- name: "Restart ledger-backup timer"
   systemd:
     name: "ledger-backup.timer"
     state: "restarted"
     daemon_reload: yes
 
-- name: "restart ledger-networth timer"
+- name: "Restart ledger-networth timer"
   systemd:
     name: "ledger-networth.timer"
     state: "restarted"

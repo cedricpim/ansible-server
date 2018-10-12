@@ -1,5 +1,5 @@
 ---
-- name: "create {{ ledger_user }} user"
+- name: "Create {{ ledger_user }} user"
   user:
     name: "{{ ledger_user }}"
     home: "{{ ledger_home }}"
@@ -9,14 +9,14 @@
 - import_tasks: dependencies.yml
 - import_tasks: build.yml
 
-- name: "create folder for ledger configuration"
+- name: "Create folder for ledger configuration"
   file:
     path: "{{ ledger_config_directory }}"
     owner: "{{ ledger_user }}"
     group: "{{ ledger_user }}"
     state: "directory"
 
-- name: "copy ledger configuration"
+- name: "Copy ledger configuration"
   template:
     src: "config.j2"
     dest: "{{ ledger_config_directory }}/config"
@@ -33,7 +33,7 @@
   loop_control:
     loop_var: "script"
 
-- name: "create user folder for systemd and for backups"
+- name: "Create user folder for systemd and for backups"
   file:
     path: "{{ item.path }}"
     owner: "{{ item.owner }}"
@@ -43,7 +43,7 @@
     - { path: "{{ ledger_backup_directory }}", owner: "{{ ledger_user }}", group: "{{ ledger_user }}" }
     - { path: "{{ systemd_directory }}", owner: "root", group: "root" }
 
-- name: "copy service and timer for ledger-backup"
+- name: "Copy service and timer for ledger-backup"
   template:
     src: "{{ item }}.j2"
     dest: "{{ systemd_directory }}/{{ item }}"
@@ -56,11 +56,11 @@
     - "ledger-networth.service"
     - "ledger-networth.timer"
   notify:
-    - "restart ledger timer"
-    - "restart ledger-backup timer"
-    - "restart ledger-networth timer"
+    - "Restart ledger timer"
+    - "Restart ledger-backup timer"
+    - "Restart ledger-networth timer"
 
-- name: "enable/start ledger related timers"
+- name: "Enable/start ledger related timers"
   systemd:
     name: "{{ item }}"
     state: "started"

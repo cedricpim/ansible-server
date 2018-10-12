@@ -1,16 +1,16 @@
 ---
-- name: "ensure curl is installed"
+- name: "Ensure curl is installed"
   apt:
     name: "curl"
     state: "latest"
 
-- name: "install git"
+- name: "Install git"
   apt:
     name: "git"
     default_release: "{{ ansible_distribution_release }}-backports"
     state: "latest"
 
-- name: "create {{ webserver_nginx_content_directory }} directory"
+- name: "Create {{ webserver_nginx_content_directory }} directory"
   file:
     path: "{{ webserver_nginx_content_directory }}"
     owner: "{{ webserver_nginx_user }}"
@@ -18,14 +18,14 @@
     mode: "0755"
     state: "directory"
 
-- name: "clone KeeWeb"
+- name: "Clone KeeWeb"
   git:
     repo: "https://github.com/keeweb/keeweb.git"
     dest: "{{ webserver_nginx_content_directory }}/keeweb"
     version: "gh-pages"
   register: keeweb_repo
 
-- name: "ensure {{ webserver_nginx_content_directory }}/keeweb permissions are set"
+- name: "Ensure {{ webserver_nginx_content_directory }}/keeweb permissions are set"
   file:
     path: "{{ webserver_nginx_content_directory }}/keeweb"
     owner: "{{ webserver_nginx_user }}"

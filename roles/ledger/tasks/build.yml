@@ -1,5 +1,5 @@
 ---
-- name: "download ledger repository"
+- name: "Download ledger repository"
   git:
     repo: "{{ ledger_repo }}"
     dest: "{{ ledger_directory }}"
@@ -9,7 +9,7 @@
   become: yes
   remote_user: "{{ ledger_user }}"
 
-- name: "install ledger"
+- name: "Install ledger"
   block:
     - command: "/bin/bash -lc 'gem build ledger.gemspec'"
       args:

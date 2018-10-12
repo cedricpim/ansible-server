@@ -1,5 +1,5 @@
 ---
-- name: "install Fail2Ban and dependencies"
+- name: "Install Fail2Ban and dependencies"
   apt:
     name:
       - "fail2ban"
@@ -7,12 +7,12 @@
     default_release: "{{ ansible_distribution_release }}-backports"
     state: "latest"
 
-- name: "copy Fail2Ban settings"
+- name: "Copy Fail2Ban settings"
   template:
     src: "jail.local.j2"
     dest: "{{ fail2ban_config_directory }}/jail.local"
     mode: "0644"
-  notify: "reload Fail2Ban"
+  notify: "Reload Fail2Ban"
 
 - include_tasks: "check_file.yml"
   with_items:
@@ -22,7 +22,7 @@
   loop_control:
     loop_var: "file"
 
-- name: "start/Enable Fail2Ban"
+- name: "Start/Enable Fail2Ban"
   systemd:
     name: "fail2ban"
     state: "started"

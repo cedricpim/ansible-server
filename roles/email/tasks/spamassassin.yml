@@ -1,5 +1,5 @@
 ---
-- name: "install SpamAssassin"
+- name: "Install SpamAssassin"
   apt:
     name:
       - "spamassassin"
@@ -7,32 +7,32 @@
     state: "latest"
   register: spamassassin_package
 
-- name: "install Pyzor add-ons"
+- name: "Install Pyzor add-ons"
   apt:
     name: "pyzor"
     state: "latest"
   register: pyzor_package
 
-- name: "install Razor add-ons"
+- name: "Install Razor add-ons"
   apt:
     name: "razor"
     state: "latest"
   register: razor_package
 
-- name: "create SpamAssassin user"
+- name: "Create SpamAssassin user"
   user:
     name: "{{ email_spamassassin_user }}"
     home: "{{ email_spamassassin_home }}"
     state: "present"
 
-- name: "add SpamAssassin group to spamass-milter user"
+- name: "Add SpamAssassin group to spamass-milter user"
   user:
     name: "spamass-milter"
     groups: "{{ email_spamassassin_user }}"
     append: yes
     state: "present"
 
-- name: "copy SpamAssassin settings"
+- name: "Copy SpamAssassin settings"
   template:
     src: "spamassassin/{{ item }}.j2"
     dest: "/etc/default/{{ item }}"
@@ -41,16 +41,16 @@
     - "spamassassin"
     - "spamass-milter"
   notify:
-    - "reload SpamAssassin"
-    - "restart spamass-milter"
+    - "Reload SpamAssassin"
+    - "Restart spamass-milter"
 
-- name: "create SpamAssassin directory"
+- name: "Create SpamAssassin directory"
   file:
     path: "{{ email_spamassassin_config_directory }}"
     mode: "0755"
     state: "directory"
 
-- name: "copy SpamAssassin milter settings"
+- name: "Copy SpamAssassin milter settings"
   template:
     src: "spamassassin/{{ item }}.j2"
     dest: "{{ email_spamassassin_config_directory }}/{{ item }}"
@@ -59,10 +59,10 @@
     - "init.pre"
     - "local.cf"
   notify:
-    - "reload SpamAssassin"
-    - "restart spamass-milter"
+    - "Reload SpamAssassin"
+    - "Restart spamass-milter"
 
-- name: "create spool directory on Postfix for SpamAssassin"
+- name: "Create spool directory on Postfix for SpamAssassin"
   file:
     path: "{{ email_postfix_spool }}/spamassassin"
     owner: "{{ email_spamassassin_user }}"
@@ -70,16 +70,16 @@
     mode: "0755"
     state: "directory"
 
-- name: "update SpamAssassin rules"
+- name: "Update SpamAssassin rules"
   command: "sa-update --verbose"
   register: spamassassin_sa_update
   failed_when:
     - spamassassin_sa_update.failed
     - not "no fresh updates were available" in spamassassin_sa_update.stdout
-  notify: "reload SpamAssassin"
+  notify: "Reload SpamAssassin"
   when: spamassassin_package is defined and spamassassin_package.changed
 
-- name: "create global Bayesian filter and SpamAssassin Add-on folders"
+- name: "Create global Bayesian filter and SpamAssassin Add-on folders"
   file:
     path: "{{ email_spamassassin_home }}/{{ item }}"
     owner: "{{ email_spamassassin_user }}"
@@ -91,11 +91,11 @@
     - ".razor"
     - ".pyzor"
 
-- name: "run Pyzor add-on"
+- name: "Run Pyzor add-on"
   command: "pyzor --homedir {{ email_spamassassin_home }}/.pyzor discover"
   when: pyzor_package is defined and pyzor_package.changed
 
-- name: "run Razor add-on"
+- name: "Run Razor add-on"
   command: "razor-admin -home={{ email_spamassassin_home }}/.razor {{ item }}"
   with_items:
     - "-register"
@@ -103,13 +103,13 @@
     - "-discover"
   when: razor_package is defined and razor_package.changed
 
-- name: "set Razor home directory"
+- name: "Set Razor home directory"
   lineinfile:
     path: "{{ email_spamassassin_home }}/.razor/razor-agent.conf"
     line: 'razorhome = {{ email_spamassassin_home }}/.razor'
     state: "present"
 
-- name: "set correct permissions"
+- name: "Set correct permissions"
   file:
     path: "{{ email_spamassassin_home }}"
     owner: "{{ email_spamassassin_user }}"
@@ -122,7 +122,7 @@
   vars:
     script: "slearn"
 
-- name: "copy sa-learn systemd"
+- name: "Copy sa-learn systemd"
   template:
     src: "spamassassin/{{ item }}.j2"
     dest: "{{ systemd_directory }}/{{ item }}"
@@ -130,9 +130,9 @@
   with_items:
     - "sa-learn.service"
     - "sa-learn.timer"
-  notify: "restart sa-learn"
+  notify: "Restart sa-learn"
 
-- name: "restart/Enable SpamAssassin services"
+- name: "Restart/Enable SpamAssassin services"
   systemd:
     name: "{{ item }}"
     state: "started"

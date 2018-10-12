@@ -1,5 +1,5 @@
 ---
-- name: "add template for http"
+- name: "Add template for http"
   template:
     src: "conf.d/letsencrypt.conf.j2"
     dest: "{{ webserver_nginx_config_directory }}/conf.d/letsencrypt.conf"
@@ -7,14 +7,14 @@
   vars:
     https: no
 
-- name: "reload Nginx"
+- name: "Reload Nginx"
   systemd:
     name: "nginx"
     state: "reloaded"
 
-- name: "prepare domains"
+- name: "Prepare domains"
   set_fact:
     domains: "{{ webserver_letsencrypt_domains | map('regex_replace', '^(.*)$', '\\1.' + server ) | list + [ server ] }}"
 
-- name: "generate certificates"
+- name: "Generate certificates"
   command: "certbot certonly --noninteractive --agree-tos --email {{ webserver_letsencrypt_email }} --webroot -w {{ webserver_letsencrypt_challenge_directory }} -d {{ domains | reverse | join(',') }}"

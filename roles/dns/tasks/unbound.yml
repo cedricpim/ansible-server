@@ -1,5 +1,5 @@
 ---
-- name: "install Unbound"
+- name: "Install Unbound"
   apt:
     name:
       - "unbound"
@@ -7,12 +7,12 @@
       - "ldnsutils"
     state: "latest"
 
-- name: "download root.hints"
+- name: "Download root.hints"
   get_url:
     url: "{{ unbound_roothints_url }}"
     dest: "{{ unbound_config_directory }}/root.hints"
 
-- name: "copy root.hints timer and service"
+- name: "Copy root.hints timer and service"
   template:
     src: "unbound/{{ item }}.j2"
     dest: "{{ systemd_directory }}/{{ item }}"
@@ -20,23 +20,23 @@
   with_items:
     - "roothints.service"
     - "roothints.timer"
-  notify: "restart root.hints timer"
+  notify: "Restart root.hints timer"
 
-- name: "start/enable roothints timer"
+- name: "Start/enable roothints timer"
   systemd:
     name: "roothints.timer"
     state: "started"
     enabled: yes
     daemon_reload: yes
 
-- name: "copy Unbound settings"
+- name: "Copy Unbound settings"
   template:
     src: "unbound/unbound.conf.j2"
     dest: "{{ unbound_config_directory }}//unbound.conf.d/unbound.conf"
     mode: "0644"
-  notify: "reload Unbound"
+  notify: "Reload Unbound"
 
-- name: "create Unbound log directory"
+- name: "Create Unbound log directory"
   file:
     path: "{{ unbound_log_directory }}"
     owner: "{{ unbound_user }}"
@@ -44,7 +44,7 @@
     mode: "0755"
     state: "directory"
 
-- name: "start/enable Unbound"
+- name: "Start/enable Unbound"
   systemd:
     name: "unbound"
     state: "started"

@@ -7,19 +7,19 @@
     - "../group_vars/system.yml"
 
   pre_tasks:
-    - name: "update backports apt sources"
+    - name: "Update backports apt sources"
       apt_repository:
         repo: "deb http://ftp.debian.org/debian {{ ansible_distribution_release }}-backports main"
         state: "present"
       tags: "always"
 
-    - name: "get list of users before running roles"
+    - name: "Get list of users before running roles"
       command: "cut -d: -f1 /etc/passwd"
       changed_when: no
       register: pre_passwd_users
       tags: "always"
 
-    - name: "get list of services before running roles"
+    - name: "Get list of services before running roles"
       command: "systemctl list-unit-files"
       changed_when: no
       register: pre_systemd_services
@@ -42,19 +42,19 @@
     - { role: "ledger", tags: "ledger" }
 
   post_tasks:
-    - name: "get list of users after running roles"
+    - name: "Get list of users after running roles"
       command: "cut -d: -f1 /etc/passwd"
       changed_when: no
       register: post_passwd_users
       tags: "always"
 
-    - name: "check if newaliases command exists"
+    - name: "Check if newaliases command exists"
       stat:
         path: "/usr/bin/newaliases"
       register: newaliases_exist
       tags: "always"
 
-    - name: "copy aliases"
+    - name: "Copy aliases"
       template:
         src: "aliases.j2"
         dest: "/etc/aliases"
@@ -68,19 +68,19 @@
         - pre_passwd_users.stdout_lines != post_passwd_users.stdout_lines
       tags: "always"
 
-    - name: "hash aliases"
+    - name: "Hash aliases"
       command: "newaliases"
-      notify: "reload Postfix"
+      notify: "Reload Postfix"
       when: template_aliases is defined and template_aliases.changed
       tags: "always"
 
-    - name: "get list of services after running roles"
+    - name: "Get list of services after running roles"
       command: "systemctl list-unit-files"
       changed_when: no
       register: post_systemd_services
       tags: "always"
 
-    - name: "restart Systemon"
+    - name: "Restart Systemon"
       systemd:
         name: "systemon"
         state: "restarted"
@@ -93,18 +93,18 @@
         - pre_systemd_services.stdout_lines != post_systemd_services.stdout_lines
       tags: "always"
 
-    - name: "remove dependencies that are no longer required"
+    - name: "Remove dependencies that are no longer required"
       apt:
         autoremove: yes
       tags: "always"
 
-    - name: "remove useless packages from the cache"
+    - name: "Remove useless packages from the cache"
       apt:
         autoclean: yes
       tags: "always"
 
   handlers:
-    - name: "reload Postfix"
+    - name: "Reload Postfix"
       systemd:
         name: "postfix"
         state: "reloaded"

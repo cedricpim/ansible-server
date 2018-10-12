@@ -1,10 +1,10 @@
 ---
-- name: "reload Nginx"
+- name: "Reload Nginx"
   systemd:
     name: "nginx"
     state: "reloaded"
 
-- name: "restart Nginx"
+- name: "Restart Nginx"
   systemd:
     name: "nginx"
     state: "restarted"

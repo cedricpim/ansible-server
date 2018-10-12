@@ -1,31 +1,31 @@
 ---
-- name: "install Postfix"
+- name: "Install Postfix"
   apt:
     name:
       - "postfix"
       - "ssl-cert"
     state: "latest"
 
-- name: "add user postfix to group opendkim"
+- name: "Add user postfix to group opendkim"
   user:
     name: "{{ email_postfix_user }}"
     groups: "{{ email_opendkim_user }}"
     append: yes
     state: "present"
 
-- name: "copy mailname file"
+- name: "Copy mailname file"
   template:
     src: "postfix/mailname.j2"
     dest: "/etc/mailname"
     mode: "0644"
-  notify: "reload Postfix"
+  notify: "Reload Postfix"
 
-- name: "check if certificate already exists"
+- name: "Check if certificate already exists"
   stat:
     path: "{{ webserver_letsencrypt_config_directory }}/live/{{ server }}/cert.pem"
   register: letsencrypt_cert
 
-- name: "copy Postfix settings"
+- name: "Copy Postfix settings"
   template:
     src: "postfix/{{ item }}.cf.j2"
     dest: "{{ email_postfix_config_directory }}/{{ item }}.cf"
@@ -33,7 +33,7 @@
   with_items:
     - "main"
     - "master"
-  notify: "reload Postfix"
+  notify: "Reload Postfix"
 
 - include_tasks: "mapping.yml"
   with_items:
@@ -44,7 +44,7 @@
   loop_control:
     loop_var: "mapping"
 
-- name: "start/Enable Postfix"
+- name: "Start/Enable Postfix"
   systemd:
     name: "postfix"
     state: "started"

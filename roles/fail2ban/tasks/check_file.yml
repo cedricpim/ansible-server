@@ -1,10 +1,10 @@
 ---
-- name: "check {{ file.path }}"
+- name: "Check {{ file.path }}"
   stat:
     path: "{{ file.path }}"
   register: required_file
 
-- name: "ensure {{ file.path }} exist"
+- name: "Ensure {{ file.path }} exist"
   file:
     path: "{{ file.path }}"
     owner: "{{ file.owner }}"

@@ -1,5 +1,5 @@
 ---
-- name: "install Dovecot"
+- name: "Install Dovecot"
   apt:
     name:
       - "dovecot-core"
@@ -8,12 +8,12 @@
     default_release: "{{ ansible_distribution_release }}-backports"
     state: "latest"
 
-- name: "check if certificate already exists"
+- name: "Check if certificate already exists"
   stat:
     path: "{{ webserver_letsencrypt_config_directory }}/live/{{ server }}/cert.pem"
   register: letsencrypt_cert
 
-- name: "copy Dovecot settings"
+- name: "Copy Dovecot settings"
   template:
     src: "dovecot/{{ item }}.j2"
     dest: "{{ email_dovecot_config_directory }}/conf.d/{{ item }}"
@@ -25,16 +25,16 @@
     - "10-ssl.conf"
     - "15-mailboxes.conf"
     - "auth-system.conf.ext"
-  notify: "reload Dovecot"
+  notify: "Reload Dovecot"
 
-- name: "copy Dovecot credentials"
+- name: "Copy Dovecot credentials"
   template:
     src: "dovecot/passwd.db.j2"
     dest: "{{ email_dovecot_config_directory }}/passwd.db"
     mode: "0644"
-  notify: "reload Dovecot"
+  notify: "Reload Dovecot"
 
-- name: "start/Enable Dovecot"
+- name: "Start/Enable Dovecot"
   systemd:
     name: "dovecot"
     state: "started"
