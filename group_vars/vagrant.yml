@@ -4,6 +4,10 @@ general_password: "$6$gaagXYxRAIVVCA$rUek2lqIML2u5YBkFxMj.DOwC.ELGfI1K7iMyvlyH7b
 general_sshd_ports:
   - "22"
 
+openresolv_local_name_servers:
+  - "1.1.1.1"
+  - "1.1.0.0"
+
 monit_port: "22122"
 monit_credentials: "monit:monit"
 monit_bind_address: "0.0.0.0"
