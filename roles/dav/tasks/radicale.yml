@@ -23,7 +23,6 @@
     state: "directory"
   with_items:
     - { path: "{{ dav_radicale_config_directory }}", mode: "0744" }
-    - { path: "{{ dav_radicale_pid_directory }}", mode: "0744" }
     - { path: "{{ dav_radicale_log_directory }}", mode: "0755" }
 
 - name: "Copy Radicale settings"
