@@ -36,7 +36,6 @@
     - { role: "sync", tags: "sync" }
     - { role: "rkhunter", tags: "rkhunter" }
     - { role: "fail2ban", tags: "fail2ban" }
-    - { role: "systemon", tags: "systemon" }
     - { role: "email", tags: "email" }
     - { role: "netdata", tags: "netdata" }
     - { role: "ledger", tags: "ledger" }
@@ -78,19 +77,6 @@
       command: "systemctl list-unit-files"
       changed_when: no
       register: post_systemd_services
-      tags: "always"
-
-    - name: "Restart Systemon"
-      systemd:
-        name: "systemon"
-        state: "restarted"
-      register: systemon_service
-      failed_when:
-        - systemon_service.failed
-        - not "Could not find the requested service" in systemon_service.msg
-      when:
-        - pre_systemd_services is defined and post_systemd_services is defined
-        - pre_systemd_services.stdout_lines != post_systemd_services.stdout_lines
       tags: "always"
 
     - name: "Remove dependencies that are no longer required"
