@@ -59,4 +59,12 @@
   vars:
     conf: "rsyslog"
 
-- import_tasks: "utilities.yml"
+- name: "Install vim, curl and some other utilities"
+  apt:
+    name:
+      - "vim"
+      - "curl"
+      - "at"
+      - "acpid"
+      - "rsyslog"
+    state: "latest"
