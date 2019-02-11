@@ -3,3 +3,5 @@
 [Service]
 ExecStart=
 ExecStart=/usr/bin/syncthing -no-browser -no-restart -logflags=0 -home {{ syncthing_config_directory }}
+ProtectSystem=
+ProtectSystem=true
