@@ -15,7 +15,7 @@
       args:
         chdir: "{{ ledger_directory }}"
       register: ledger_gem
-    - command: "/bin/bash -lc \"gem install {{ ledger_gem.stdout | regex_findall('File: (.*)') | first }} --no-rdoc --no-ri\""
+    - command: "/bin/bash -lc \"gem install {{ ledger_gem.stdout | regex_findall('File: (.*)') | first }} --no-document\""
       args:
         chdir: "{{ ledger_directory }}"
   rescue:
