@@ -4,7 +4,6 @@ check process gallery.{{ server }} with pidfile {{ webserver_nginx_pidfile }}
   group {{ webserver_nginx_user }}
   start program = "/usr/sbin/service nginx start"
   stop program  = "/usr/sbin/service nginx stop"
-  if failed host gallery.{{ server }} port 80  protocol http  request "/" status = 301 then restart
   if failed host gallery.{{ server }} port 443 protocol https request "/" status = 401 then restart
   if cpu is greater than 40% for 2 cycles then alert
   if cpu > 60% for 5 cycles then restart
