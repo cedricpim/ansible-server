@@ -19,7 +19,7 @@
   register: letsencrypt_cert
 
 - import_tasks: "generate_certificates.yml"
-  when: letsencrypt_cert is defined and letsencrypt_cert.stat.islnk is not defined
+  when: (letsencrypt_generate_force is defined and letsencrypt_generate_force) or (letsencrypt_cert is defined and letsencrypt_cert.stat.islnk is not defined)
 
 - name: "Add template for https"
   template:
