@@ -100,3 +100,9 @@
     tasks_from: "configure"
   vars:
     conf: "taskd"
+
+- include_role:
+    name: "monit"
+    tasks_from: "configure"
+  vars:
+    conf: "taskd"
