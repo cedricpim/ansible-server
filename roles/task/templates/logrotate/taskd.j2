@@ -1,0 +1,10 @@
+{{ ansible_managed | comment }}
+
+{{ taskd_logfile }} {
+  weekly
+  rotate 7
+  missingok
+  compress
+  delaycompress
+  notifempty
+}

@@ -48,3 +48,6 @@ ledger_exchange_api_key: "{{ vault_ledger_exchange_api_key }}"
 ledger_currency: "{{ vault_ledger_currency }}"
 ledger_investment_categories: "{{ vault_ledger_investment_categories }}"
 ledger_reoccurrences: "{{ vault_ledger_reoccurrences }}"
+
+taskd_user: "{{ vault_taskd_user }}"
+taskd_server: "{{ vault_taskd_server }}"

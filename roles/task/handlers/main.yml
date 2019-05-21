@@ -1,0 +1,10 @@
+---
+- name: "Restart Taskd"
+  systemd:
+    name: "taskd"
+    state: "restarted"
+    daemon_reload: yes
+
+- name: "Show user details"
+  debug:
+    msg: "{{ taskd_added_user.stdout_lines }}"

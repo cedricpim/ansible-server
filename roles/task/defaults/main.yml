@@ -1,0 +1,10 @@
+---
+taskd_user: "Debian-taskd"
+taskd_directory: "/var/lib/taskd"
+taskd_logfile: "/var/log/taskd.log"
+taskd_pidfile: "/run/taskd.pid"
+taskd_port: "53589"
+taskd_server: "localhost"
+taskd_organisation: "general"
+
+taskd_pki_generators: "/usr/share/taskd/pki"

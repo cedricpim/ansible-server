@@ -1,0 +1,102 @@
+---
+- name: "Install Taskd"
+  apt:
+    name: "taskd"
+    state: "latest"
+
+- name: "Create Taskd user"
+  user:
+    name: "{{ taskd_user }}"
+    shell: "/bin/false"
+    state: "present"
+    create_home: no
+
+- name: "Change folder permissions for Taskd"
+  file:
+    path: "{{ item }}"
+    owner: "{{ taskd_user }}"
+    group: "{{ taskd_user }}"
+    state: "directory"
+    recurse: yes
+  with_items:
+    - "{{ taskd_directory }}"
+    - "/etc/taskd"
+
+- name: "Remove default Taskd user"
+  user:
+    name: "Debian-taskd"
+    state: "absent"
+  when: taskd_user != "Debian-taskd"
+
+- name: "Copy Taskd vars"
+  template:
+    src: "vars.j2"
+    dest: "{{ taskd_pki_generators }}/vars"
+    mode: "0644"
+
+- name: "Copy Taskd settings"
+  template:
+    src: "config.j2"
+    dest: "{{ taskd_directory }}/config"
+    owner: "{{ taskd_user }}"
+    group: "{{ taskd_user }}"
+    mode: "0600"
+  notify: "Restart Taskd"
+
+- name: "Check if certificates have been generated already"
+  stat:
+    path: "{{ taskd_directory }}/server.key.pem"
+  register: server_key_stat
+
+- import_tasks: "generate_certificates.yml"
+  when: (taskd_generate_force is defined and taskd_generate_force) or (server_key_stat is defined and server_key_stat.stat.islnk is not defined)
+
+- name: "Check if organisation has been generated already"
+  stat:
+    path: "{{ taskd_directory }}/orgs/{{ taskd_organisation }}"
+  register: organisation_stat
+
+- name: "Add Taskd general organisation"
+  command: "taskd add org {{ taskd_organisation }} --data {{ taskd_directory }}"
+  when: organisation_stat is defined and organisation_stat.stat.islnk is not defined
+
+- import_tasks: "generate_client_certificates.yml"
+  when: taskd_client_name is defined and taskd_client_name
+
+- name: "Change folder permissions for Taskd"
+  file:
+    path: "{{ taskd_directory }}"
+    owner: "{{ taskd_user }}"
+    group: "{{ taskd_user }}"
+    state: "directory"
+    recurse: yes
+
+- name: "Create Taskd service directory"
+  file:
+    path: "{{ systemd_directory }}/taskd.service.d"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+    state: "directory"
+
+- name: "Override Taskd service"
+  template:
+    src: "systemd/override.conf.j2"
+    dest: "{{ systemd_directory }}/taskd.service.d/override.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: "Restart Taskd"
+
+- name: "Start/enable taskd"
+  systemd:
+    name: "taskd"
+    state: "started"
+    enabled: yes
+    daemon_reload: yes
+
+- include_role:
+    name: "logrotate"
+    tasks_from: "configure"
+  vars:
+    conf: "taskd"

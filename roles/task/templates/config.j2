@@ -1,0 +1,23 @@
+{{ ansible_managed | comment }}
+
+# Taskd configuration
+#
+# See http://taskwarrior.org/docs/taskserver/configure.html
+# or man taskdrc
+confirmation=1
+extensions=/usr/libexec/taskd
+ip.log=off
+log={{ taskd_logfile }}
+pid.file={{ taskd_pidfile }}
+queue.size=10
+request.limit=1048576
+root={{ taskd_directory }}
+server={{ taskd_server }}:{{ taskd_port }}
+trust=strict
+verbose=1
+client.key={{ taskd_directory }}/client.key.pem
+client.cert={{ taskd_directory }}/client.cert.pem
+server.key={{ taskd_directory }}/server.key.pem
+server.cert={{ taskd_directory }}/server.cert.pem
+server.crl={{ taskd_directory }}/server.crl.pem
+ca.cert={{ taskd_directory }}/ca.cert.pem
