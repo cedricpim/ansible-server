@@ -3,8 +3,8 @@
 server {
   listen      {{ ansible_default_ipv4.address }}:443 ssl;
   server_name monit.{{ server }};
-  access_log  {{ webserver_nginx_log_directory }}/keeweb.access.log;
-  error_log   {{ webserver_nginx_log_directory }}/keeweb.error.log;
+  access_log  {{ webserver_nginx_log_directory }}/monit.access.log;
+  error_log   {{ webserver_nginx_log_directory }}/monit.error.log;
 
   location / {
     proxy_set_header         X-Real-IP $remote_addr;
