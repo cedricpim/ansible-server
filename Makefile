@@ -4,8 +4,6 @@ VERBOSE ?=
 TAGS ?=
 ANSIBLE_OPTS ?=
 ROOT ?=
-TASKD_CLIENT_USER ?=
-TASKD_FORCE_CERTIFICATES ?=
 LETSENCRYPT_FORCE_CERTIFICATES ?=
 
 $(if ${CHECK},   $(eval ANSIBLE_OPTS += --check))
@@ -19,8 +17,6 @@ setup:
 
 deploy:
 	$(eval ANSIBLE_OPTS += --vault-password-file vaulted_vars/system.txt)
-	$(if ${TASKD_CLIENT_USER},              $(eval ANSIBLE_OPTS += -e "taskd_client_name=${TASKD_CLIENT_USER}"))
-	$(if ${TASKD_FORCE_CERTIFICATES},       $(eval ANSIBLE_OPTS += -e "taskd_generate_force=yes"))
 	$(if ${LETSENCRYPT_FORCE_CERTIFICATES}, $(eval ANSIBLE_OPTS += -e "letsencrypt_generate_force=yes"))
 	ansible-playbook playbooks/${PLAYBOOK}.yml --diff --ask-become-pass ${ANSIBLE_OPTS}
 

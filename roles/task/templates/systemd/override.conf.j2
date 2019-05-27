@@ -1,9 +1,0 @@
-{{ ansible_managed | comment }}
-
-[Service]
-User=
-User={{ taskd_user }}
-Group=
-Group={{ taskd_user }}
-ExecStart=
-ExecStart=/usr/bin/taskd server --data {{ taskd_directory }}
