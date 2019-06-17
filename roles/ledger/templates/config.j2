@@ -21,28 +21,22 @@
 
 :fields:
   :account:
-    :default: ""
     :presence: true
   :date:
     :default: "<%= Date.today %>"
     :presence: true
   :category:
-    :default: ""
     :presence: true
   :description:
-    :default: ""
     :presence: false
   :venue:
-    :default: ""
     :presence: false
   :amount:
-    :default: ""
     :presence: true
   :currency:
     :default: "{{ ledger_currency }}"
     :presence: true
   :trip:
-    :default: ""
     :presence: false
 
 :format:
