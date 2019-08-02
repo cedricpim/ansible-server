@@ -4,4 +4,4 @@ IFS=$'\n\t'
 
 {{ ansible_managed | comment }}
 
-sieve-test {{ email_directory }}/sieve-$1/master.sieve {{ email_directory }}/{{ server }}/**/mail/cur/$2 -t - -Tlevel=matching
+sudo -u {{ email_user }} sieve-test {{ email_directory }}/sieve-$1/master.sieve {{ email_directory }}/{{ server }}/**/mail/$2 -t - -Tlevel=matching
