@@ -21,6 +21,12 @@
 - import_tasks: "generate_certificates.yml"
   when: (letsencrypt_generate_force is defined and letsencrypt_generate_force) or (letsencrypt_cert is defined and letsencrypt_cert.stat.islnk is not defined)
 
+- name: "Add template for email server renewal"
+  template:
+    src: "letsencrypt/mail.sh.j2"
+    dest: "{{ webserver_letsencrypt_config_directory }}/renewal-hooks/post/mail.sh"
+    mode: "0755"
+
 - name: "Add template for https"
   template:
     src: "conf.d/letsencrypt.conf.j2"
