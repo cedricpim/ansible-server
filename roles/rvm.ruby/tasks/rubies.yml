@@ -6,11 +6,11 @@
   failed_when: False
   register: detect_rubies
   with_items: '{{ rvm1_rubies }}'
-  when: rvm1_rubies|bool
+  when: rvm1_rubies
 
 - name: Install rubies
   command: '{{ rvm1_rvm }} install {{ item.item }} {{ rvm1_ruby_install_flags }}'
-  when: rvm1_rubies|bool and item.rc|default(0) != 0
+  when: rvm1_rubies and item.rc|default(0) != 0
   with_items: '{{ detect_rubies.results }}'
 
 - name: Detect default ruby version
@@ -38,7 +38,7 @@
   args:
     creates: '{{ rvm1_install_path }}/wrappers/{{ item.stdout }}/bundler'
   with_items: '{{ ruby_patch.results }}'
-  when: rvm1_bundler_install|bool
+  when: rvm1_bundler_install
   register: bundler_install
   changed_when: '"Successfully installed bundler" in bundler_install.stdout'
 
@@ -59,7 +59,7 @@
     dest: '{{ rvm1_symlink_to }}/{{ item }}'
     owner: '{{ root_user }}'
     group: '{{ root_group }}'
-  when: not '--user-install' in rvm1_install_flags and rvm1_bundler_install|bool
+  when: not '--user-install' in rvm1_install_flags and rvm1_bundler_install
   with_items: '{{ rvm1_symlink_bundler_binaries }}'
 
 - name: Detect if ruby version can be deleted
@@ -67,9 +67,9 @@
   changed_when: False
   failed_when: False
   register: detect_delete_ruby
-  when: rvm1_delete_ruby|bool
+  when: rvm1_delete_ruby
 
 - name: Delete ruby version
   command: '{{ rvm1_rvm }} remove {{ rvm1_delete_ruby }}'
   changed_when: False
-  when: rvm1_delete_ruby|bool and detect_delete_ruby.rc == 0
+  when: rvm1_delete_ruby and detect_delete_ruby.rc == 0

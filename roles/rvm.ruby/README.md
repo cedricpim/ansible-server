@@ -1,4 +1,9 @@
-## What is rvm1-ansible? [![Build Status](https://travis-ci.org/rvm/rvm1-ansible.svg?branch=master)](https://travis-ci.org/rvm/rvm1-ansible)
+[![Build Status](https://travis-ci.org/rvm/rvm1-ansible.svg?branch=master)](https://travis-ci.org/rvm/rvm1-ansible)
+[![OpenCollective](https://opencollective.com/rvm/backers/badge.svg)](#backers)
+[![OpenCollective](https://opencollective.com/rvm/sponsors/badge.svg)](#sponsors)
+[![Ansible Role](https://img.shields.io/badge/role-rvm_io-red.svg)](https://galaxy.ansible.com/rvm/ruby)
+
+## What is rvm1-ansible?
 
 It is an [Ansible](http://www.ansible.com/home) role to install and manage ruby versions using rvm.
 
@@ -16,7 +21,7 @@ using a version manager while still benefiting from what rvm has to offer.
 
 ## Installation
 
-`$ ansible-galaxy install rvm_io.ruby`
+`$ ansible-galaxy install rvm.ruby`
 
 ## Role variables
 
@@ -55,7 +60,7 @@ rvm1_ruby_install_flags:
 rvm1_user: 'ubuntu'
 
 # URL for the latest installer script
-rvm1_rvm_latest_installer: 'https://raw.githubusercontent.com/wayneeseguin/rvm/master/binscripts/rvm-installer'
+rvm1_rvm_latest_installer: 'https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer'
 
 # rvm version to use
 rvm1_rvm_version: 'stable'
@@ -70,7 +75,7 @@ rvm1_rvm_check_for_updates: True
 rvm1_gpg_keys: '409B6B1796C275462A1703113804BB82D39DC0E3'
 
 # The GPG key server
-rvm1_gpg_key_server: 'hkp://keys.gnupg.net'
+rvm1_gpg_key_server: 'hkp://pool.sks-keyservers.net'
 
 # autolib mode, see https://rvm.io/rvm/autolibs
 rvm1_autolib_mode: 3
@@ -85,7 +90,7 @@ rvm1_autolib_mode: 3
   hosts: all
 
   roles:
-    - { role: rvm_io.ruby,
+    - { role: rvm.ruby,
         tags: ruby,
         rvm1_rubies: ['ruby-2.3.1'],
         rvm1_user: 'ubuntu'
@@ -99,7 +104,7 @@ If you need to pass a list of ruby versions, pass it in an array like so.
 - name: Configure servers with ruby support system wide
   hosts: all
   roles:
-    - { role: rvm_io.ruby,
+    - { role: rvm.ruby,
         tags: ruby,
         become: yes,
 
@@ -158,12 +163,65 @@ Just add `--extra-vars 'rvm1_delete_ruby=ruby-2.1.0'` to the end of your play bo
 
 ## Requirements
 
-- Tested on ubuntu 12.04 LTS but it should work on other versions that are similar.
-- Tested on RHEL6.5 and CentOS [6.5, 6.6, 6.7]
+- Tested on CentOS 6 and 7
+- Tested on Debian 8 and 9
+- Tested on Ubuntu 14.04 and 16.04
 
 ## Ansible galaxy
 
-You can find it on the official [ansible galaxy](https://galaxy.ansible.com/rvm_io/ruby/) if you want to rate it.
+You can find it on the official [ansible galaxy](https://galaxy.ansible.com/rvm/ruby) if you want to rate it.
+
+## Contributing
+
+### Backers
+
+[Become a backer](https://opencollective.com/rvm#backer) and support us with a small monthly donation to help us continue our activities.
+
+[![Backer](https://opencollective.com/rvm/backer/0/avatar.svg)](https://opencollective.com/rvm/backer/0/website)
+[![Backer](https://opencollective.com/rvm/backer/1/avatar.svg)](https://opencollective.com/rvm/backer/1/website)
+[![Backer](https://opencollective.com/rvm/backer/2/avatar.svg)](https://opencollective.com/rvm/backer/2/website)
+[![Backer](https://opencollective.com/rvm/backer/3/avatar.svg)](https://opencollective.com/rvm/backer/3/website)
+[![Backer](https://opencollective.com/rvm/backer/4/avatar.svg)](https://opencollective.com/rvm/backer/4/website)
+[![Backer](https://opencollective.com/rvm/backer/5/avatar.svg)](https://opencollective.com/rvm/backer/5/website)
+[![Backer](https://opencollective.com/rvm/backer/6/avatar.svg)](https://opencollective.com/rvm/backer/6/website)
+[![Backer](https://opencollective.com/rvm/backer/7/avatar.svg)](https://opencollective.com/rvm/backer/7/website)
+[![Backer](https://opencollective.com/rvm/backer/8/avatar.svg)](https://opencollective.com/rvm/backer/8/website)
+[![Backer](https://opencollective.com/rvm/backer/9/avatar.svg)](https://opencollective.com/rvm/backer/9/website)
+[![Backer](https://opencollective.com/rvm/backer/10/avatar.svg)](https://opencollective.com/rvm/backer/10/website)
+[![Backer](https://opencollective.com/rvm/backer/11/avatar.svg)](https://opencollective.com/rvm/backer/11/website)
+[![Backer](https://opencollective.com/rvm/backer/12/avatar.svg)](https://opencollective.com/rvm/backer/12/website)
+[![Backer](https://opencollective.com/rvm/backer/13/avatar.svg)](https://opencollective.com/rvm/backer/13/website)
+[![Backer](https://opencollective.com/rvm/backer/14/avatar.svg)](https://opencollective.com/rvm/backer/14/website)
+[![Backer](https://opencollective.com/rvm/backer/15/avatar.svg)](https://opencollective.com/rvm/backer/15/website)
+[![Backer](https://opencollective.com/rvm/backer/16/avatar.svg)](https://opencollective.com/rvm/backer/16/website)
+[![Backer](https://opencollective.com/rvm/backer/17/avatar.svg)](https://opencollective.com/rvm/backer/17/website)
+[![Backer](https://opencollective.com/rvm/backer/18/avatar.svg)](https://opencollective.com/rvm/backer/18/website)
+[![Backer](https://opencollective.com/rvm/backer/19/avatar.svg)](https://opencollective.com/rvm/backer/19/website)
+
+### Sponsors
+
+[Become a sponsor](https://opencollective.com/rvm#sponsor) and get your logo on our README on Github with a link to your site.
+
+[![Sponsor](https://opencollective.com/rvm/sponsor/0/avatar.svg)](https://opencollective.com/rvm/sponsor/0/website)
+[![Sponsor](https://opencollective.com/rvm/sponsor/1/avatar.svg)](https://opencollective.com/rvm/sponsor/1/website)
+[![Sponsor](https://opencollective.com/rvm/sponsor/2/avatar.svg)](https://opencollective.com/rvm/sponsor/2/website)
+[![Sponsor](https://opencollective.com/rvm/sponsor/3/avatar.svg)](https://opencollective.com/rvm/sponsor/3/website)
+[![Sponsor](https://opencollective.com/rvm/sponsor/4/avatar.svg)](https://opencollective.com/rvm/sponsor/4/website)
+[![Sponsor](https://opencollective.com/rvm/sponsor/5/avatar.svg)](https://opencollective.com/rvm/sponsor/5/website)
+[![Sponsor](https://opencollective.com/rvm/sponsor/6/avatar.svg)](https://opencollective.com/rvm/sponsor/6/website)
+[![Sponsor](https://opencollective.com/rvm/sponsor/7/avatar.svg)](https://opencollective.com/rvm/sponsor/7/website)
+[![Sponsor](https://opencollective.com/rvm/sponsor/8/avatar.svg)](https://opencollective.com/rvm/sponsor/8/website)
+[![Sponsor](https://opencollective.com/rvm/sponsor/9/avatar.svg)](https://opencollective.com/rvm/sponsor/9/website)
+[![Sponsor](https://opencollective.com/rvm/sponsor/10/avatar.svg)](https://opencollective.com/rvm/sponsor/10/website)
+[![Sponsor](https://opencollective.com/rvm/sponsor/11/avatar.svg)](https://opencollective.com/rvm/sponsor/11/website)
+[![Sponsor](https://opencollective.com/rvm/sponsor/12/avatar.svg)](https://opencollective.com/rvm/sponsor/12/website)
+[![Sponsor](https://opencollective.com/rvm/sponsor/13/avatar.svg)](https://opencollective.com/rvm/sponsor/13/website)
+[![Sponsor](https://opencollective.com/rvm/sponsor/14/avatar.svg)](https://opencollective.com/rvm/sponsor/14/website)
+[![Sponsor](https://opencollective.com/rvm/sponsor/15/avatar.svg)](https://opencollective.com/rvm/sponsor/15/website)
+[![Sponsor](https://opencollective.com/rvm/sponsor/16/avatar.svg)](https://opencollective.com/rvm/sponsor/16/website)
+[![Sponsor](https://opencollective.com/rvm/sponsor/17/avatar.svg)](https://opencollective.com/rvm/sponsor/17/website)
+[![Sponsor](https://opencollective.com/rvm/sponsor/18/avatar.svg)](https://opencollective.com/rvm/sponsor/18/website)
+[![Sponsor](https://opencollective.com/rvm/sponsor/19/avatar.svg)](https://opencollective.com/rvm/sponsor/19/website)
 
 ## License
 
