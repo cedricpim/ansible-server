@@ -67,4 +67,5 @@
       - "at"
       - "acpid"
       - "rsyslog"
+      - "tmux"
     state: "latest"
