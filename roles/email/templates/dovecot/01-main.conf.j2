@@ -39,6 +39,18 @@ service stats {
     address = 127.0.0.1
     port = {{ email_dovecot_stats_port }}
   }
+
+  unix_listener stats-reader {
+    user = {{ email_user }}
+    group = {{ email_user }}
+    mode = 0660
+  }
+
+  unix_listener stats-writer {
+    user = {{ email_user }}
+    group = {{ email_user }}
+    mode = 0660
+  }
 }
 
 service auth {
