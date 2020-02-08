@@ -9,7 +9,7 @@
   pre_tasks:
     - name: "Update current packages"
       apt:
-        upgrade: yes
+        upgrade: "yes"
         update_cache: yes
         force_apt_get: yes
       tags: "always"
