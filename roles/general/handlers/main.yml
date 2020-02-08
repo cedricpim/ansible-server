@@ -6,3 +6,9 @@
 
 - name: "Restart server configuration"
   command: "systemctl daemon-reexec"
+
+- name: "Restart Rsyslog"
+  systemd:
+    name: "rsyslog"
+    state: "restarted"
+    daemon_reload: yes
