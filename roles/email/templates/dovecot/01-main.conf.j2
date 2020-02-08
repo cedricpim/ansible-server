@@ -10,6 +10,7 @@ ssl_key = <{{ webserver_letsencrypt_config_directory }}/live/{{ server }}/privke
 ssl_cert = </etc/ssl/certs/ssl-cert-snakeoil.pem
 ssl_key = </etc/ssl/private/ssl-cert-snakeoil.key
 {% endif %}
+ssl_dh = </etc/dovecot/dh.pem
 ssl_client_ca_dir = /etc/ssl/certs
 ssl_cipher_list = ALL:!LOW:!SSLv2:!EXP:!aNULL
 mail_home = {{ email_directory }}/%d/%n
