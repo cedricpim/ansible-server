@@ -14,7 +14,7 @@ check process netdata
   group netdata
   start program = "/usr/sbin/service netdata start"
   stop program  = "/usr/sbin/service netdata stop"
-  if failed host localhost port 19999 protocol http request "/" status = 400 then restart
+  if failed host localhost port 19999 protocol http request "/" status = 200 then restart
   if 5 restarts with 5 cycles then unmonitor
   depends netdata_bin
   depends netdata_rc
