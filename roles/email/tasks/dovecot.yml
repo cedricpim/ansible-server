@@ -34,6 +34,23 @@
     mode: "0644"
   notify: "Reload Dovecot"
 
+- name: "Check if dh certificate already exists"
+  stat:
+    path: "{{ email_dovecot_config_directory }}/dh.pem"
+  register: dh_cert
+
+- name: "Generate dh certificate"
+  block:
+    - tempfile: suffix="dovecot" state="directory"
+      register: dh_tempdir
+    - command: "dd if=/var/lib/dovecot/ssl-parameters.dat bs=1 skip=88 of={{ dh_tempdir.path }}/ssl"
+    - command: "openssl dhparam 4096 -out {{ email_dovecot_config_directory }}/dh.pem -inform der {{ dh_tempdir.path }}/ssl"
+  always:
+    - file: path="{{ dh_tempdir.path }}" state="absent"
+  when:
+    - dh_cert is defined
+    - dh_cert.stat.islnk is not defined
+
 - name: "Start/Enable Dovecot"
   systemd:
     name: "dovecot"
