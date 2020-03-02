@@ -4,7 +4,7 @@
 Description=Store networth calculation
 
 [Service]
-ExecStart=/bin/bash -lc 'rbledger networth -s'
+ExecStart=/bin/bash -lc 'ledger networth --save'
 User={{ ledger_user }}
 Group={{ ledger_user }}
 Type=oneshot

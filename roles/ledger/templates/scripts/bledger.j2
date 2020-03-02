@@ -7,11 +7,11 @@ IFS=$'\n\t'
 datetime=`date "+%Y%m%dT%H%M"`
 
 if [[ -f {{ ledger_file }} ]]; then
-  /bin/cp {{ ledger_file }} {{ ledger_backup_directory }}/$(basename "{{ ledger_file }}" ".csv")$datetime.csv
+  /bin/cp {{ ledger_file }} {{ ledger_backup_directory }}/$(basename "{{ ledger_afile }}" ".csv")$datetime.csv
 fi
 
 if [[ -f {{ ledger_networth }} ]]; then
-  /bin/cp {{ ledger_networth }} {{ ledger_backup_directory }}/$(basename "{{ ledger_networth }}" ".csv")$datetime.csv
+  /bin/cp {{ ledger_networth }} {{ ledger_backup_directory }}/$(basename "{{ ledger_anetworth }}" ".csv")$datetime.csv
 fi
 
 /usr/bin/find {{ ledger_backup_directory }} -type f -mtime +{{ ledger_keep_days }} -delete

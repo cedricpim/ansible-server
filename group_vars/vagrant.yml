@@ -95,7 +95,7 @@ ledger_exchange_api_key: "some_key"
 ledger_currency: "USD"
 ledger_investment_categories:
   - "InvestmentCategory"
-ledger_excluded_accounts:
+ledger_ignored_accounts:
   - "AccountExcluded"
 ledger_reoccurrences:
   - { day: "01", account: "Account", category: "Category", description: "Description", venue: "Venue", amount: "-100.00", currency: "EUR" }

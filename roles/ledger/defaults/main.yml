@@ -14,5 +14,21 @@ ledger_config_directory: "{{ ledger_home }}/.config/ledger"
 
 ledger_file: "{{ ledger_config_directory }}/ledger.csv"
 ledger_networth: "{{ ledger_config_directory }}/networth.csv"
+ledger_afile: "{{ ledger_config_directory }}/aledger.csv"
+ledger_anetworth: "{{ ledger_config_directory }}/anetworth.csv"
 ledger_backup_directory: "{{ ledger_home }}/backups/ledger"
 ledger_keep_days: "7"
+
+ledger_destination: "/usr/local/bin"
+
+ledger_currency: "EUR"
+ledger_investment_categories:
+  - "Investment"
+ledger_transfer: "Transfer"
+ledger_ignored_accounts:
+  - "Vacation"
+  - "Personal"
+
+ledger_version: "1.0.0"
+ledger_filename: "ledger-v{{ ledger_version }}-x86_64-unknown-linux-musl"
+ledger_url: "https://github.com/cedricpim/ledger-rust/releases/download/v{{ ledger_version }}/{{ ledger_filename }}"

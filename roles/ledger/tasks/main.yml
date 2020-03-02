@@ -6,6 +6,7 @@
     shell: "/bin/false"
     state: "present"
 
+- import_tasks: alternative.yml
 - import_tasks: dependencies.yml
 - import_tasks: build.yml
 

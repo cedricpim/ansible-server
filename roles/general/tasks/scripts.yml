@@ -9,6 +9,6 @@
   template:
     src: "scripts/{{ script }}.j2"
     dest: "{{ general_scripts_directory }}/{{ script }}"
-    user: "root"
+    owner: "root"
     group: "staff"
     mode: "0755"
