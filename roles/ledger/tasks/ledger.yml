@@ -53,7 +53,7 @@
 
 - name: "Copy service and timer for ledger-backup"
   template:
-    src: "{{ item }}.j2"
+    src: "systemd/{{ item }}.j2"
     dest: "{{ systemd_directory }}/{{ item }}"
     mode: "0600"
   with_items:
