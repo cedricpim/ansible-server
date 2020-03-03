@@ -31,3 +31,50 @@
     owner: "{{ ledger_user }}"
     group: "{{ ledger_user }}"
     mode: "0600"
+
+- include_role:
+    name: "general"
+    tasks_from: "scripts"
+  with_items:
+    - "bledger"
+    - "rledger"
+  loop_control:
+    loop_var: "script"
+
+- name: "Create user folder for systemd and for backups"
+  file:
+    path: "{{ item.path }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    state: "directory"
+  with_items:
+    - { path: "{{ ledger_backup_directory }}", owner: "{{ ledger_user }}", group: "{{ ledger_user }}" }
+    - { path: "{{ systemd_directory }}", owner: "root", group: "root" }
+
+- name: "Copy service and timer for ledger-backup"
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ systemd_directory }}/{{ item }}"
+    mode: "0600"
+  with_items:
+    - "ledger.service"
+    - "ledger.timer"
+    - "ledger-backup.service"
+    - "ledger-backup.timer"
+    - "ledger-networth.service"
+    - "ledger-networth.timer"
+  notify:
+    - "Restart ledger timer"
+    - "Restart ledger-backup timer"
+    - "Restart ledger-networth timer"
+
+- name: "Enable/start ledger related timers"
+  systemd:
+    name: "{{ item }}"
+    state: "started"
+    enabled: yes
+    daemon_reload: yes
+  with_items:
+    - "ledger.timer"
+    - "ledger-backup.timer"
+    - "ledger-networth.timer"

@@ -1,9 +1,9 @@
 {{ ansible_managed | comment }}
 
-encryption: {{ ledger_apassword }}
+encryption: {{ ledger_password }}
 files:
-  ledger: {{ ledger_afile }}
-  networth: {{ ledger_anetworth }}
+  ledger: {{ ledger_file }}
+  networth: {{ ledger_networth }}
 exchange:
   api_key: {{ ledger_exchange_api_key }}
   cache_file: /tmp/exchange-cache.yml
