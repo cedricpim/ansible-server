@@ -91,5 +91,18 @@ email_sieve_filters: |
 
 ledger_password: "password"
 ledger_exchange_api_key: "some_key"
+ledger_firefly:
+  base_path: "http://localhost"
+  opening_balance: "Balance"
+  token: "TOKEN"
 ledger_reoccurrences:
-  - { day: "01", account: "Account", category: "Category", description: "Description", venue: "Venue", amount: "-100.00", currency: "EUR" }
+  - day: "01"
+    account: "Account"
+    category: "Category"
+    description: "Description"
+    quantity: "100g"
+    venue: "Venue"
+    amount: "-20.55"
+    currency: "EUR"
+    trip: ""
+    id: ""
