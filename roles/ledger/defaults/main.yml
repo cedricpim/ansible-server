@@ -22,3 +22,21 @@ ledger_ignored_accounts:
 ledger_version: "1.0.1"
 ledger_filename: "ledger-v{{ ledger_version }}-x86_64-unknown-linux-musl"
 ledger_url: "https://github.com/cedricpim/ledger-rust/releases/download/v{{ ledger_version }}/{{ ledger_filename }}"
+
+ledger_mariadb_root_user: "root"
+ledger_mariadb_root_password: ""
+ledger_mariadb_admin_user: "admin"
+ledger_mariadb_admin_password: "admin"
+ledger_mariadb_firefly_user: "firefly"
+ledger_mariadb_firefly_password: "firefly"
+ledger_mariadb_firefly_database: "fireflydb"
+ledger_mariadb_admin_hosts:
+  - "127.0.0.1"
+  - "::1"
+  - "localhost"
+
+ledger_mariadb_config_directory: "/etc/mysql/mariadb.conf.d"
+ledger_mariadb_log_directory: "/var/log/mysql"
+ledger_mariadb_pidfile: "/var/run/mysqld/mysqld.pid"
+ledger_mariadb_sockfile: "/var/run/mysqld/mysqld.sock"
+ledger_mariadb_port: "3306"

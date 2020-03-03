@@ -1,0 +1,90 @@
+---
+- name: "Install MariaDB"
+  apt:
+    name:
+      - "python-mysqldb"
+      - "mariadb-server"
+      - "mysqltuner"
+      - "percona-toolkit"
+    state: "latest"
+
+- name: "Add configuration for MariaDB"
+  template:
+    src: "mariadb/{{ item }}.j2"
+    dest: "{{ ledger_mariadb_config_directory }}/{{ item }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  with_items:
+    - "50-client.cnf"
+    - "50-mysqld_safe.cnf"
+    - "50-server.cnf"
+  notify: "Restart MariaDB"
+
+- name: "Start/Enable MariaDB"
+  service:
+    name: "mariadb"
+    state: "started"
+    enabled: yes
+
+- name: "Collect all possible information using passwordless root access"
+  mysql_info:
+    login_user: "{{ ledger_mariadb_root_user }}"
+    login_password: "{{ ledger_mariadb_root_password }}"
+  failed_when: no
+  register: root_user_info
+
+- name: "Add administrative user"
+  mysql_user:
+    user: "{{ ledger_mariadb_admin_user }}"
+    password: "{{ ledger_mariadb_admin_password }}"
+    host: "{{ item }}"
+    priv: "*.*:ALL,GRANT"
+    state: "present"
+    check_implicit_admin: true
+    login_user: "{{ ledger_mariadb_root_user }}"
+    login_password: "{{ ledger_mariadb_root_password }}"
+  changed_when: false
+  with_items: "{{ ledger_mariadb_admin_hosts }}"
+  when: 
+    - root_user_info is defined 
+    - root_user_info.msg is undefined or not "'Exception' in root_user_info.msg"
+
+- name: "Remove root user completely"
+  mysql_user:
+    user: "{{ ledger_mariadb_root_user }}"
+    host: "{{ item }}"
+    state: "absent"
+    login_user: "{{ ledger_mariadb_admin_user }}"
+    login_password: "{{ ledger_mariadb_admin_password }}"
+  with_items: "{{ ledger_mariadb_admin_hosts }}"
+
+- name: 'Add MariaDB user'
+  mysql_user:
+    user: "{{ ledger_mariadb_firefly_user }}"
+    password: "{{ ledger_mariadb_firefly_password }}"
+    host: "{{ item }}"
+    priv: "{{ ledger_mariadb_firefly_database }}.*:ALL"
+    state: "present"
+    append_privs: no
+    login_user: "{{ ledger_mariadb_admin_user }}"
+    login_password: "{{ ledger_mariadb_admin_password }}"
+  with_items: "{{ ledger_mariadb_admin_hosts }}"
+
+- name: "Create Firefly database"
+  mysql_db:
+    name: "{{ ledger_mariadb_firefly_database }}"
+    login_user: "{{ ledger_mariadb_admin_user }}"
+    login_password: "{{ ledger_mariadb_admin_password }}"
+
+- include_role:
+    name: "monit"
+    tasks_from: "configure"
+  vars:
+    conf: "mariadb"
+
+- include_role:
+    name: "logrotate"
+    tasks_from: "configure"
+  vars:
+    conf: "mariadb"

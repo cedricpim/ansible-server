@@ -16,3 +16,8 @@
     name: "ledger-networth.timer"
     state: "restarted"
     daemon_reload: yes
+
+- name: "Restart MariaDB"
+  systemd:
+    name: "mariadb"
+    state: "restarted"

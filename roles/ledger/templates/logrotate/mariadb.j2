@@ -1,0 +1,20 @@
+{{ ansible_managed | comment }}
+
+{{ ledger_mariadb_log_directory }}/* {
+  daily
+  rotate 30
+  create 660 mysql adm
+  missingok
+  compress
+  delaycompress
+  notifempty
+  dateext
+  dateformat .%Y-%m-%d-%H-%M-%S
+  sharedscripts
+  postrotate
+    # just if mysqld is really running
+    if test -x /usr/bin/mysqladmin && /usr/bin/mysqladmin ping &> /dev/null; then
+      /usr/bin/mysqladmin --local flush-error-log flush-engine-log flush-general-log flush-slow-log
+    fi
+  endscript
+}
