@@ -9,7 +9,7 @@ check process dovecot with pidfile /var/run/dovecot/master.pid
   depends dovecot_init
   depends dovecot_bin
 
-check file dovecot_init with path /lib/systemd/system/dovecot.service
+check file dovecot_init with path {{ lib_systemd_directory }}/dovecot.service
   group mail
   include /etc/monit/templates/rootrc
 

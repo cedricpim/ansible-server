@@ -19,7 +19,7 @@ check file master_bin with path /usr/lib/postfix/sbin/master
   group postfix
   include /etc/monit/templates/rootbin
 
-check file postfix_rc with path /lib/systemd/system/postfix.service
+check file postfix_rc with path {{ lib_systemd_directory }}/postfix.service
   group postfix
   include /etc/monit/templates/rootrc
 

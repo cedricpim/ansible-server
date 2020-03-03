@@ -15,7 +15,7 @@ check file spamassassin_bin with path /usr/bin/spamassassin
   group mail
   include /etc/monit/templates/rootbin
 
-check file spamassassin_rc with path /lib/systemd/system/spamassassin.service
+check file spamassassin_rc with path {{ lib_systemd_directory }}/spamassassin.service
   group mail
   include /etc/monit/templates/rootrc
 

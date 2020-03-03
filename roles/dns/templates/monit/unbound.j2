@@ -12,6 +12,6 @@ check file unbound_bin with path /usr/sbin/unbound
   group dns
   include /etc/monit/templates/rootbin
 
-check file unbound_rc with path /lib/systemd/system/unbound.service
+check file unbound_rc with path {{ lib_systemd_directory }}/unbound.service
   group dns
   include /etc/monit/templates/rootrc

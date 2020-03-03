@@ -14,7 +14,7 @@ check file rsyslogd_bin with path /usr/sbin/rsyslogd
   group rsyslogd
   include /etc/monit/templates/rootbin
 
-check file rsyslogd_rc with path /lib/systemd/system/rsyslog.service
+check file rsyslogd_rc with path {{ lib_systemd_directory }}/rsyslog.service
   group rsyslogd
   include /etc/monit/templates/rootrc
 

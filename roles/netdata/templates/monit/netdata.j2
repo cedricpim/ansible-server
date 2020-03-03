@@ -23,6 +23,6 @@ check file netdata_bin with path /usr/sbin/netdata
   group netdata
   include /etc/monit/templates/rootbin
 
-check file netdata_rc with path /lib/systemd/system/netdata.service
+check file netdata_rc with path {{ lib_systemd_directory }}/netdata.service
   group netdata
   include /etc/monit/templates/rootrc

@@ -13,6 +13,6 @@ check file atd_bin with path /usr/sbin/atd
   group atd
   include /etc/monit/templates/rootbin
 
-check file atd_rc with path /lib/systemd/system/atd.service
+check file atd_rc with path {{ lib_systemd_directory }}/atd.service
   group atd
   include /etc/monit/templates/rootrc

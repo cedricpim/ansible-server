@@ -4,6 +4,7 @@ general_scripts_directory: "/usr/local/bin"
 logs_directory: "/var/log"
 
 systemd_directory: "/etc/systemd/system"
+lib_systemd_directory: "/lib/systemd/system"
 
 webserver_nginx_user: "nginx"
 webserver_nginx_config_directory: "/etc/nginx"
