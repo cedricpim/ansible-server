@@ -1,0 +1,24 @@
+{{ ansible_managed | comment }}
+
+server {
+  listen      {{ ansible_default_ipv4.address }}:443 ssl;
+  server_name ledger.{{ server }};
+  access_log  {{ webserver_nginx_log_directory }}/ledger.access.log;
+  error_log   {{ webserver_nginx_log_directory }}/ledger.error.log;
+
+  root {{ ledger_firefly_directory }}/public;
+  index index.php;
+
+  location / {
+    auth_basic           "Restricted Area";
+    auth_basic_user_file conf/htpasswd.ledger;
+
+    try_files $uri $uri/ /index.php?$query_string;
+  }
+
+  location ~ \.php$ {
+    include snippets/fastcgi-php.conf;
+
+    fastcgi_pass unix:{{ ledger_firefly_phpfpm_sockfile }};
+  }
+}

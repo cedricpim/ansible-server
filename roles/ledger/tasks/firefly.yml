@@ -1,0 +1,91 @@
+---
+- name: "Install PHP"
+  apt:
+    name:
+      - "php7.3"
+      - "php7.3-bcmath"
+      - "php7.3-intl"
+      - "php7.3-curl"
+      - "php7.3-zip"
+      - "php7.3-gd"
+      - "php7.3-xml"
+      - "php7.3-mbstring"
+      - "php7.3-ldap"
+      - "php7.3-mysql"
+      - "php7.3-fpm"
+      - "composer"
+    state: "latest"
+
+- name: "Add configuration for PHP-FPM"
+  template:
+    src: "php/www.conf.j2"
+    dest: "{{ ledger_firefly_phpfpm_config_directory }}/www.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: "Restart PHP-FPM"
+
+- name: "Start/Enable PHP-FPM"
+  service:
+    name: "php7.3-fpm"
+    state: "started"
+    enabled: yes
+
+- name: "Check if Firefly III has been installed"
+  stat:
+    path: "{{ ledger_firefly_directory }}"
+  register: firefly_iii_installed
+
+- name: "Install Firefly III"
+  composer:
+    command: "create-project"
+    arguments: "grumpydictator/firefly-iii firefly-iii {{ ledger_firefly_version }}"
+    working_dir: "{{ webserver_nginx_content_directory }}"
+    no_dev: yes
+    prefer_dist: yes
+  when:
+    - firefly_iii_installed is defined
+    - firefly_iii_installed.stat.islnk is not defined
+
+- name: "Ensure {{ ledger_firefly_directory }} permissions are set"
+  file:
+    path: "{{ ledger_firefly_directory }}"
+    owner: "{{ webserver_nginx_user }}"
+    group: "{{ webserver_nginx_user }}"
+    state: "directory"
+    recurse: yes
+
+- name: "Add configuration for Firefly III"
+  template:
+    src: "firefly/env.j2"
+    dest: "{{ ledger_firefly_directory }}/.env"
+    owner: "{{ webserver_nginx_user }}"
+    group: "{{ webserver_nginx_user }}"
+    mode: "0644"
+
+- name: "Final steps for installation"
+  block:
+    - command: "sudo -E -u {{ webserver_nginx_user }} php artisan migrate:refresh --seed"
+      args:
+        chdir: "{{ ledger_firefly_directory }}"
+        warn: no
+    - command: "sudo -E -u {{ webserver_nginx_user }} php artisan firefly-iii:upgrade-database"
+      args:
+        chdir: "{{ ledger_firefly_directory }}"
+  when:
+    - firefly_iii_installed is defined
+    - firefly_iii_installed.stat.islnk is not defined
+
+- include_role:
+    name: "webserver"
+    tasks_from: "configure"
+  vars:
+    conf: "ledger.conf"
+    credentials:
+      - "htpasswd.ledger"
+
+- include_role:
+    name: "monit"
+    tasks_from: "configure"
+  vars:
+    conf: "ledger"

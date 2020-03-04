@@ -8,3 +8,4 @@
 
 - import_tasks: ledger.yml
 - import_tasks: mariadb.yml
+- import_tasks: firefly.yml

@@ -21,3 +21,8 @@
   systemd:
     name: "mariadb"
     state: "restarted"
+
+- name: "Restart PHP-FPM"
+  systemd:
+    name: "php7.3-fpm"
+    state: "restarted"
