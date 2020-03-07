@@ -1,0 +1,66 @@
+---
+- name: "Install PostgreSQL"
+  apt:
+    name:
+      - "postgresql-{{ ledger_postgresql_version }}"
+      - "postgresql-client-{{ ledger_postgresql_version }}"
+      - "python-psycopg2"
+    state: "latest"
+
+- name: "Add configuration for PostgreSQL"
+  template:
+    src: "postgresql/postgresql.conf.j2"
+    dest: "{{ ledger_postgresql_config_directory }}/postgresql.conf"
+    owner: "{{ ledger_postgresql_user }}"
+    group: "{{ ledger_postgresql_user }}"
+    mode: "0644"
+  notify: "Restart PostgreSQL"
+
+- name: "Start/Enable PostgreSQL"
+  service:
+    name: "{{ item }}"
+    state: "started"
+    enabled: yes
+  with_items: 
+    - "postgresql"
+    - "postgresql@{{ ledger_postgresql_version }}-main"
+
+- name: "Set password for administrative user"
+  postgresql_user:
+    name: "{{ ledger_postgresql_admin_user }}"
+    password: "{{ ledger_postgresql_admin_password }}"
+    port: "{{ ledger_postgresql_port }}"
+    state: "present"
+  become: yes
+  become_user: "{{ ledger_postgresql_user }}"
+  vars:
+    ansible_ssh_pipelining: yes
+
+- name: "Create Firefly database"
+  postgresql_db:
+    name: "{{ ledger_postgresql_firefly_database }}"
+    port: "{{ ledger_postgresql_port }}"
+    state: "present"
+  become: yes
+  become_user: "{{ ledger_postgresql_user }}"
+  vars:
+    ansible_ssh_pipelining: yes
+
+- name: "Add Firefly user"
+  postgresql_user:
+    user: "{{ ledger_postgresql_firefly_user }}"
+    password: "{{ ledger_postgresql_firefly_password }}"
+    db: "{{ ledger_postgresql_firefly_database }}"
+    port: "{{ ledger_postgresql_port }}"
+    priv: "ALL"
+    state: "present"
+  become: yes
+  become_user: "{{ ledger_postgresql_user }}"
+  vars:
+    ansible_ssh_pipelining: yes
+
+- include_role:
+    name: "monit"
+    tasks_from: "configure"
+  vars:
+    conf: "postgresql"

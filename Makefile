@@ -18,6 +18,7 @@ setup:
 deploy:
 	$(eval ANSIBLE_OPTS += --vault-password-file vaulted_vars/system.txt)
 	$(if ${LETSENCRYPT_FORCE_CERTIFICATES}, $(eval ANSIBLE_OPTS += -e "letsencrypt_generate_force=yes"))
+	$(if ${FIREFLY_UPDATE}, $(eval ANSIBLE_OPTS += -e "firefly_update=yes"))
 	ansible-playbook playbooks/${PLAYBOOK}.yml --diff --ask-become-pass ${ANSIBLE_OPTS}
 
 deploy-vagrant:

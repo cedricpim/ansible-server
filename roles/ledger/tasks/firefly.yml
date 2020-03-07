@@ -11,7 +11,7 @@
       - "php7.3-xml"
       - "php7.3-mbstring"
       - "php7.3-ldap"
-      - "php7.3-mysql"
+      - "php7.3-pgsql"
       - "php7.3-fpm"
       - "composer"
     state: "latest"
@@ -39,7 +39,7 @@
 - name: "Install Firefly III"
   composer:
     command: "create-project"
-    arguments: "grumpydictator/firefly-iii firefly-iii {{ ledger_firefly_version }}"
+    arguments: "grumpydictator/firefly-iii {{ ledger_firefly_name }} {{ ledger_firefly_version }}"
     working_dir: "{{ webserver_nginx_content_directory }}"
     no_dev: yes
     prefer_dist: yes
@@ -64,14 +64,13 @@
     mode: "0644"
 
 - name: "Final steps for installation"
-  block:
-    - command: "sudo -E -u {{ webserver_nginx_user }} php artisan migrate:refresh --seed"
-      args:
-        chdir: "{{ ledger_firefly_directory }}"
-        warn: no
-    - command: "sudo -E -u {{ webserver_nginx_user }} php artisan firefly-iii:upgrade-database"
-      args:
-        chdir: "{{ ledger_firefly_directory }}"
+  command: "sudo -E -u {{ webserver_nginx_user }} php artisan {{ item }}"
+  args:
+    chdir: "{{ ledger_firefly_directory }}"
+    warn: no
+  with_items:
+    - "migrate:refresh --seed"
+    - "firefly-iii:upgrade-database"
   when:
     - firefly_iii_installed is defined
     - firefly_iii_installed.stat.islnk is not defined

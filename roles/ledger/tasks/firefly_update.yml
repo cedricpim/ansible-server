@@ -1,0 +1,60 @@
+---
+- name: "Temporary directory for preparing new version of Firefly"
+  tempfile: suffix="firefly" state="directory"
+  register: tempdir
+
+- name: "Update Firefly III"
+  composer:
+    command: "create-project"
+    arguments: "grumpydictator/firefly-iii {{ ledger_firefly_name }} {{ ledger_firefly_version }}"
+    working_dir: "{{ tempdir.path }}"
+    no_dev: yes
+    prefer_dist: yes
+
+- name: "Add configuration for Firefly III"
+  template:
+    src: "firefly/env.j2"
+    dest: "{{ tempdir.path }}/{{ ledger_firefly_name }}/.env"
+    owner: "{{ webserver_nginx_user }}"
+    group: "{{ webserver_nginx_user }}"
+    mode: "0644"
+
+- name: "Copy storage and uploads from current version"
+  command: "cp -r {{ ledger_firefly_directory }}/storage/{{ item }} {{ tempdir.path }}/{{ ledger_firefly_name }}/storage/{{ item }}"
+  with_items:
+    - "upload"
+    - "export"
+
+- name: "Clean cache files"
+  block:
+    - file: path="{{ tempdir.path }}/{{ ledger_firefly_name }}/bootstrap/cache" state="absent"
+    - file: path="{{ tempdir.path }}/{{ ledger_firefly_name }}/bootstrap/cache" owner="{{ webserver_nginx_user }}" group="{{ webserver_nginx_user }}" state="directory"
+
+- name: "Ensure firefly-iii permissions are set"
+  file:
+    path: "{{ tempdir.path }}"
+    owner: "{{ webserver_nginx_user }}"
+    group: "{{ webserver_nginx_user }}"
+    state: "directory"
+    recurse: yes
+
+- name: "Final steps for upgrade"
+  command: "sudo -E -u {{ webserver_nginx_user }} php artisan {{ item }}"
+  args:
+    chdir: "{{ tempdir.path }}/{{ ledger_firefly_name }}"
+    warn: no
+  with_items:
+    - "cache:clear"
+    - "migrate --seed"
+    - "firefly-iii:upgrade-database"
+    - "cache:clear"
+
+- name: "Enable the new version of Firefly"
+  block:
+    - command: "mv {{ ledger_firefly_directory }} {{ ledger_firefly_directory }}.bak"
+    - command: "mv {{ tempdir.path }}/{{ ledger_firefly_name }} {{ ledger_firefly_directory }}"
+
+- name: "Remove temporary directory"
+  file:
+    path: "{{ tempdir.path }}"
+    state: "absent"
