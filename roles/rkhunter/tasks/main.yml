@@ -26,7 +26,7 @@
   register: rkhunter_settings
 
 - name: "Update Rkhunter"
-  command: "rkhunter --update"
+  command: "rkhunter --update --propupd"
   register: rkhunter_update
   failed_when:
     - rkhunter_update.failed
