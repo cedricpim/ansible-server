@@ -32,9 +32,15 @@ http {
   ssl_session_cache  {{ webserver_nginx_ssl_session_cache }};
   ssl_prefer_server_ciphers  on;
 
-  # Set HTTP Strict Transport Security
-  add_header  Strict-Transport-Security "max-age=63072000; includeSubdomains; ";
-  add_header  X-Frame-Options "DENY";
+  # Improve HTTP headers
+  server_tokens off;
+  add_header Content-Security-Policy "default-src 'self' *.{{ server }};";
+  add_header Strict-Transport-Security "max-age=31536000; includeSubDomains;";
+  add_header X-Frame-Options "DENY";
+  add_header X-Content-Type-Options "nosniff";
+  add_header Referrer-Policy "same-origin";
+  add_header Feature-Policy "geolocation none; midi none; notifications none; push none; sync-xhr none; microphone none; camera none; magnetometer none; gyroscope none; speaker self; vibrate none; fullscreen self; payment none;";
+  add_header Expect-CT "max-age=86400, enforce";
 
   include {{ webserver_nginx_config_directory }}/conf.d/*.conf;
 }
