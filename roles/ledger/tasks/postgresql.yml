@@ -33,6 +33,7 @@
     state: "present"
   become: yes
   become_user: "{{ ledger_postgresql_user }}"
+  no_log: yes
   vars:
     ansible_ssh_pipelining: yes
 
@@ -56,6 +57,7 @@
     state: "present"
   become: yes
   become_user: "{{ ledger_postgresql_user }}"
+  no_log: yes
   vars:
     ansible_ssh_pipelining: yes
 
