@@ -47,6 +47,7 @@
     - "cache:clear"
     - "migrate --seed"
     - "firefly-iii:upgrade-database"
+    - "passport:install"
     - "cache:clear"
 
 - name: "Enable the new version of Firefly"
