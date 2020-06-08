@@ -1,5 +1,9 @@
 ---
+netdata_url: "https://my-netdata.io/kickstart.sh"
+netdata_checksum: "sha256:82ddfedc8eb176f0220ba7435153d095d55df6d98a40f61b19fab1cd0139e594"
+
 netdata_config_directory: "/etc/netdata"
 netdata_port: "19999"
 netdata_bind_address: "127.0.0.1"
 netdata_log_directory: "/var/log/netdata"
+netdata_pidfile: "/var/run/netdata/netdata.pid"

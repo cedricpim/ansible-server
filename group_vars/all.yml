@@ -20,3 +20,12 @@ monit_sender: "monit@localhost"
 fail2ban_sender: "fail2ban@localhost"
 
 email_webmaster: "root"
+
+services:
+  - "dav"
+  - "gallery"
+  - "keeweb"
+  - "ledger"
+  - "monit"
+  - "netdata"
+  - "sync"

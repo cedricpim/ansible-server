@@ -1,18 +1,6 @@
 {{ ansible_managed | comment }}
 
-# netdata python.d.plugin configuration for nginx
-#
-# You must have ngx_http_stub_status_module configured on your nginx server for this
-# plugin to work. The following is an example config.
-# It must be located inside a server { } block.
-#
-# location /stub_status {
-#   stub_status;
-#   # Security: Only allow access from the IP below.
-#   allow 192.168.1.200;
-#   # Deny anyone else
-#   deny all;
-#  }
+# netdata python.d.plugin configuration for monit
 #
 # This file is in YaML format. Generally the format is:
 #
@@ -41,11 +29,15 @@
 # If unset, the default for python.d.plugin is used.
 # priority: 60000
 
-# retries sets the number of retries to be made in case of failures.
-# If unset, the default for python.d.plugin is used.
-# Attempts to restore the service are made once every update_every
-# and only if the module has collected values in the past.
-# retries: 5
+# penalty indicates whether to apply penalty to update_every in case of failures.
+# Penalty will increase every 5 failed updates in a row. Maximum penalty is 10 minutes.
+# penalty: yes
+
+# autodetection_retry sets the job re-check interval in seconds.
+# The job is not deleted if check fails.
+# Attempts to start the job are made once every autodetection_retry.
+# This feature is disabled by default.
+# autodetection_retry: 0
 
 # ----------------------------------------------------------------------
 # JOBS (data collection sources)
@@ -61,17 +53,17 @@
 # predefined parameters. These are:
 #
 # job_name:
-#     name: my_name    # the JOB's name as it will appear at the
-#                      # dashboard. If name: is not supplied the
-#                      # job_name: will be used (use _ for spaces)
-#                      # JOBs sharing a name are mutually exclusive
-#     update_every: 1  # the JOB's data collection frequency
-#     priority: 60000  # the JOB's order on the dashboard
-#     retries: 5       # the JOB's number of restoration attempts
+#     name: myname            # the JOB's name as it will appear at the
+#                             # dashboard (by default is the job_name)
+#                             # JOBs sharing a name are mutually exclusive
+#     update_every: 1         # the JOB's data collection frequency
+#     priority: 60000         # the JOB's order on the dashboard
+#     penalty: yes            # the JOB's penalty
+#     autodetection_retry: 0  # the JOB's re-check interval in seconds
 #
 # Additionally to the above, this plugin also supports the following:
 #
-#     url: 'URL'       # the URL to fetch nginx's status stats
+#     url: 'URL'       # the URL to fetch monit's status stats
 #
 # if the URL is password protected, the following are supported:
 #
@@ -80,12 +72,12 @@
 #
 # Example
 #
-# RemoteNginx:
-#     name : 'Reverse_Proxy'
-#     url  : 'http://yourdomain.com/stub_status'
+# local:
+#     name : 'Local Monit'
+#     url  : 'http://localhost:2812'
 #
-# "RemoteNginx" will show up in Netdata logs. "Reverse Proxy" will show up in the menu
-# in the nginx section.
+# "local" will show up in Netdata logs. "Reverse Proxy" will show up in the menu
+# in the monit section.
 
 # ----------------------------------------------------------------------
 # AUTO-DETECTION JOBS
@@ -93,4 +85,6 @@
 
 localhost:
   name : 'local'
-  url  : 'http://127.0.0.1/stub_status'
+  url  : 'http://localhost:{{ monit_port }}'
+  user : '{{ monit_credentials.split(":") | first }}'
+  pass : '{{ monit_credentials.split(":") | last }}'

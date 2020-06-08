@@ -9,6 +9,6 @@
   notifempty
   sharedscripts
   postrotate
-    /bin/kill -HUP `pidof netdata 2>/dev/null` 2>/dev/null || true
+    /bin/kill -HUP `cat {{ netdata_pidfile }} 2>/dev/null` 2>/dev/null || true
   endscript
 }

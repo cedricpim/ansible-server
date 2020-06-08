@@ -9,12 +9,11 @@ check process netdata.{{ server }} with pidfile {{ webserver_nginx_pidfile }}
   if cpu > 60% for 5 cycles then restart
   if 10 restarts with 10 cycles then unmonitor
 
-check process netdata
-  matching "sbin/netdata"
+check process netdata with pidfile {{ netdata_pidfile }}
   group netdata
   start program = "/usr/sbin/service netdata start"
   stop program  = "/usr/sbin/service netdata stop"
-  if failed host localhost port 19999 protocol http request "/" status = 200 then restart
+  if failed host localhost port {{ netdata_port }} protocol http request "/" status = 200 then restart
   if 5 restarts with 5 cycles then unmonitor
   depends netdata_bin
   depends netdata_rc
@@ -25,4 +24,7 @@ check file netdata_bin with path /usr/sbin/netdata
 
 check file netdata_rc with path {{ lib_systemd_directory }}/netdata.service
   group netdata
-  include /etc/monit/templates/rootrc
+  if failed checksum       then unmonitor
+  if failed permission 664 then unmonitor
+  if failed uid root       then unmonitor
+  if failed gid root       then unmonitor

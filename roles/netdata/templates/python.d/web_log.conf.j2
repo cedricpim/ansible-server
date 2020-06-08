@@ -29,11 +29,15 @@
 # If unset, the default for python.d.plugin is used.
 # priority: 60000
 
-# retries sets the number of retries to be made in case of failures.
-# If unset, the default for python.d.plugin is used.
-# Attempts to restore the service are made once every update_every
-# and only if the module has collected values in the past.
-# retries: 5
+# penalty indicates whether to apply penalty to update_every in case of failures.
+# Penalty will increase every 5 failed updates in a row. Maximum penalty is 10 minutes.
+# penalty: yes
+
+# autodetection_retry sets the job re-check interval in seconds.
+# The job is not deleted if check fails.
+# Attempts to start the job are made once every autodetection_retry.
+# This feature is disabled by default.
+# autodetection_retry: 0
 
 # ----------------------------------------------------------------------
 # JOBS (data collection sources)
@@ -52,26 +56,36 @@
 # predefined parameters. These are:
 #
 # job_name:
-#     name: myname     # the JOB's name as it will appear at the
-#                      # dashboard (by default is the job_name)
-#                      # JOBs sharing a name are mutually exclusive
-#     update_every: 1  # the JOB's data collection frequency
-#     priority: 60000  # the JOB's order on the dashboard
-#     retries: 5       # the JOB's number of restoration attempts
+#     name: myname            # the JOB's name as it will appear at the
+#                             # dashboard (by default is the job_name)
+#                             # JOBs sharing a name are mutually exclusive
+#     update_every: 1         # the JOB's data collection frequency
+#     priority: 60000         # the JOB's order on the dashboard
+#     penalty: yes            # the JOB's penalty
+#     autodetection_retry: 0  # the JOB's re-check interval in seconds
 #
 # Additionally to the above, web_log also supports the following:
 #
 #     path: 'PATH'                        # the path to web server log file
-#     detailed_response_codes: yes/no     # Default: yes. Additional chart where response codes are not grouped
-#     detailed_response_aggregate: yes/no # Default: yes. Not aggregated detailed response codes charts
-#     all_time : yes/no                   # Default: yes. All time unique client IPs chart (50000 addresses ~ 400KB)
+#     path: 'PATH[0-9]*[0-9]'             # log files with date suffix are also supported
+#     detailed_response_codes: yes/no     # default: yes. Additional chart where response codes are not grouped
+#     detailed_response_aggregate: yes/no # default: yes. Not aggregated detailed response codes charts
+#     all_time : yes/no                   # default: yes. All time unique client IPs chart (50000 addresses ~ 400KB)
+#     filter:                             # filter with regex
+#          include: 'REGEX'               # only those rows that matches the regex
+#          exclude: 'REGEX'               # all rows except those that matches the regex
 #     categories:                         # requests per url chart configuration
 #          cacti: 'cacti.*'               # name(dimension): REGEX to match
 #          observium: 'observium.*'       # name(dimension): REGEX to match
 #          stub_status: 'stub_status'     # name(dimension): REGEX to match
+#     user_defined:                       # requests per pattern in <user_defined> field (custom_log_format)
+#          cacti: 'cacti.*'               # name(dimension): REGEX to match
+#          observium: 'observium.*'       # name(dimension): REGEX to match
+#          stub_status: 'stub_status'     # name(dimension): REGEX to match
 #     custom_log_format:                  # define a custom log format
-#          pattern: '(?P<address>[\da-f.:]+) -.*?"(?P<method>[A-Z]+) (?P<url>.*?)" (?P<code>[1-9]\d{2}) (?P<bytes_sent>\d+) (?P<resp_length>\d+) (?P<resp_time>\d\.\d+) '
-#          time_multiplier: 1000000       # type <int> - convert time to microseconds
+#          pattern: '(?P<address>[\da-f.:]+) -.*?"(?P<method>[A-Z]+) (?P<url>.*?)" (?P<code>[1-9]\d{2}) (?P<bytes_sent>\d+) (?P<resp_length>\d+) (?P<resp_time>\d+\.\d+) '
+#          time_multiplier: 1000000       # type <int>/<float> - convert time to microseconds
+#     histogram: [1,3,10,30,100, ...]      # type list of int - Cumulative histogram of response time in milli seconds
 
 # ----------------------------------------------------------------------
 # WEB SERVER CONFIGURATION
@@ -85,7 +99,7 @@
 # nginx:
 #   log_format netdata '$remote_addr - $remote_user [$time_local] '
 #                      '"$request" $status $body_bytes_sent '
-#                      '$request_length $request_time '
+#                      '$request_length $request_time $upstream_response_time '
 #                      '"$http_referer" "$http_user_agent"';
 #   access_log /var/log/nginx/access.log netdata;
 #
@@ -95,6 +109,32 @@
 #   CustomLog "/var/log/apache2/access.log" netdata
 
 # ----------------------------------------------------------------------
+# VHOST AND PORT
+# if your want to graph the request/sec per virtual host and per port (to check the number of requests in http vs https)
+
+# in apache : (%v gives the hostname, %p the port number)
+#  LogFormat "%v %p %h %t \"%r\" %>s %O %I %D \"%{Referer}i\" \"%{User-Agent}i\"" vhost_netdata
+#
+# and in this file in apache_vhosts_log section, add :
+#  custom_log_format:
+#     pattern: '(?P<vhost>[a-zA-Z\d.-_]+) (?P<port>\d+) (?P<address>[\da-f.:]+) \[.*\] "(?P<method>[A-Z]+)[^"]*" (?P<code>[1-9]\d{2}) (?P<bytes_sent>\d+) (?P<resp_length>\d+) (?P<resp_time>\d+)'
+
+# in nginx: ($host or $http_host give the hostname, $server_port the port number)
+#   log_format netdatavhost '$host $server_port $remote_addr - $remote_user [$time_local] '
+#                      '"$request" $status $body_bytes_sent '
+#                      '$request_length $request_time $upstream_response_time '
+#                      '"$http_referer" "$http_user_agent"';
+#
+#   access_log /var/log/nginx/access.log netdatavhost;
+#
+#   be aware that the access_log directive in a server{} block overwrites the one in http{}, if your vhosts have individual log
+#   files, you have to specify the general netdata log in each vhost as a second access_log statement.
+#
+# and in this file in nginx_log section, add :
+#  custom_log_format:
+#     pattern: '(?P<vhost>[a-zA-Z\d.-_\[\]]+) (?P<port>\d+) (?P<address>[\da-f.:]+) .* "(?P<method>[A-Z]+)[^"]*" (?P<code>[1-9]\d{2}) (?P<bytes_sent>\d+) (?P<resp_length>\d+) (?P<resp_time>\d+)'
+
+# ----------------------------------------------------------------------
 # AUTO-DETECTION JOBS
 # only one of them per web server will run (when they have the same name)
 
@@ -102,7 +142,12 @@
 # -------------------------------------------
 # nginx log on various distros
 
-# debian, arch
-nginx_log:
+nginx:
   name: 'nginx'
   path: '/var/log/nginx/access.log'
+
+{% for service in services %}
+{{ service }}:
+  name: '{{ service }}'
+  path: '/var/log/nginx/{{ service }}.access.log'
+{% endfor %}

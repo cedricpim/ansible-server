@@ -1,20 +1,27 @@
 ---
-- name: "Install Netdata and utilities"
+- name: "Install utilities for netdata"
   apt:
     name:
-      - "netdata"
+      - "acl"
       - "iw"
       - "fping"
       - "python-dnspython"
     state: "latest"
 
-- name: "Add required groups to Netdata"
-  user:
-    name: "netdata"
-    groups:
-      - "nginx"
-      - "adm"
-      - "proxy"
+- name: "Check if netdata is installed"
+  stat:
+    path: "/usr/sbin/netdata"
+  register: netdata
+
+- name: "Install netdata"
+  block:
+    - tempfile: suffix="netdata" state="directory"
+      register: tempdir
+    - get_url: url="{{ netdata_url }}" dest="{{ tempdir.path }}/installer.sh" checksum="{{ netdata_checksum }}"
+    - command: "bash {{ tempdir.path }}/installer.sh --non-interactive --no-updates --stable-channel --disable-telemetry"
+  always:
+    - file: path="{{ tempdir.path }}" state="absent"
+  when: netdata is defined and netdata.stat.islnk is not defined
 
 - name: "Copy Netdata settings"
   template:
@@ -24,13 +31,8 @@
   with_items:
     - "netdata.conf"
     - "python.d.conf"
+    - "health_alarm_notify.conf"
   notify: "Restart Netdata"
-
-- name: "Create Netdata Python directory"
-  file:
-    path: "{{ netdata_config_directory }}/python.d"
-    mode: "0755"
-    state: "directory"
 
 - name: "Copy Netdata Python settings"
   template:
@@ -38,18 +40,40 @@
     dest: "{{ netdata_config_directory }}/python.d/{{ item }}.conf"
     mode: "0644"
   with_items:
-    - "postfix"
+    - "logind"
+    - "monit"
+    - "postgres"
     - "web_log"
-    - "dovecot"
-    - "nginx"
   notify: "Restart Netdata"
 
-- name: "Set correct recipient for email"
-  lineinfile:
-    path: "{{ netdata_config_directory }}/health_alarm_notify.conf"
-    regexp: 'DEFAULT_RECIPIENT_EMAIL='
-    line: 'DEFAULT_RECIPIENT_EMAIL={{ email_webmaster }}@{{ server }}'
+- name: "Copy Netdata Go settings"
+  template:
+    src: "go.d/{{ item }}.conf.j2"
+    dest: "{{ netdata_config_directory }}/go.d/{{ item }}.conf"
+    mode: "0644"
+  with_items:
+    - "unbound"
   notify: "Restart Netdata"
+
+- name: "Define permissions for Netdata to access Unbound"
+  acl:
+    path: "{{ unbound_config_directory }}/{{ item }}"
+    entity: "netdata"
+    etype: "user"
+    permissions: "r"
+    state: "present"
+  with_items:
+    - "unbound.conf"
+    - "unbound_control.key"
+    - "unbound_control.pem"
+
+- name: "Define permissions for Netdata to access Dovecot stats"
+  acl:
+    path: "/var/run/dovecot/old-stats"
+    entity: "netdata"
+    etype: "user"
+    permissions: "rw"
+    state: "present"
 
 - name: "Start/enable Netdata"
   systemd:
