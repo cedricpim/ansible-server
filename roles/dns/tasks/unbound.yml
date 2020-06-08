@@ -32,7 +32,7 @@
 - name: "Copy Unbound settings"
   template:
     src: "unbound/unbound.conf.j2"
-    dest: "{{ unbound_config_directory }}//unbound.conf.d/unbound.conf"
+    dest: "{{ unbound_config_directory }}/unbound.conf.d/unbound.conf"
     mode: "0644"
   notify: "Reload Unbound"
 
