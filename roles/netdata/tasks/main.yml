@@ -30,7 +30,6 @@
     mode: "0644"
   with_items:
     - "netdata.conf"
-    - "python.d.conf"
     - "health_alarm_notify.conf"
   notify: "Restart Netdata"
 
@@ -40,7 +39,6 @@
     dest: "{{ netdata_config_directory }}/python.d/{{ item }}.conf"
     mode: "0644"
   with_items:
-    - "logind"
     - "monit"
     - "postgres"
     - "web_log"
