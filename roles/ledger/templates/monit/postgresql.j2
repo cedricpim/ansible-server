@@ -4,8 +4,8 @@
   group database
   start program = "/usr/sbin/service postgresql start"
   stop  program = "/usr/sbin/service postgresql stop"
-  if failed unixsocket {{ ledger_postgresql_sockfile }} protocol pgsql then restart
-  if failed unixsocket {{ ledger_postgresql_sockfile }} protocol pgsql then alert
+  if failed unixsocket {{ ledger_postgresql_sockfile }} protocol pgsql timeout 60 then restart
+  if failed unixsocket {{ ledger_postgresql_sockfile }} protocol pgsql timeout 60 then alert
   if failed host localhost port {{ ledger_postgresql_port }} protocol pgsql then restart
   if failed host localhost port {{ ledger_postgresql_port }} protocol pgsql then alert
   if 5 restarts within 5 cycles then timeout
