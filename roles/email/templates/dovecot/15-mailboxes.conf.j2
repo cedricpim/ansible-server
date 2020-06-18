@@ -46,12 +46,12 @@
 
 # NOTE: Assumes "namespace inbox" has been defined in 10-mail.conf.
 namespace inbox {
-  {% for mailbox in email_mailboxes %}
+{% for mailbox in email_mailboxes %}
   mailbox "{{ mailbox.name }}" {
     auto = {{ mailbox.auto }}
-    {% if mailbox.special_use is defined %}
+{% if mailbox.special_use is defined %}
     special_use = {{ mailbox.special_use }}
-    {% endif %}
+{% endif %}
   }
-  {% endfor %}
+{% endfor %}
 }
