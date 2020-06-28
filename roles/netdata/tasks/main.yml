@@ -21,7 +21,7 @@
     - command: "bash {{ tempdir.path }}/installer.sh --non-interactive --no-updates --stable-channel --disable-telemetry"
   always:
     - file: path="{{ tempdir.path }}" state="absent"
-  when: netdata is defined and netdata.stat.islnk is not defined
+  when: (netdata is defined and netdata.stat.islnk is not defined) or (update is defined and update)
 
 - name: "Copy Netdata settings"
   template:

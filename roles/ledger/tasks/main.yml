@@ -11,4 +11,4 @@
 - import_tasks: firefly.yml
 
 - import_tasks: firefly_update.yml
-  when: firefly_update is defined and firefly_update
+  when: update is defined and update
