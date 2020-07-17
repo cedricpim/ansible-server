@@ -28,11 +28,11 @@ ignoreip = 127.0.0.1/8
 ignorecommand =
 
 # "bantime" is the number of seconds that a host is banned.
-bantime = 600
+bantime = 10m
 
 # A host is banned if it has generated "maxretry" during the last "findtime"
 # seconds.
-findtime = 600
+findtime = 10m
 
 # "maxretry" is the number of failures before a host get banned.
 maxretry = 3
@@ -84,11 +84,13 @@ logencoding = auto
 # false: jail is not enabled
 enabled = false
 
+# "mode" defines the mode of the filter (see corresponding filter implementation for more info).
+mode = normal
 
 # "filter" defines the filter to use by the jail.
 #  By default jails have names matching their filter name
 #
-filter = %(__name__)s
+filter = %(__name__)s[mode=%(mode)s]
 
 
 #
@@ -113,7 +115,7 @@ mta = sendmail
 protocol = tcp
 
 # Specify chain where jumps would need to be added in iptables-* actions
-chain = INPUT
+chain = <known/chain>
 
 # Ports to be banned
 # Usually should be overridden in a particular jail
@@ -182,7 +184,7 @@ action_badips_report = badips[category="%(__name__)s", agent="%(fail2ban_agent)s
 # Choose default action.  To change, just override value of 'action' with the
 # interpolation to the chosen action shortcut (e.g.  action_mw, action_mwl, etc) in jail.local
 # globally (section [DEFAULT]) or per specific section
-action = %(action_)s
+action = %(action_mwl)s
 
 
 #
@@ -195,16 +197,6 @@ action = %(action_)s
 
 [sshd]
 
-enabled = true
-port    = ssh
-logpath = %(sshd_log)s
-backend = %(sshd_backend)s
-
-
-[sshd-ddos]
-# This jail corresponds to the standard configuration in Fail2ban.
-# The mail-whois action send a notification e-mail with a whois request
-# in the body.
 enabled = true
 port    = ssh
 logpath = %(sshd_log)s
@@ -226,6 +218,8 @@ logpath = %(nginx_error_log)s
 # http://nginx.org/en/docs/http/ngx_http_limit_req_module.html
 # or for example see in 'config/filter.d/nginx-limit-req.conf'
 [nginx-limit-req]
+
+enabled = true
 port    = http,https
 logpath = %(nginx_error_log)s
 
@@ -235,6 +229,16 @@ enabled  = true
 port     = http,https
 logpath  = %(nginx_error_log)s
 maxretry = 2
+
+# Ban attackers that try to use PHP's URL-fopen() functionality
+# through GET/POST variables. - Experimental, with more than a year
+# of usage in production environments.
+
+[php-url-fopen]
+
+enabled = true
+port    = http,https
+logpath = %(nginx_access_log)s
 
 
 #
@@ -256,6 +260,7 @@ logpath  = {{ monit_logfile }}
 [postfix]
 
 enabled  = true
+mode     = more
 port     = smtp,465,submission
 logpath  = %(postfix_log)s
 backend  = %(postfix_backend)s
@@ -264,6 +269,7 @@ backend  = %(postfix_backend)s
 [postfix-rbl]
 
 enabled  = true
+filter   = postfix[mode=rbl]
 port     = smtp,465,submission
 logpath  = %(postfix_log)s
 backend  = %(postfix_backend)s
@@ -307,12 +313,16 @@ backend = %(dovecot_backend)s
 [postfix-sasl]
 
 enabled  = true
+filter   = postfix[mode=auth]
 port     = smtp,465,submission,imap,imaps,pop3,pop3s
 # You might consider monitoring /var/log/mail.warn instead if you are
 # running postfix since it would provide the same log lines at the
 # "warn" level but overall at the smaller filesize.
 logpath  = %(postfix_log)s
 backend  = %(postfix_backend)s
+bantime  = 3w
+findtime = 3d
+maxretry = 1
 
 
 #
@@ -332,5 +342,15 @@ backend  = %(postfix_backend)s
 enabled  = true
 logpath  = {{ fail2ban_logfile }}
 banaction = %(banaction_allports)s
-bantime  = 1814400  ; 3 weeks
-findtime = 259200   ; 3 days
+bantime  = 3w
+findtime = 3d
+
+# Generic filter for PAM. Has to be used with action which bans all
+# ports such as iptables-allports, shorewall
+
+[pam-generic]
+# pam-generic filter can be customized to monitor specific subset of 'tty's
+enabled = true
+banaction = %(banaction_allports)s
+logpath  = %(syslog_authpriv)s
+backend  = %(syslog_backend)s
