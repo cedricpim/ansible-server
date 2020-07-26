@@ -9,10 +9,11 @@ Requires=network.target
 ExecStart=/usr/bin/env python3 -m radicale
 Restart=on-failure
 User={{ dav_user }}
-Type=forking
-RuntimeDirectory=radicale
+Group={{ dav_user }}
+
 # Deny other users access to the calendar data
 UMask=0027
+
 # Optional security settings
 PrivateTmp=true
 ProtectSystem=strict
@@ -21,7 +22,7 @@ ProtectKernelTunables=true
 ProtectKernelModules=true
 ProtectControlGroups=true
 NoNewPrivileges=true
-ReadWritePaths={{ dav_home }} {{ dav_radicale_pid_directory }} {{ dav_radicale_log_directory }}
+ReadWritePaths={{ dav_home }} {{ dav_radicale_log_directory }}
 
 [Install]
 WantedBy=multi-user.target

@@ -10,7 +10,8 @@
 - name: "Install Radicale"
   pip:
     name: "radicale"
-    state: "latest"
+    version: "{{ dav_radicale_version }}"
+    state: "present"
     executable: "pip3"
   notify: "Restart Radicale"
 

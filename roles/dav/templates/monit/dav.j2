@@ -9,7 +9,8 @@ check process dav.{{ server }} with pidfile {{ webserver_nginx_pidfile }}
   if cpu > 60% for 5 cycles then restart
   if 10 restarts with 10 cycles then unmonitor
 
-check process radicale with pidfile {{ dav_radicale_pid_directory }}/radicale.pid
+check process radicale
+  matching "radicale"
   group {{ dav_user }}
   start program = "/usr/sbin/service radicale start"
   stop program  = "/usr/sbin/service radicale stop"
