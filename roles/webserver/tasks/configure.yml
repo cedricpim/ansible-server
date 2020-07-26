@@ -1,5 +1,5 @@
 ---
-- name: "Check if nginx is installed"
+- name: "Check if Nginx is installed"
   shell: "dpkg-query -W -f='${Status}' nginx | grep 'install ok installed'"
   failed_when: no
   changed_when: no

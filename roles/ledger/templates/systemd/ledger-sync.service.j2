@@ -1,10 +1,10 @@
 {{ ansible_managed | comment }}
 
 [Unit]
-Description=Store networth calculation
+Description=Sync local and remote changes with Firefly server
 
 [Service]
-ExecStart=/bin/bash -lc 'nledger'
+ExecStart=/bin/bash -lc 'ledger sync'
 User={{ ledger_user }}
 Group={{ ledger_user }}
 Type=oneshot

@@ -37,6 +37,7 @@
     tasks_from: "scripts"
   with_items:
     - "bledger"
+    - "nledger"
     - "rledger"
   loop_control:
     loop_var: "script"
@@ -63,10 +64,13 @@
     - "ledger-backup.timer"
     - "ledger-networth.service"
     - "ledger-networth.timer"
+    - "ledger-sync.service"
+    - "ledger-sync.timer"
   notify:
     - "Restart ledger timer"
     - "Restart ledger-backup timer"
     - "Restart ledger-networth timer"
+    - "Restart ledger-sync timer"
 
 - name: "Enable/start ledger related timers"
   systemd:
@@ -78,3 +82,4 @@
     - "ledger.timer"
     - "ledger-backup.timer"
     - "ledger-networth.timer"
+    - "ledger-sync.timer"

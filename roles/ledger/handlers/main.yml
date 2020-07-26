@@ -17,6 +17,12 @@
     state: "restarted"
     daemon_reload: yes
 
+- name: "Restart ledger-sync timer"
+  systemd:
+    name: "ledger-sync.timer"
+    state: "restarted"
+    daemon_reload: yes
+
 - name: "Restart PostgreSQL"
   systemd:
     name: "postgresql"

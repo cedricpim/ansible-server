@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -eo pipefail
+IFS=$'\n\t'
+
+{{ ansible_managed | comment }}
+
+ledger pull
+ledger networth --save
+
+exit 0
