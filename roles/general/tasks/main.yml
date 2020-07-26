@@ -38,8 +38,11 @@
 - include_role:
     name: "general"
     tasks_from: "scripts"
-  vars:
-    script: "pserver-stats"
+  with_items:
+    - "pserver-stats"
+    - "systemd-email"
+  loop_control:
+    loop_var: "script"
 
 - name: "Create Rsyslog service directory"
   file:
@@ -57,6 +60,13 @@
     group: "root"
     mode: "0644"
   notify: "Restart Rsyslog"
+
+- name: "Copy service for mailing on failure"
+  template:
+    src: "systemd/status_email@.service.j2"
+    dest: "{{ systemd_directory }}/status_email@.service"
+    mode: "0600"
+  notify: "Reload systemd"
 
 - include_role:
     name: "monit"

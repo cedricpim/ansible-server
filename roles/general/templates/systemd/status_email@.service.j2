@@ -1,0 +1,10 @@
+{{ ansible_managed | comment }}
+
+[Unit]
+Description=Status email for %i to user
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/systemd-email {{ email_webmaster }}@{{ server }} %i
+User=nobody
+Group=systemd-journal
