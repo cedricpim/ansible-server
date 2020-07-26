@@ -3,6 +3,7 @@
 [Unit]
 Description=Update root hints for unbound
 After=network.target
+OnFailure=status_email@%n.service
 
 [Service]
 ExecStart=/usr/bin/curl -o {{ unbound_config_directory }}/root.hints {{ unbound_roothints_url }}

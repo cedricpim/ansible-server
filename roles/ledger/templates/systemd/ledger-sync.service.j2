@@ -2,6 +2,7 @@
 
 [Unit]
 Description=Sync local and remote changes with Firefly server
+OnFailure=status_email@%n.service
 
 [Service]
 ExecStart=/bin/bash -lc 'ledger sync'

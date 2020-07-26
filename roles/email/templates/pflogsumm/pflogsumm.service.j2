@@ -2,6 +2,7 @@
 
 [Unit]
 Description=Generate report about emails from previous day
+OnFailure=status_email@%n.service
 
 [Service]
 ExecStart={{ general_scripts_directory }}/ppflogsumm

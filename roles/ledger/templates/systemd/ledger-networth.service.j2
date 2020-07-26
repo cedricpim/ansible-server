@@ -2,6 +2,7 @@
 
 [Unit]
 Description=Store networth calculation
+OnFailure=status_email@%n.service
 
 [Service]
 ExecStart=/bin/bash -lc 'nledger'

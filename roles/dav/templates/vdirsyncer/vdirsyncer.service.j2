@@ -3,6 +3,7 @@
 [Unit]
 Description=Synchronize calendars and contacts
 Documentation=https://vdirsyncer.readthedocs.org/
+OnFailure=status_email@%n.service
 
 [Service]
 ExecStart={{ general_scripts_directory }}/vsync

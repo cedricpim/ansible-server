@@ -2,6 +2,7 @@
 
 [Unit]
 Description=Ledger recurring expenses
+OnFailure=status_email@%n.service
 
 [Service]
 ExecStart=/bin/bash -lc 'rledger'
