@@ -11,6 +11,10 @@ Restart=on-failure
 User={{ dav_user }}
 Group={{ dav_user }}
 
+# Logging
+StandardOutput=append:{{ dav_radicale_log_directory }}/radicale.log
+StandardError=append:{{ dav_radicale_log_directory }}/radicale.log
+
 # Deny other users access to the calendar data
 UMask=0027
 
