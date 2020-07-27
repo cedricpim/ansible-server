@@ -3,9 +3,13 @@
 [Unit]
 Description=Store networth calculation
 OnFailure=status_email@%n.service
+StartLimitIntervalSec=480
+StartLimitBurst=5
 
 [Service]
+Type=simple
 ExecStart=/bin/bash -lc 'nledger'
+Restart=on-failure
+RestartSec=60
 User={{ ledger_user }}
 Group={{ ledger_user }}
-Type=oneshot
