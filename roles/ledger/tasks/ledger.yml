@@ -15,7 +15,7 @@
     - file: path="{{ ledger_destination }}/ledger" owner="root" group="staff"
   always:
     - file: path="{{ tempdir.path }}" state="absent"
-  when: ledger_installed_version.stdout is not defined or ledger_installed_version.stdout != ledger_version
+  when: ledger_installed_version.stdout is not defined or ledger_installed_version.stdout != ledger_version_output
 
 - name: "Create folder for ledger configuration"
   file:
