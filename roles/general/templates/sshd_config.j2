@@ -25,9 +25,6 @@ Protocol 2
 #HostKey /etc/ssh/ssh_host_ecdsa_key
 #HostKey /etc/ssh/ssh_host_ed25519_key
 
-#Privilege Separation is turned on for security
-UsePrivilegeSeparation yes
-
 # Ciphers and keying
 #RekeyLimit default none
 
@@ -62,8 +59,8 @@ MaxSessions 10
 #IgnoreRhosts yes
 
 # To disable tunneled clear text passwords, change to no here!
-#PasswordAuthentication yes
-#PermitEmptyPasswords no
+PasswordAuthentication no
+PermitEmptyPasswords no
 
 # Change to yes to enable challenge-response passwords (beware issues with
 # some PAM modules and threads)
