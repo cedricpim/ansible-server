@@ -146,7 +146,7 @@ MAIL-ON-WARNING={{ email_webmaster }}@{{ server }}
 # The default is to use the 'mail' command, with a subject line
 # of '[rkhunter] Warnings found for ${HOST_NAME}'.
 #
-#MAIL_CMD=mail -s "[rkhunter] Warnings found for ${HOST_NAME}"
+MAIL_CMD=mailx -s "[rkhunter] Warnings found for ${HOST_NAME}"
 
 #
 # This option specifies the directory to use for temporary files.
