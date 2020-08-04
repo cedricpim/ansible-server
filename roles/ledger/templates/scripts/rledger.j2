@@ -11,7 +11,7 @@ function expected_date() {
 CURRENT_DATE="$(date +'%Y-%m-%d')"
 
 {% for rec in ledger_reoccurrences %}
-expected_date {{ rec.day | quote }} && ledger book -a {{ rec.account | quote }} -a $CURRENT_DATE -a {{ rec.category | quote }} -a {{ rec.description | quote }} -a {{ rec.quantity | quote }} -a {{ rec.venue | quote }} -a {{ rec.amount | quote }} -a {{ rec.currency | quote }} -a {{ rec.trip | quote }} -a {{ rec.id | quote }}
+expected_date {{ rec.day | quote }} && ledger book --attributes {{ rec.account | quote }} $CURRENT_DATE {{ rec.category | quote }} {{ rec.description | quote }} {{ rec.quantity | quote }} {{ rec.venue | quote }} {{ rec.amount | quote }} {{ rec.currency | quote }} {{ rec.trip | quote }} {{ rec.id | quote }}
 {% endfor %}
 
 exit 0
