@@ -52,6 +52,7 @@
 
 - name: "Enable the new version of Firefly"
   block:
+    - file: path="{{ ledger_firefly_directory }}.bak" state="absent"
     - command: "mv {{ ledger_firefly_directory }} {{ ledger_firefly_directory }}.bak"
     - command: "mv {{ tempdir.path }}/{{ ledger_firefly_name }} {{ ledger_firefly_directory }}"
 
