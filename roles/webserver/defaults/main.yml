@@ -6,7 +6,7 @@ webserver_nginx_log_directory: "/var/log/nginx"
 webserver_nginx_pidfile: "/run/nginx.pid"
 
 webserver_nginx_ssl_dhparam: "/etc/ssl/certs/dhparam.pem"
-webserver_nginx_ssl_ciphers: "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH"
+webserver_nginx_ssl_ciphers: "ECDHE-ECDSA-CHACHA20-POLY1305 ECDHE-RSA-CHACHA20-POLY1305 DHE-RSA-CHACHA20-POLY1305"
 webserver_nginx_ssl_session_cache: "shared:SSL:10m"
 webserver_nginx_ssl_protocols:
   - "TLSv1.2"
