@@ -17,4 +17,4 @@
     domains: "{{ webserver_letsencrypt_domains | map('regex_replace', '^(.*)$', '\\1.' + server ) | list + [ server ] }}"
 
 - name: "Generate certificates"
-  command: "certbot certonly --noninteractive --agree-tos --email {{ webserver_letsencrypt_email }} --webroot -w {{ webserver_letsencrypt_challenge_directory }} -d {{ domains | reverse | join(',') }}"
+  command: "certbot certonly --noninteractive --expand --agree-tos --email {{ webserver_letsencrypt_email }} --webroot -w {{ webserver_letsencrypt_challenge_directory }} -d {{ domains | reverse | join(',') }}"
