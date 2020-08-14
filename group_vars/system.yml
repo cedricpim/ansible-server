@@ -30,6 +30,7 @@ sync_credentials: "{{ vault_sync_credentials }}"
 sync_personal_credentials: "{{ vault_sync_personal_credentials }}"
 sync_personal_file: "{{ vault_sync_personal_file }}"
 
+email_mta_sts: "{{ vault_email_mta_sts }}"
 email_webmaster: "{{ vault_email_webmaster }}"
 email_virtual_mailbox_users: "{{ vault_email_virtual_mailbox_users }}"
 email_virtuals: "{{ vault_email_virtuals }}"

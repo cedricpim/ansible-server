@@ -32,3 +32,10 @@ email_spamd_pidfile: "/run/spamd.pid"
 
 email_pflogsumm_sender: "pflogsumm@localhost"
 email_pflogsumm_receiver: "root@localhost"
+
+email_mta_sts_directory: "{{ webserver_nginx_content_directory }}/mta-sts/.well-known"
+email_mta_sts:
+  version: "STSv1"
+  mode: "enforce"
+  mx: "mail1"
+  max_age: "604800"

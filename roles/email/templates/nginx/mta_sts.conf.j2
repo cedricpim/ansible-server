@@ -1,0 +1,16 @@
+{{ ansible_managed | comment }}
+
+server {
+  listen      {{ ansible_default_ipv4.address }}:443 ssl;
+  server_name mta-sts.{{ server }};
+  access_log  {{ webserver_nginx_log_directory }}/mta_sts.access.log;
+  error_log   {{ webserver_nginx_log_directory }}/mta_sts.error.log;
+
+  location /.well-known/mta-sts.txt {
+    root {{ webserver_nginx_content_directory }}/mta-sts;
+  }
+
+  location / {
+    return 403 "403 Forbidden - This site is used to specify the MTA-STS policy for this domain, please see '/.well-known/mta-sts.txt'.";
+  }
+}

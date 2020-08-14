@@ -40,3 +40,8 @@
   systemd:
     name: "pflogsumm.timer"
     state: "restarted"
+
+- name: "Reload Nginx"
+  systemd:
+    name: "nginx"
+    state: "reloaded"

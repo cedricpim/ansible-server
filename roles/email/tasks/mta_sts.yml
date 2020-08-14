@@ -1,0 +1,29 @@
+---
+- name: "Create MTA-STS directory"
+  file:
+    path: "{{ email_mta_sts_directory }}"
+    owner: "{{ webserver_nginx_user }}"
+    group: "{{ webserver_nginx_user }}"
+    mode: "0755"
+    state: "directory"
+
+- name: "Copy MTA-STS configuration"
+  template:
+    src: "mta_sts/mta-sts.txt.j2"
+    dest: "{{ email_mta_sts_directory }}/mta-sts.txt"
+    owner: "{{ webserver_nginx_user }}"
+    group: "{{ webserver_nginx_user }}"
+    mode: "0644"
+  notify: "Reload Nginx"
+
+- include_role:
+    name: "webserver"
+    tasks_from: "configure"
+  vars:
+    conf: "mta_sts.conf"
+
+- include_role:
+    name: "monit"
+    tasks_from: "configure"
+  vars:
+    conf: "mta_sts"
