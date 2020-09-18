@@ -39,3 +39,7 @@ email_mta_sts:
   mode: "enforce"
   mx: "mail1"
   max_age: "604800"
+
+email_geoip_config_directory: "/etc"
+email_maxmind_account_id: "ACCOUNT_ID"
+email_maxmind_license_key: "LICENSE_KEY"

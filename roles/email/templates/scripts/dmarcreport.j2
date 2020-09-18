@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -eo pipefail
+IFS=$'\n\t'
+
+{{ ansible_managed | comment }}
+
+sudo -u {{ email_user }} grep -rl "Subject: Report Domain" {{ email_directory }}/{{ server }}/{{ email_webmaster }}/mail/Reports/cur \
+  | uniq \
+  | sudo -u {{ email_user }} xargs grep -l dmarc \
+  | sudo -u vmail xargs parsedmarc \
+  | jq -Cs . \
+  | less -r

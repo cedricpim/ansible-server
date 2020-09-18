@@ -1,0 +1,46 @@
+---
+- name: "Install python3 and pip3 and geoipupdate and jq"
+  apt:
+    name:
+      - "python3"
+      - "python3-pip"
+      - "geoipupdate"
+      - "jq"
+
+- name: "Run geoipupdate"
+  command: "/usr/bin/geoipupdate"
+
+- name: "Install parsedmarc"
+  pip:
+    name: "parsedmarc"
+    state: "latest"
+    executable: "pip3"
+
+- include_role:
+    name: "general"
+    tasks_from: "scripts"
+  vars:
+    script: "dmarcreport"
+
+- name: "Copy configuration file for geoipupdate"
+  template:
+    src: "dmarc/GeoIP.conf.j2"
+    dest: "{{ email_geoip_config_directory }}/GeoIP.conf"
+    mode: "0644"
+
+- name: "Copy GeoIP systemd"
+  template:
+    src: "dmarc/{{ item }}.j2"
+    dest: "{{ systemd_directory }}/{{ item }}"
+    mode: "0755"
+  with_items:
+    - "geoipupdate.service"
+    - "geoipupdate.timer"
+  notify: "Restart geoipupdate timer"
+
+- name: "Start/Enable geoipupdate"
+  systemd:
+    name: "geoipupdate.timer"
+    state: "started"
+    enabled: yes
+    daemon_reload: yes

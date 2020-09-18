@@ -38,6 +38,8 @@ email_virtual_regexs: "{{ vault_email_virtual_regexs }}"
 email_credentials: "{{ vault_email_credentials }}"
 email_mailboxes: "{{ vault_email_mailboxes }}"
 email_spamassassin_languages: "{{ vault_email_spamassassin_languages }}"
+email_maxmind_account_id: "{{ vault_email_maxmind_account_id }}"
+email_maxmind_license_key: "{{ vault_email_maxmind_license_key }}"
 email_sieve_filters: "{{ vault_email_sieve_filters }}"
 
 ledger_user: "{{ vault_ledger_user }}"

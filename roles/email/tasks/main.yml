@@ -13,3 +13,4 @@
 - import_tasks: "postfix.yml"
 - import_tasks: "dovecot.yml"
 - import_tasks: "pflogsumm.yml"
+- import_tasks: "dmarc.yml"
