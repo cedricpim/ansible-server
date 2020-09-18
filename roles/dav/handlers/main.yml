@@ -4,7 +4,7 @@
     name: "radicale"
     state: "restarted"
 
-- name: "Restart Vdirsyncer"
+- name: "Restart Vdirsyncer timer"
   systemd:
-    name: "vdirsyncer"
+    name: "vdirsyncer.timer"
     state: "restarted"

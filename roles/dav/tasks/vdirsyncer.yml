@@ -44,7 +44,7 @@
   with_items:
     - "vdirsyncer.service"
     - "vdirsyncer.timer"
-  notify: "Restart Vdirsyncer"
+  notify: "Restart Vdirsyncer timer"
 
 - name: "Discover collections"
   shell: "yes | vdiscover"
