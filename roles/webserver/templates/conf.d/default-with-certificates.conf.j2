@@ -1,7 +1,13 @@
 {{ ansible_managed | comment }}
 
 server {
-  listen      {{ ansible_default_ipv4.address }}:443 ssl;
+  listen      443 ssl;
+  server_name www.{{ server }};
+  return 301 $scheme://{{ server }}$request_uri;
+}
+
+server {
+  listen      443 ssl;
   server_name {{ server }};
 
   ssl_certificate     /etc/ssl/certs/ssl-cert-snakeoil.pem;

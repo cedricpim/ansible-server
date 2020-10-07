@@ -1,7 +1,7 @@
 {{ ansible_managed | comment }}
 
 server {
-  listen      {{ ansible_default_ipv4.address }}:443 ssl;
+  listen      443 ssl;
   server_name sync.{{ server }};
   access_log  {{ webserver_nginx_log_directory }}/sync.access.log;
   error_log   {{ webserver_nginx_log_directory }}/sync.error.log;
