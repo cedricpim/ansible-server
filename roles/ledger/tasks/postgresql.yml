@@ -5,6 +5,7 @@
       - "postgresql-{{ ledger_postgresql_version }}"
       - "postgresql-client-{{ ledger_postgresql_version }}"
       - "python-psycopg2"
+      - "python3-psycopg2"
     state: "latest"
 
 - name: "Add configuration for PostgreSQL"
@@ -33,7 +34,6 @@
     state: "present"
   become: yes
   become_user: "{{ ledger_postgresql_user }}"
-  no_log: yes
   vars:
     ansible_ssh_pipelining: yes
 
