@@ -10,7 +10,7 @@
 - name: "Set authorized key from local user"
   authorized_key:
     user: "{{ general_user }}"
-    key: "{{ lookup('file', '~/.ssh/server_id_rsa.pub') }}"
+    key: "{{ lookup('file', '~/.ssh/server_id.pub') }}"
     state: "present"
 
 - name: "Add {{ general_user }} to sudoers"
@@ -86,7 +86,7 @@
   vars:
     conf: "rsyslog"
 
-- name: "Install vim, curl and some other utilities"
+- name: "Install vim, curl, borg and some other utilities"
   apt:
     name:
       - "vim"
@@ -95,4 +95,5 @@
       - "acpid"
       - "rsyslog"
       - "tmux"
+      - "borgbackup"
     state: "latest"
