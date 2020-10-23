@@ -1,6 +1,6 @@
 ---
 netdata_url: "https://my-netdata.io/kickstart.sh"
-netdata_checksum: "sha256:82ddfedc8eb176f0220ba7435153d095d55df6d98a40f61b19fab1cd0139e594"
+netdata_checksum: "sha256:3264fa58f6a8815cd73fdb516357783e7e02761070cb3da8ba26cf5e8f13c29f"
 
 netdata_config_directory: "/etc/netdata"
 netdata_port: "19999"

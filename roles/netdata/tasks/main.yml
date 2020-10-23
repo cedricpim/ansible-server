@@ -29,6 +29,8 @@
     dest: "{{ netdata_config_directory }}/{{ item }}"
     mode: "0644"
   with_items:
+    - "go.d.conf"
+    - "python.d.conf"
     - "netdata.conf"
     - "health_alarm_notify.conf"
   notify: "Restart Netdata"
@@ -51,6 +53,7 @@
     mode: "0644"
   with_items:
     - "unbound"
+    - "systemdunits"
   notify: "Restart Netdata"
 
 - name: "Define permissions for Netdata to access Unbound"
