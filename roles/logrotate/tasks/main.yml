@@ -15,12 +15,3 @@
     path: "{{ logrotate_config_directory }}"
     mode: "0755"
     state: "directory"
-
-- include_role:
-    name: "logrotate"
-    tasks_from: "configure"
-  with_items:
-    - "apt"
-    - "dpkg"
-  loop_control:
-    loop_var: "conf"

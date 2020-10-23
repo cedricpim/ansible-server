@@ -18,18 +18,3 @@ compress
 
 # packages drop log rotation information into this directory
 include {{ logrotate_config_directory }}
-
-# system-specific logs may be also be configured here.
-{{ logs_directory }}/wtmp {
-  missingok
-  monthly
-  create 0664 root utmp
-  rotate 1
-}
-
-{{ logs_directory }}/btmp {
-  missingok
-  monthly
-  create 0660 root utmp
-  rotate 1
-}
