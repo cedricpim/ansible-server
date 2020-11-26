@@ -90,7 +90,7 @@ email_sieve_filters: |
   }
 
 ledger_password: "password"
-ledger_exchange_api_key: "some_key"
+ledger_exchange_key: "some_key"
 ledger_firefly:
   base_path: "http://localhost"
   opening_balance: "Balance"
