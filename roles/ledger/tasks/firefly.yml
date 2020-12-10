@@ -24,11 +24,14 @@
 
 - name: "Add configuration for PHP-FPM"
   template:
-    src: "php/www.conf.j2"
-    dest: "{{ ledger_firefly_phpfpm_config_directory }}/www.conf"
+    src: "php/{{ item.name }}.j2"
+    dest: "{{ ledger_firefly_phpfpm_config_directory }}/{{ item.directory }}{{ item.name }}"
     owner: "root"
     group: "root"
     mode: "0644"
+  with_items:
+    - { name: "php.ini", directory: "" }
+    - { name: "www.conf", directory: "pool.d/" }
   notify: "Restart PHP-FPM"
 
 - name: "Start/Enable PHP-FPM"
