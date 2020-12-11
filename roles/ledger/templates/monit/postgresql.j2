@@ -1,6 +1,6 @@
 {{ ansible_managed | comment }}
 
- check process postgresql with pidfile {{ ledger_postgresql_pidfile }}
+check process postgresql with pidfile {{ ledger_postgresql_pidfile }}
   group database
   start program = "/usr/sbin/service postgresql start"
   stop  program = "/usr/sbin/service postgresql stop"
