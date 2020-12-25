@@ -18,7 +18,7 @@
 ##
 ## Start Monit in the background (run as a daemon):
 #
-  set daemon {{ monit_interval }} # check services at 2-minute intervals
+  set daemon {{ monit_interval }}            # check services at 2-minute intervals
 #   with start delay 240    # optional: delay the first check by 4-minutes (by
 #                           # default Monit check immediately after Monit start)
 #
@@ -98,7 +98,7 @@
       slots 100                     # optionally limit the queue size
 #
 #
-## Send status and events to M/Monit (for more informations about M/Monit
+## Send status and events to M/Monit (for more information about M/Monit
 ## see https://mmonit.com/). By default Monit registers credentials with
 ## M/Monit so M/Monit can smoothly communicate back to Monit and you don't
 ## have to register Monit credentials manually in M/Monit. It is possible to
@@ -308,4 +308,6 @@
 ## It is possible to include additional configuration parts from other files or
 ## directories.
 #
+   include {{ monit_directory }}/conf.d/*
    include {{ monit_directory }}/conf-enabled/*
+#
