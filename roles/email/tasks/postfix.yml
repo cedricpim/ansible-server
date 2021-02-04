@@ -41,6 +41,7 @@
     - "virtual-mailbox-users"
     - "virtual"
     - "virtual-regex"
+    - "check_helo_access"
   loop_control:
     loop_var: "mapping"
 
