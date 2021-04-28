@@ -14,6 +14,14 @@
     mode: "0644"
   notify: "Reload Fail2Ban"
 
+- name: "Add extra check to postfix"
+  lineinfile:
+    path: "{{ fail2ban_config_directory }}/filter.d/postfix.conf"
+    regexp: 'Protocol error'
+    insertafter: 'VRFY'
+    line: "            ^RCPT from [^[]*\\[<HOST>\\]%(_port)s: 550 5\\.5\\.1 Protocol error\\b"
+  notify: "Reload Fail2Ban"
+
 - include_tasks: "check_file.yml"
   with_items:
     - { path: "{{ monit_logfile }}", owner: "root", group: "root" }
