@@ -9,8 +9,3 @@
     src: "htoprc.j2"
     dest: "/etc/htoprc"
     mode: "0644"
-
-- name: "Update bashrc with fix for htop"
-  lineinfile:
-    dest: "~{{ general_user }}/.bashrc"
-    line: 'alias htop="TERM=xterm htop"'

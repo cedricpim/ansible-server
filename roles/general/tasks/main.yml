@@ -97,3 +97,8 @@
       - "tmux"
       - "borgbackup"
     state: "latest"
+
+- name: "Update bashrc with fix for terminal"
+  lineinfile:
+    dest: "~{{ general_user }}/.bashrc"
+    line: 'export TERM=xterm-color'
