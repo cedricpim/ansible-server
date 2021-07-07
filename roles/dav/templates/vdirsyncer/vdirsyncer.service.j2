@@ -4,8 +4,12 @@
 Description=Synchronize calendars and contacts
 Documentation=https://vdirsyncer.readthedocs.org/
 OnFailure=status_email@%n.service
+StartLimitIntervalSec=300
+StartLimitBurst=3
 
 [Service]
 ExecStart={{ general_scripts_directory }}/vsync
-Type=oneshot
+Type=simple
 User={{ dav_user }}
+Restart=on-failure
+RestartSec=60
