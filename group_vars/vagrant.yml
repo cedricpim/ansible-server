@@ -49,7 +49,6 @@ dav_collections:
     reminder: "TRIGGER\\:\\-P2DT"
     sed: ":a;N;\\$!ba;s#BEGIN:VALARM.*TRIGGER:-P2DT.*(BEGIN:VALARM)#\\1#g"
 
-gallery_credentials: "vagrant:YYzo3ZBykz1oI"
 gallery_sigal_pictures_source: "/home/vagrant/pictures"
 
 sync_credentials: "vagrant:YYzo3ZBykz1oI"

@@ -19,7 +19,6 @@
     name: "sigal"
     state: "latest"
     executable: "pip3"
-  notify: "Restart Sigal"
 
 - name: "Create Sigal configuration directory"
   file:
@@ -43,20 +42,16 @@
     owner: "{{ gallery_sigal_user }}"
     group: "{{ gallery_sigal_user }}"
     mode: "0644"
-  notify: "Restart Sigal"
 
 - name: "Copy Sigal systemd"
   template:
     src: "sigal/sigal.service.j2"
     dest: "{{ systemd_directory }}/sigal.service"
     mode: "0644"
-  notify: "Restart Sigal"
 
-- name: "Start/Enable Sigal"
+- name: "Reload Systemd"
   systemd:
     name: "sigal"
-    state: "started"
-    enabled: yes
     daemon_reload: yes
 
 - include_role:
@@ -64,17 +59,3 @@
     tasks_from: "scripts"
   vars:
     script: "process-photos"
-
-- include_role:
-    name: "webserver"
-    tasks_from: "configure"
-  vars:
-    conf: "gallery.conf"
-    credentials:
-      - "htpasswd.gallery"
-
-- include_role:
-    name: "monit"
-    tasks_from: "configure"
-  vars:
-    conf: "gallery"
