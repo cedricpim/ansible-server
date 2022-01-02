@@ -1,0 +1,9 @@
+{{ ansible_managed | comment }}
+
+# This file contains the environment variables file for systemd.
+
+# Currently, the only defined variable is $LOGWATCH_OPTIONS,
+# which specifies the default options passed to the logwatch
+# executable when invoked with systemd.
+
+LOGWATCH_OPTIONS="--output mail"

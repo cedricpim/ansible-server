@@ -1,0 +1,11 @@
+{{ ansible_managed | comment }}
+
+[Unit]
+Description=Log analyzer and reporter
+Documentation=man:logwatch(8) man:logwatch.conf(5)
+Before=logrotate.service
+
+[Service]
+Type=oneshot
+EnvironmentFile=-/etc/logwatch/conf/systemd.conf
+ExecStart=/usr/sbin/logwatch $LOGWATCH_OPTIONS

@@ -1,2 +1,5 @@
 ---
 systemd_sender: "systemd@localhost"
+
+logwatch_directory: "/etc/logwatch/conf"
+logwatch_sender: "logwatch@localhost"
