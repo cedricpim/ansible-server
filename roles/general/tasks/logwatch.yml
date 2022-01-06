@@ -11,29 +11,8 @@
 
 - name: "Configure Logwatch"
   template:
-    src: "logwatch/{{ item }}.j2"
-    dest: "{{ logwatch_directory }}/{{ item }}"
+    src: "logwatch/logwatch.conf.j2"
+    dest: "{{ logwatch_directory }}/logwatch.conf"
     owner: "root"
     group: "root"
     mode: "0644"
-  with_items:
-    - "logwatch.conf"
-    - "systemd.conf"
-
-- name: "Copy service and timer for logwatch"
-  template:
-    src: "systemd/{{ item }}.j2"
-    dest: "{{ systemd_directory }}/{{ item }}"
-    mode: "0600"
-  with_items:
-    - "logwatch.service"
-    - "logwatch.timer"
-  notify:
-    - "Restart logwatch timer"
-
-- name: "Start/Enable Logwatch timer"
-  systemd:
-    name: "logwatch.timer"
-    state: "started"
-    enabled: yes
-    daemon_reload: yes
