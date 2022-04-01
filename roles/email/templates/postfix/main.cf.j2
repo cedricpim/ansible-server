@@ -47,13 +47,14 @@ smtpd_helo_required = yes
 smtpd_client_restrictions =
   permit_mynetworks,
   permit_sasl_authenticated,
+  check_client_access hash:{{ email_postfix_config_directory }}/check_access,
   reject_unauth_pipelining,
   reject_unknown_client_hostname
 
 smtpd_helo_restrictions =
   permit_mynetworks,
   permit_sasl_authenticated,
-  check_helo_access hash:{{ email_postfix_config_directory }}/check_helo_access,
+  check_helo_access hash:{{ email_postfix_config_directory }}/check_access,
   reject_non_fqdn_helo_hostname,
   reject_invalid_helo_hostname,
   reject_unknown_helo_hostname

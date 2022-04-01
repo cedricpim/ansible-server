@@ -1,5 +1,0 @@
-{{ ansible_managed | comment }}                                                         >
-                                                                                        >
-{% for helo in email_helo_whitelist | default([]) %}                                    >
-{{ helo }}  OK                                                                          >
-{% endfor %}
