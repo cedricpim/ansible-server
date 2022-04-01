@@ -53,8 +53,10 @@ smtpd_client_restrictions =
 smtpd_helo_restrictions =
   permit_mynetworks,
   permit_sasl_authenticated,
+  check_helo_access hash:{{ email_postfix_config_directory }}/check_helo_access,
   reject_non_fqdn_helo_hostname,
-  reject_invalid_helo_hostname
+  reject_invalid_helo_hostname,
+  reject_unknown_helo_hostname
 
 smtpd_sender_restrictions =
   permit_mynetworks,
