@@ -19,7 +19,7 @@ ok_locales {{ email_spamassassin_locales | join(" ") }}
 
 # Set Pyzor & Razor config file paths
 razor_config {{ email_spamassassin_home }}/.razor/razor-agent.conf
-pyzor_options --homedir {{ email_spamassassin_home }}/.pyzor
+pyzor_options --homedir {{ email_spamassassin_home }}
 
 #   Add *****SPAM***** to the Subject header of spam e-mails
 #

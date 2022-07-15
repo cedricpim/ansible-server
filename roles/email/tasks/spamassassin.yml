@@ -11,7 +11,6 @@
   apt:
     name: "pyzor"
     state: "latest"
-  register: pyzor_package
 
 - name: "Install Razor add-ons"
   apt:
@@ -89,11 +88,6 @@
   with_items:
     - ".spamassassin"
     - ".razor"
-    - ".pyzor"
-
-- name: "Run Pyzor add-on"
-  command: "pyzor --homedir {{ email_spamassassin_home }}/.pyzor discover"
-  when: pyzor_package is defined and pyzor_package.changed
 
 - name: "Run Razor add-on"
   command: "razor-admin -home={{ email_spamassassin_home }}/.razor {{ item }}"
