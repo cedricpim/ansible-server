@@ -1,7 +1,7 @@
 ---
 - name: "Update apt sources to include new version of PHP"
   block:
-    - apt_key: key="{{ apt_sury_key }}" url="{{ apt_sury_repo }}/apt.gpg" state="present"
+    - apt_key: id="{{ apt_sury_key }}" url="{{ apt_sury_repo }}/apt.gpg" state="present"
     - apt_repository: repo="deb {{ apt_sury_repo }} {{ ansible_distribution_release }} main" state="present"
     - apt: update_cache=yes
 
