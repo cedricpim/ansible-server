@@ -42,7 +42,6 @@
   command: "sudo -E -u {{ webserver_nginx_user }} php artisan {{ item }}"
   args:
     chdir: "{{ tempdir.path }}/{{ ledger_firefly_name }}"
-    warn: no
   with_items:
     - "cache:clear"
     - "migrate --seed"
