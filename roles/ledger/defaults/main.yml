@@ -41,7 +41,7 @@ ledger_postgresql_sockfile: "/run/postgresql/.s.PGSQL.{{ ledger_postgresql_port 
 
 ledger_firefly_name: "firefly-iii"
 ledger_firefly_directory: "{{ webserver_nginx_content_directory }}/{{ ledger_firefly_name }}"
-ledger_firefly_version: "5.7.17"
+ledger_firefly_version: "5.7.18"
 ledger_firefly_app_key: "SomeRandomStringOf32CharsExactly"
 ledger_firefly_timezone: "Europe/Amsterdam"
 ledger_firefly_sender: "firefly@localhost"
