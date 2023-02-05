@@ -27,6 +27,13 @@
     mode: "0644"
   register: before_filter_sieve
 
+- name: "Ensure usage of double quotes"
+  replace:
+    path: "{{ email_directory }}/sieve-before/master.sieve"
+    regexp: ''''
+    replace: '"'
+  when: before_filter_sieve is defined and before_filter_sieve.changed
+
 - name: "Compile before-filter Sieve"
   block:
     - command: "sievec {{ email_directory }}/sieve-before/master.sieve"
