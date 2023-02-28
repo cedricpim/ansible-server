@@ -140,7 +140,7 @@ smtp_tls_note_starttls_offer = yes
 smtp_tls_security_level = may
 
 ## Postscreen
-postscreen_greet_action = enforce
-postscreen_dnsbl_action = enforce
+postscreen_greet_action = ignore
+postscreen_dnsbl_action = ignore
 postscreen_access_list = permit_mynetworks
 postscreen_dnsbl_sites = {{ email_postfix_rbls | join(', ') }}
