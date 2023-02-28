@@ -17,6 +17,13 @@ bayes_file_mode 0777
 ok_languages {{ email_spamassassin_languages | join(" ") }}
 ok_locales {{ email_spamassassin_locales | join(" ") }}
 
+# Fix issue with several spam emails not being classified as such because of
+# a supposed high reliability IP
+score RCVD_IN_DNSWL_HI 0 -1.0 0 -1.0
+
+# Define local DNS server
+dns_server 127.0.0.1
+
 # Set Pyzor & Razor config file paths
 razor_config {{ email_spamassassin_home }}/.razor/razor-agent.conf
 pyzor_options --homedir {{ email_spamassassin_home }}
