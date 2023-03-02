@@ -2,6 +2,7 @@
 
 user  {{ webserver_nginx_user }};
 worker_processes  auto;
+include {{ webserver_nginx_config_directory }}/modules-enabled/*.conf;
 
 pid {{ webserver_nginx_pidfile }};
 
@@ -42,7 +43,7 @@ http {
   # Logging Settings
   ##
 
-  access_log {{ webserver_nginx_log_directory }}/access.log main;
+  access_log {{ webserver_nginx_log_directory }}/access.log;
   error_log {{ webserver_nginx_log_directory }}/error.log warn;
 
   ##
@@ -63,7 +64,6 @@ http {
   ##
 
   include {{ webserver_nginx_config_directory }}/conf.d/*.conf;
-  include {{ webserver_nginx_config_directory }}/modules-enabled/*.conf;
 
   log_format  main  '$remote_addr - $remote_user [$time_local] '
                     '"$request" $status $body_bytes_sent '
