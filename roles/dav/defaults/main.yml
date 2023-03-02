@@ -2,7 +2,7 @@
 dav_user: "dav"
 dav_home: "/home/dav"
 
-dav_radicale_version: "3.0.3"
+dav_radicale_version: "3.1.8"
 dav_radicale_bind_address: "127.0.0.1"
 dav_radicale_port: "5232"
 dav_radicale_log_directory: "/var/log/radicale"
