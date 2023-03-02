@@ -1,6 +1,7 @@
 {{ ansible_managed | comment }}
 
-check process unbound with pidfile "{{ unbound_pidfile }}"
+check process unbound
+  matching "unbound"
   group dns
   start program = "/usr/sbin/service unbound start"
   stop program  = "/usr/sbin/service unbound stop"
