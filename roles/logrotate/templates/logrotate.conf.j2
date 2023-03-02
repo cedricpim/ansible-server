@@ -1,6 +1,9 @@
 {{ ansible_managed | comment }}
 
 # see "man logrotate" for details
+
+# global options do not affect preceding include directives
+
 # rotate log files weekly
 weekly
 
@@ -18,3 +21,5 @@ compress
 
 # packages drop log rotation information into this directory
 include {{ logrotate_config_directory }}
+
+# system-specific logs may also be configured here.

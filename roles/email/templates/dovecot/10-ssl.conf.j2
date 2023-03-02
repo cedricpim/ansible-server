@@ -5,14 +5,14 @@
 ##
 
 # SSL/TLS support: yes, no, required. <doc/wiki/SSL.txt>
-#ssl = yes
+ssl = yes
 
 # PEM encoded X.509 SSL/TLS certificate and private key. They're opened before
 # dropping root privileges, so keep the key file unreadable by anyone but
 # root. Included doc/mkcert.sh can be used to easily generate self-signed
 # certificate, just make sure to update the domains in dovecot-openssl.cnf
-#ssl_cert = </etc/dovecot/private/dovecot.pem
-#ssl_key = </etc/dovecot/private/dovecot.key
+ssl_cert = </etc/dovecot/private/dovecot.pem
+ssl_key = </etc/dovecot/private/dovecot.key
 
 # If key file is password protected, give the password here. Alternatively
 # give it when starting dovecot with -p parameter. Since this file is often
@@ -32,9 +32,14 @@
 # when Dovecot needs to act as an SSL client (e.g. imapc backend or
 # submission service). The directory is usually /etc/ssl/certs in
 # Debian-based systems and the file is /etc/pki/tls/cert.pem in
-# RedHat-based systems.
-#ssl_client_ca_dir = /etc/ssl/certs
+# RedHat-based systems. Note that ssl_client_ca_file isn't recommended with
+# large CA bundles, because it leads to excessive memory usage.
+#ssl_client_ca_dir =
+ssl_client_ca_dir = /etc/ssl/certs
 #ssl_client_ca_file =
+
+# Require valid cert when connecting to a remote server
+#ssl_client_require_valid_cert = yes
 
 # Request client to send a certificate. If you also want to require it, set
 # auth_ssl_require_client_cert=yes in auth section.
@@ -49,7 +54,7 @@
 # Generate new params with `openssl dhparam -out /etc/dovecot/dh.pem 4096`
 # Or migrate from old ssl-parameters.dat file with the command dovecot
 # gives on startup when ssl_dh is unset.
-#ssl_dh = </usr/share/dovecot/dh.pem
+ssl_dh = </usr/share/dovecot/dh.pem
 
 # Minimum SSL protocol version to use. Potentially recognized values are SSLv3,
 # TLSv1, TLSv1.1, and TLSv1.2, depending on the OpenSSL version used.

@@ -12,6 +12,8 @@
 # possible, but leave them commented.  Uncommented options override the
 # default value.
 
+Include /etc/ssh/sshd_config.d/*.conf
+
 {% for port in general_sshd_ports %}
 Port {{ port }}
 {% endfor %}
@@ -19,8 +21,6 @@ Port {{ port }}
 #ListenAddress 0.0.0.0
 #ListenAddress ::
 
-Protocol 2
-# HostKeys for protocol version 2
 #HostKey /etc/ssh/ssh_host_rsa_key
 #HostKey /etc/ssh/ssh_host_ecdsa_key
 #HostKey /etc/ssh/ssh_host_ed25519_key

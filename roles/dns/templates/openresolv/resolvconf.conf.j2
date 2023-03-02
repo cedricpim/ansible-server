@@ -8,4 +8,9 @@ resolv_conf=/etc/resolv.conf
 # configure your subscribers configuration files below.
 name_servers="{{ (openresolv_local_name_servers + openresolv_name_servers) | join(' ') }}"
 
+
+# Mirror the Debian package defaults for the below resolvers
+# so that resolvconf integrates seemlessly.
+dnsmasq_resolv=/var/run/dnsmasq/resolv.conf
+pdnsd_conf=/etc/pdnsd.conf
 unbound_conf={{ unbound_config_directory }}/unbound.conf.d/resolvconf.conf
