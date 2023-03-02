@@ -2,7 +2,6 @@
 
 # Some general options
 protocols = imap sieve
-ssl = yes
 {% if letsencrypt_cert is defined and letsencrypt_cert.stat.islnk is defined %}
 ssl_cert = <{{ webserver_letsencrypt_config_directory }}/live/{{ server }}/fullchain.pem
 ssl_key = <{{ webserver_letsencrypt_config_directory }}/live/{{ server }}/privkey.pem
@@ -11,7 +10,6 @@ ssl_cert = </etc/ssl/certs/ssl-cert-snakeoil.pem
 ssl_key = </etc/ssl/private/ssl-cert-snakeoil.key
 {% endif %}
 ssl_dh = <{{ email_dovecot_config_directory }}/dh.pem
-ssl_client_ca_dir = /etc/ssl/certs
 ssl_cipher_list = ALL:!LOW:!SSLv2:!EXP:!aNULL
 mail_home = {{ email_directory }}/%d/%n
 mail_location = maildir:{{ email_directory }}/%d/%n/mail:LAYOUT=fs

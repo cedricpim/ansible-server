@@ -34,7 +34,6 @@ ssl = yes
 # Debian-based systems and the file is /etc/pki/tls/cert.pem in
 # RedHat-based systems. Note that ssl_client_ca_file isn't recommended with
 # large CA bundles, because it leads to excessive memory usage.
-#ssl_client_ca_dir =
 ssl_client_ca_dir = /etc/ssl/certs
 #ssl_client_ca_file =
 
@@ -54,7 +53,7 @@ ssl_client_ca_dir = /etc/ssl/certs
 # Generate new params with `openssl dhparam -out /etc/dovecot/dh.pem 4096`
 # Or migrate from old ssl-parameters.dat file with the command dovecot
 # gives on startup when ssl_dh is unset.
-ssl_dh = </usr/share/dovecot/dh.pem
+#ssl_dh = </usr/share/dovecot/dh.pem
 
 # Minimum SSL protocol version to use. Potentially recognized values are SSLv3,
 # TLSv1, TLSv1.1, and TLSv1.2, depending on the OpenSSL version used.
