@@ -5,7 +5,6 @@
       - "acl"
       - "iw"
       - "fping"
-      - "python-dnspython"
     state: "latest"
 
 - name: "Check if netdata is installed"
@@ -23,10 +22,24 @@
     - file: path="{{ tempdir.path }}" state="absent"
   when: (netdata is defined and netdata.stat.islnk is not defined) or (update is defined and update)
 
+- name: "Create Netdata directories"
+  file:
+    path: "{{ item }}"
+    owner: "netdata"
+    group: "netdata"
+    mode: "0755"
+    state: "directory"
+  with_items:
+    - "{{ netdata_log_directory }}"
+    - "{{ netdata_config_directory }}/go.d"
+    - "{{ netdata_config_directory }}/python.d"
+
 - name: "Copy Netdata settings"
   template:
     src: "{{ item }}.j2"
     dest: "{{ netdata_config_directory }}/{{ item }}"
+    owner: "netdata"
+    group: "netdata"
     mode: "0644"
   with_items:
     - "go.d.conf"
@@ -37,23 +50,25 @@
 
 - name: "Copy Netdata Python settings"
   template:
-    src: "python.d/{{ item }}.conf.j2"
-    dest: "{{ netdata_config_directory }}/python.d/{{ item }}.conf"
+    src: "python.d/monit.conf.j2"
+    dest: "{{ netdata_config_directory }}/python.d/monit.conf"
+    owner: "netdata"
+    group: "netdata"
     mode: "0644"
-  with_items:
-    - "monit"
-    - "postgres"
-    - "web_log"
   notify: "Restart Netdata"
 
 - name: "Copy Netdata Go settings"
   template:
     src: "go.d/{{ item }}.conf.j2"
     dest: "{{ netdata_config_directory }}/go.d/{{ item }}.conf"
+    owner: "netdata"
+    group: "netdata"
     mode: "0644"
   with_items:
-    - "unbound"
+    - "postgres"
     - "systemdunits"
+    - "unbound"
+    - "web_log"
   notify: "Restart Netdata"
 
 - name: "Define permissions for Netdata to access Unbound"

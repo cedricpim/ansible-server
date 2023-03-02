@@ -11,7 +11,7 @@
 # - messages to your slack team (slack.com),
 # - messages to your alerta server (alerta.io),
 # - messages to your flock team (flock.com),
-# - messages to your discord guild (discordapp.com),
+# - messages to your discord guild (discord.com),
 # - messages to your telegram chat / group chat (telegram.org)
 # - sms messages to your cell phone or any sms enabled device (twilio.com)
 # - sms messages to your cell phone or any sms enabled device (messagebird.com)
@@ -21,7 +21,7 @@
 # - notifications to Amazon SNS topics (aws.amazon.com)
 # - messages to your irc channel on your selected network
 # - messages to a local or remote syslog daemon
-# - message to Microsoft Team (through webhook)
+# - message to Microsoft Teams (through webhook)
 # - message to Rocket.Chat (through webhook)
 # - message to Google Hangouts Chat (through webhook)
 #
@@ -79,7 +79,7 @@ date_format=''
 # domain name.
 #
 # This does not report correct FQDN's for slave systems for which this
-# sytem is a master.
+# sytem is a parent.
 #
 # Additionally, if the system host name is overridden in /etc/netdata.conf
 # with the `hostname` option, that name will be used unconditionally
@@ -162,10 +162,17 @@ sendsms=""
 #  - pagerduty.com (pd) services
 #  - irc channels
 #
-# You can append |critical to limit the notifications to be sent.
+# You can append modifiers to limit the notifications to be sent:
+# |critical - Send critical notifications and following status changes until
+#             the alarm is cleared.
+# |nowarn   - Do not send warning notifications.
+# |noclear  - Do not send clear notifications.
 #
 # In these examples, the first recipient receives all the alarms
-# while the second one receives only the critical ones:
+# while the second one receives only notifications for alarms that
+# have at some point become critical. The second user may still receive
+# warning and clear notifications, but only for the event that previously
+# caused a critical alarm.
 #
 #  email      : "user1@example.com user2@example.com|critical"
 #  pushover   : "2987343...9437837 8756278...2362736|critical"
@@ -180,6 +187,11 @@ sendsms=""
 #  pd         : "<pd_service_key_1> <pd_service_key_2>|critical"
 #  irc        : "<irc_channel_1> <irc_channel_2>|critical"
 #  hangouts   : "alarms disasters|critical"
+#
+# You can append multiple modifiers. In this example, recipient receives
+# notifications for critical alarms and following status changes except clear
+# notifications.
+#  email      : "user1@example.com|critical|noclear"
 #
 # If a recipient is set to empty string, the default recipient of the given
 # notification method (email, pushover, telegram, slack, alerta, etc) will be used.
@@ -219,8 +231,8 @@ DEFAULT_RECIPIENT_EMAIL="{{ email_webmaster }}@{{ server }}"
 # You can also have netdata add headers to the message that will
 # cause most e-mail clients to treat all notifications for a given
 # chart+alarm+host combination as a single thread.  This can help
-# simplify tracking of alarms, as it provides an easy wway for scripts
-# to corelate messages and also will cause most clients to group all the
+# simplify tracking of alarms, as it provides an easy way for scripts
+# to correlate messages and also will cause most clients to group all the
 # messages together.  This is enabled by default, uncomment the line
 # below if you want to disable it.
 #EMAIL_THREADING="NO"
@@ -258,7 +270,7 @@ DYNATRACE_SPACE=""
 DYNATRACE_TAG_VALUE=""
 
 # Change this to what you want
-DYNATRACE_ANNOTATION_TYPE="NetData Alarm"
+DYNATRACE_ANNOTATION_TYPE="Netdata Alarm"
 
 # This can be CUSTOM_INFO, CUSTOM_ANNOTATION, CUSTOM_CONFIGURATION, CUSTOM_DEPLOYMENT
 # Applying default value
@@ -267,6 +279,35 @@ DYNATRACE_EVENT="CUSTOM_INFO"
 
 
 DEFAULT_RECIPIENT_DYNATRACE=""
+
+#------------------------------------------------------------------------------
+# Stackpulse global notification options
+SEND_STACKPULSE="YES"
+
+# Webhook
+STACKPULSE_WEBHOOK=""
+
+DEFAULT_RECIPIENT_STACKPULSE=""
+
+#------------------------------------------------------------------------------
+# gotify global notification options
+SEND_GOTIFY="YES"
+
+# App token and url
+GOTIFY_APP_TOKEN=""
+GOTIFY_APP_URL=""
+
+DEFAULT_RECIPIENT_GOTIFY=""
+
+#------------------------------------------------------------------------------
+# opsgenie global notification options
+SEND_OPSGENIE="YES"
+
+# Api key
+OPSGENIE_API_KEY=""
+OPSGENIE_API_URL=""
+
+DEFAULT_RECIPIENT_OPSGENIE=""
 
 #------------------------------------------------------------------------------
 # hangouts (google hangouts chat) global notification options
@@ -413,6 +454,11 @@ SEND_TELEGRAM="YES"
 # Without it, netdata cannot send telegram messages.
 TELEGRAM_BOT_TOKEN=""
 
+# If an API limit error is returned on sending a message, Netdata will retry this number of times before giving up.
+# Setting the number to 0 makes Netdata do no retries (which is the default).
+# See https://core.telegram.org/bots/faq#my-bot-is-hitting-limits-how-do-i-avoid-this
+TELEGRAM_RETRIES_ON_LIMIT="0"
+
 # To get your chat ID send the command /getid to telegram bot @myidbot
 # (https://t.me/myidbot). Each user also needs to open a conversation with the
 # bot that will be sending notifications.
@@ -444,38 +490,45 @@ SLACK_WEBHOOK_URL=""
 DEFAULT_RECIPIENT_SLACK=""
 
 #------------------------------------------------------------------------------
-# Microsoft Team (office.com) global notification options
-# More details are available here regarding the payload syntax options : https://docs.microsoft.com/en-us/outlook/actionable-messages/message-card-reference
-# Online designer : https://acdesignerbeta.azurewebsites.net/
+# Microsoft Teams (office.com) global notification options
+# More details are available here regarding the payload syntax options:
+# https://docs.microsoft.com/en-us/outlook/actionable-messages/message-card-reference
+# Online designer : https://adaptivecards.io/designer/
 # multiple recipients can be given like this:
 #                  "CHANNEL1 CHANNEL2 ..."
 
-# enable/disable sending team notifications
-SEND_MSTEAM="YES"
+# enable/disable sending teams notifications
+SEND_MSTEAMS="YES"
+
+# In Microsoft Teams the channel name is encoded in the URI after
+# .../IncomingWebhook/...
+# You have to replace the encoded channel name by the placeholder `CHANNEL`
+# in `MSTEAMS_WEBHOOK_URL`. The placeholder `CHANNEL` will be replaced by the
+# actual encoded channel name before sending the notification.
+MSTEAMS_WEBHOOK_URL=""
+
 
 # if a role's recipients are not configured, a notification will be send to
 # this slack channel (empty = do not send a notification for unconfigured
 # roles):
-# For team the channel name is encoded in the URI after ....IncomingWebhook/___/.....
-# This value will be replaced in the webhook value to publish to several channels in a same Team.
-# In order to get it working properly, you have to replace the value between [] ....IncomingWebhook/[___]/..... by "CHANNEL" string.
-DEFAULT_RECIPIENT_MSTEAM=""
-# Based on the way MS Teams is working, put the differents channels here like : "CHANNEL1 CHANNEL2 ..."
+# Put the different encoded channel names here like : "CHANNEL1 CHANNEL2 ..."
 # AT LEAST ONE CHANNEL IS MANDATORY
-MSTEAM_WEBHOOK_URL=""
+DEFAULT_RECIPIENT_MSTEAMS=""
 
-# Define the default color scheme for alert to MS Team - icon and color
+
+# Define the default color scheme for alert to MS Teams - icon and color
 # Icons - go to https://emojipedia.org/bomb/
-MSTEAM_ICON_DEFAULT="♡"
-MSTEAM_ICON_CLEAR="💚"
-MSTEAM_ICON_WARNING="⚠️"
-MSTEAM_ICON_CRITICAL="🔥"
+MSTEAMS_ICON_DEFAULT="♡"
+MSTEAMS_ICON_CLEAR="💚"
+MSTEAMS_ICON_WARNING="⚠️"
+MSTEAMS_ICON_CRITICAL="🔥"
+
 
 # Colors
-MSTEAM_COLOR_DEFAULT="0076D7"
-MSTEAM_COLOR_CLEAR="65A677"
-MSTEAM_COLOR_WARNING="FFA500"
-MSTEAM_COLOR_CRITICAL="D93F3C"
+MSTEAMS_COLOR_DEFAULT="0076D7"
+MSTEAMS_COLOR_CLEAR="65A677"
+MSTEAMS_COLOR_WARNING="FFA500"
+MSTEAMS_COLOR_CRITICAL="D93F3C"
 
 
 #------------------------------------------------------------------------------
@@ -540,7 +593,7 @@ DEFAULT_RECIPIENT_FLOCK=""
 
 
 #------------------------------------------------------------------------------
-# discord (discordapp.com) global notification options
+# discord (discord.com) global notification options
 
 # multiple recipients can be given like this:
 #                  "CHANNEL1 CHANNEL2 ..."
@@ -549,7 +602,7 @@ DEFAULT_RECIPIENT_FLOCK=""
 SEND_DISCORD="YES"
 
 # Create a webhook by following the official documentation -
-# https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks
+# https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks
 DISCORD_WEBHOOK_URL=""
 
 # if a role's recipients are not configured, a notification will be send to
@@ -611,6 +664,10 @@ SEND_PD="YES"
 # (empty = do not send a notification for unconfigured roles):
 DEFAULT_RECIPIENT_PD=""
 
+# Which PD API are we going to use? For version 2 or newer, it is necessary to do a request for Pagerduty
+# before to set the version(https://developer.pagerduty.com/docs/events-api-v2/overview/).
+USE_PD_VERSION="1"
+
 
 #------------------------------------------------------------------------------
 # fleep notification options
@@ -653,6 +710,10 @@ DEFAULT_RECIPIENT_IRC=""
 # e.g. "irc.freenode.net"
 IRC_NETWORK=""
 
+# The irc port to which a connection will occur.
+# e.g. 6667 (the default one), 6697 (a TLS/SSL one)
+IRC_PORT=6667
+
 # The irc nickname which is required to send the notification. It must not be
 # an already registered name as the connection's MODE is defined as a 'guest'.
 IRC_NICKNAME=""
@@ -676,7 +737,7 @@ SEND_SYSLOG="NO"
 # A note on log levels and facilities:
 #
 # The traditional UNIX syslog mechanism has the concept of both log
-# levels and facilities.  A log level indicates the relaitve severity of
+# levels and facilities.  A log level indicates the relative severity of
 # the message, while a facility specifies a generic source for the message
 # (for example, the `mail` facility is where sendmail and postfix log
 # their messages).  All major syslog daemons have the ability to filter
@@ -735,7 +796,7 @@ DEFAULT_RECIPIENT_SYSLOG="netdata"
 SEND_PROWL="YES"
 
 # If a role's recipients are not configured, use the following,
-# (empty = do not send a notiication for unconfigured roles)
+# (empty = do not send a notification for unconfigured roles)
 #
 # Recipients for iOS push notifications are Prowl API keys.
 #
@@ -902,17 +963,26 @@ role_recipients_irc[sysadmin]="${DEFAULT_RECIPIENT_IRC}"
 
 role_recipients_syslog[sysadmin]="${DEFAULT_RECIPIENT_SYSLOG}"
 
-role_recipients_prowl[sysadming]="${DEFAULT_RECIPIENT_PROWL}"
+role_recipients_prowl[sysadmin]="${DEFAULT_RECIPIENT_PROWL}"
 
 role_recipients_awssns[sysadmin]="${DEFAULT_RECIPIENT_AWSSNS}"
 
 role_recipients_custom[sysadmin]="${DEFAULT_RECIPIENT_CUSTOM}"
 
-role_recipients_msteam[sysadmin]="${DEFAULT_RECIPIENT_MSTEAM}"
+role_recipients_msteams[sysadmin]="${DEFAULT_RECIPIENT_MSTEAMS}"
 
 role_recipients_rocketchat[sysadmin]="${DEFAULT_RECIPIENT_ROCKETCHAT}"
 
 role_recipients_dynatrace[sysadmin]="${DEFAULT_RECIPIENT_DYNATRACE}"
+
+role_recipients_opsgenie[sysadmin]="${DEFAULT_RECIPIENT_OPSGENIE}"
+
+role_recipients_matrix[sysadmin]="${DEFAULT_RECIPIENT_MATRIX}"
+
+role_recipients_stackpulse[sysadmin]="${DEFAULT_RECIPIENT_STACKPULSE}"
+
+role_recipients_gotify[sysadmin]="${DEFAULT_RECIPIENT_GOTIFY}"
+
 # -----------------------------------------------------------------------------
 # DNS related alarms
 
@@ -956,13 +1026,22 @@ role_recipients_awssns[domainadmin]="${DEFAULT_RECIPIENT_AWSSNS}"
 
 role_recipients_custom[domainadmin]="${DEFAULT_RECIPIENT_CUSTOM}"
 
-role_recipients_msteam[domainadmin]="${DEFAULT_RECIPIENT_MSTEAM}"
+role_recipients_msteams[domainadmin]="${DEFAULT_RECIPIENT_MSTEAMS}"
 
 role_recipients_rocketchat[domainadmin]="${DEFAULT_RECIPIENT_ROCKETCHAT}"
 
 role_recipients_sms[domainadmin]="${DEFAULT_RECIPIENT_SMS}"
 
 role_recipients_dynatrace[domainadmin]="${DEFAULT_RECIPIENT_DYNATRACE}"
+
+role_recipients_opsgenie[domainadmin]="${DEFAULT_RECIPIENT_OPSGENIE}"
+
+role_recipients_matrix[domainadmin]="${DEFAULT_RECIPIENT_MATRIX}"
+
+role_recipients_stackpulse[domainadmin]="${DEFAULT_RECIPIENT_STACKPULSE}"
+
+role_recipients_gotify[domainadmin]="${DEFAULT_RECIPIENT_GOTIFY}"
+
 # -----------------------------------------------------------------------------
 # database servers alarms
 # mysql, redis, memcached, postgres, etc
@@ -1007,13 +1086,22 @@ role_recipients_awssns[dba]="${DEFAULT_RECIPIENT_AWSSNS}"
 
 role_recipients_custom[dba]="${DEFAULT_RECIPIENT_CUSTOM}"
 
-role_recipients_msteam[dba]="${DEFAULT_RECIPIENT_MSTEAM}"
+role_recipients_msteams[dba]="${DEFAULT_RECIPIENT_MSTEAMS}"
 
 role_recipients_rocketchat[dba]="${DEFAULT_RECIPIENT_ROCKETCHAT}"
 
 role_recipients_sms[dba]="${DEFAULT_RECIPIENT_SMS}"
 
 role_recipients_dynatrace[dba]="${DEFAULT_RECIPIENT_DYNATRACE}"
+
+role_recipients_opsgenie[dba]="${DEFAULT_RECIPIENT_OPSGENIE}"
+
+role_recipients_matrix[dba]="${DEFAULT_RECIPIENT_MATRIX}"
+
+role_recipients_stackpulse[dba]="${DEFAULT_RECIPIENT_STACKPULSE}"
+
+role_recipients_gotify[dba]="${DEFAULT_RECIPIENT_GOTIFY}"
+
 # -----------------------------------------------------------------------------
 # web servers alarms
 # apache, nginx, lighttpd, etc
@@ -1058,13 +1146,22 @@ role_recipients_awssns[webmaster]="${DEFAULT_RECIPIENT_AWSSNS}"
 
 role_recipients_custom[webmaster]="${DEFAULT_RECIPIENT_CUSTOM}"
 
-role_recipients_msteam[webmaster]="${DEFAULT_RECIPIENT_MSTEAM}"
+role_recipients_msteams[webmaster]="${DEFAULT_RECIPIENT_MSTEAMS}"
 
 role_recipients_rocketchat[webmaster]="${DEFAULT_RECIPIENT_ROCKETCHAT}"
 
 role_recipients_sms[webmaster]="${DEFAULT_RECIPIENT_SMS}"
 
 role_recipients_dynatrace[webmaster]="${DEFAULT_RECIPIENT_DYNATRACE}"
+
+role_recipients_opsgenie[webmaster]="${DEFAULT_RECIPIENT_OPSGENIE}"
+
+role_recipients_matrix[webmaster]="${DEFAULT_RECIPIENT_MATRIX}"
+
+role_recipients_stackpulse[webmaster]="${DEFAULT_RECIPIENT_STACKPULSE}"
+
+role_recipients_gotify[webmaster]="${DEFAULT_RECIPIENT_GOTIFY}"
+
 # -----------------------------------------------------------------------------
 # proxy servers alarms
 # squid, etc
@@ -1105,17 +1202,26 @@ role_recipients_syslog[proxyadmin]="${DEFAULT_RECIPIENT_SYSLOG}"
 
 role_recipients_prowl[proxyadmin]="${DEFAULT_RECIPIENT_PROWL}"
 
-role_recipients_awssns[porxyadmin]="${DEFAULT_RECIPIENT_AWSSNS}"
+role_recipients_awssns[proxyadmin]="${DEFAULT_RECIPIENT_AWSSNS}"
 
 role_recipients_custom[proxyadmin]="${DEFAULT_RECIPIENT_CUSTOM}"
 
-role_recipients_msteam[proxyadmin]="${DEFAULT_RECIPIENT_MSTEAM}"
+role_recipients_msteams[proxyadmin]="${DEFAULT_RECIPIENT_MSTEAMS}"
 
 role_recipients_rocketchat[proxyadmin]="${DEFAULT_RECIPIENT_ROCKETCHAT}"
 
 role_recipients_sms[proxyadmin]="${DEFAULT_RECIPIENT_SMS}"
 
 role_recipients_dynatrace[proxyadmin]="${DEFAULT_RECIPIENT_DYNATRACE}"
+
+role_recipients_opsgenie[webmaster]="${DEFAULT_RECIPIENT_OPSGENIE}"
+
+role_recipients_matrix[webmaster]="${DEFAULT_RECIPIENT_MATRIX}"
+
+role_recipients_stackpulse[webmaster]="${DEFAULT_RECIPIENT_STACKPULSE}"
+
+role_recipients_gotify[webmaster]="${DEFAULT_RECIPIENT_GOTIFY}"
+
 # -----------------------------------------------------------------------------
 # peripheral devices
 # UPS, photovoltaics, etc
@@ -1158,10 +1264,18 @@ role_recipients_awssns[sitemgr]="${DEFAULT_RECIPIENT_AWSSNS}"
 
 role_recipients_custom[sitemgr]="${DEFAULT_RECIPIENT_CUSTOM}"
 
-role_recipients_msteam[sitemgr]="${DEFAULT_RECIPIENT_MSTEAM}"
+role_recipients_msteams[sitemgr]="${DEFAULT_RECIPIENT_MSTEAMS}"
 
 role_recipients_rocketchat[sitemgr]="${DEFAULT_RECIPIENT_ROCKETCHAT}"
 
 role_recipients_sms[sitemgr]="${DEFAULT_RECIPIENT_SMS}"
 
 role_recipients_dynatrace[sitemgr]="${DEFAULT_RECIPIENT_DYNATRACE}"
+
+role_recipients_opsgenie[sitemgr]="${DEFAULT_RECIPIENT_OPSGENIE}"
+
+role_recipients_matrix[sitemgr]="${DEFAULT_RECIPIENT_MATRIX}"
+
+role_recipients_stackpulse[sitemgr]="${DEFAULT_RECIPIENT_STACKPULSE}"
+
+role_recipients_gotify[sitemgr]="${DEFAULT_RECIPIENT_GOTIFY}"

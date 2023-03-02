@@ -18,13 +18,16 @@ check process netdata with pidfile {{ netdata_pidfile }}
   depends netdata_bin
   depends netdata_rc
 
-check file netdata_bin with path /usr/sbin/netdata
+check file netdata_bin with path /opt/netdata/usr/sbin/netdata
   group netdata
-  include /etc/monit/templates/rootbin
+  if failed checksum       then unmonitor
+  if failed permission 755 then unmonitor
+  if failed uid netdata    then unmonitor
+  if failed gid netdata    then unmonitor
 
 check file netdata_rc with path {{ lib_systemd_directory }}/netdata.service
   group netdata
   if failed checksum       then unmonitor
-  if failed permission 664 then unmonitor
+  if failed permission 644 then unmonitor
   if failed uid root       then unmonitor
   if failed gid root       then unmonitor
