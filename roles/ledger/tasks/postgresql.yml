@@ -4,7 +4,6 @@
     name:
       - "postgresql-{{ ledger_postgresql_version }}"
       - "postgresql-client-{{ ledger_postgresql_version }}"
-      - "python-psycopg2"
       - "python3-psycopg2"
     state: "latest"
 
