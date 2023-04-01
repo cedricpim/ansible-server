@@ -51,7 +51,6 @@ http {
   ##
 
   gzip on;
-
   # gzip_vary on;
   # gzip_proxied any;
   # gzip_comp_level 6;
@@ -74,7 +73,7 @@ http {
 
   # Improve HTTP headers
   server_tokens off;
-  add_header Content-Security-Policy "default-src 'self';";
+  add_header Content-Security-Policy "default-src 'self' *.{{ server }}; frame-ancestors 'none'";
   add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload";
   add_header X-Frame-Options "DENY";
   add_header X-Content-Type-Options "nosniff";

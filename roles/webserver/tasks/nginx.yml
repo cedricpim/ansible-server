@@ -49,14 +49,14 @@
     mode: "0755"
     state: "directory"
 
-- name: "Check if DHE parameter exists"
-  stat:
-    path: "{{ webserver_nginx_ssl_dhparam }}"
-  register: dhe_parameter
-
-- name: "Generate a stronger DHE parameter"
-  command: "openssl dhparam -out {{ webserver_nginx_ssl_dhparam }} 4096"
-  when: dhe_parameter is defined and dhe_parameter.stat.islnk is not defined
+- name: "Copy dh.pem"
+  copy:
+    src: "dh.pem"
+    dest: "{{ webserver_nginx_ssl_dhparam }}"
+    owner: "{{ webserver_nginx_user }}"
+    group: "{{ webserver_nginx_user }}"
+    mode: "0644"
+  notify: "Reload Nginx"
 
 - name: "Copy main settings"
   template:

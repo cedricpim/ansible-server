@@ -20,4 +20,16 @@ server {
   location = /50x.html {
     root   /usr/share/nginx/html;
   }
+
+  set $securitytxt "Contact: mailto:{{ email_webmaster }}@{{ server }}\nExpires: {{ webserver_security_expiration }}\nPreferred-Languages: {{ webserver_security_preferred_language }}\nCanonical: https://{{ server }}/.well-known/security.txt";
+
+  location /.well-known/security.txt {
+    add_header Content-Type text/plain;
+    return 200 $securitytxt;
+  }
+
+  location = /security.txt {
+    add_header Content-Type text/plain;
+    return 200 $securitytxt;
+  }
 }

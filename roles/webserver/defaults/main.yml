@@ -4,6 +4,8 @@ webserver_nginx_config_directory: "/etc/nginx"
 webserver_nginx_content_directory: "/var/www"
 webserver_nginx_log_directory: "/var/log/nginx"
 webserver_nginx_pidfile: "/run/nginx.pid"
+webserver_security_preferred_language: "en"
+webserver_security_expiration: "2100-12-31T23:59:59.999Z"
 
 webserver_nginx_ssl_dhparam: "/etc/ssl/certs/dhparam.pem"
 webserver_nginx_ssl_ciphers: "ECDHE-ECDSA-CHACHA20-POLY1305 ECDHE-RSA-CHACHA20-POLY1305 DHE-RSA-CHACHA20-POLY1305"
