@@ -137,7 +137,9 @@ default_destination_concurrency_limit = 5
 disable_vrfy_command = yes
 relay_destination_concurrency_limit = 1
 smtp_tls_note_starttls_offer = yes
-smtp_tls_security_level = may
+smtp_tls_security_level = dane
+smtp_dns_support_level = dnssec
+smtp_host_lookup = dns
 
 ## Postscreen
 postscreen_greet_action = ignore
