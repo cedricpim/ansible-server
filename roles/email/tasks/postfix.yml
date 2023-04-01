@@ -45,6 +45,13 @@
   loop_control:
     loop_var: "mapping"
 
+- name: "Copy dh.pem"
+  copy:
+    src: "dh.pem"
+    dest: "{{ email_postfix_config_directory }}/dh.pem"
+    mode: "0644"
+  notify: "Reload Postfix"
+
 - name: "Start/Enable Postfix"
   systemd:
     name: "postfix"
