@@ -9,6 +9,15 @@ server {
   root {{ ledger_firefly_directory }}/public;
   index index.php;
 
+  add_header Content-Security-Policy "default-src 'self' 'unsafe-inline' ledger.{{ server }}; frame-ancestors 'none'";
+  add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload";
+  add_header X-Frame-Options "DENY";
+  add_header X-Content-Type-Options "nosniff";
+  add_header Referrer-Policy "same-origin";
+  add_header Permissions-Policy "geolocation=(), midi=(), notifications=(), push=(), sync-xhr=(), microphone=(), camera=(), magnetometer=(), gyroscope=(), speaker=(), vibrate=(), fullscreen=(), payment=()";
+  add_header Expect-CT "max-age=86400, enforce";
+  add_header X-XSS-Protection "0";
+
   location / {
     auth_basic           "Restricted Area";
     auth_basic_user_file conf/htpasswd.ledger;
