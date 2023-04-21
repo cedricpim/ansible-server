@@ -6,6 +6,8 @@
     create_home: yes
     shell: "/bin/bash"
     state: "present"
+    groups: "{{ general_user_groups }}"
+    append: yes
 
 - name: "Set authorized key from local user"
   authorized_key:
