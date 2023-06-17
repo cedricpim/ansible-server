@@ -16,6 +16,7 @@
 #OPTIONS="--create-prefs --max-children 5 --helper-home-dir"
 OPTIONS="--create-prefs -x --max-children 5 \
 --helper-home-dir {{ email_spamassassin_home }} \
+-u {{ email_spamassassin_user }} -g {{ email_spamassassin_user }} \
 --siteconfigpath {{ email_spamassassin_config_directory }} \
 --socketpath={{ email_postfix_spool  }}/spamassassin/spamd.sock \
 --socketowner={{ email_spamassassin_user }} \
