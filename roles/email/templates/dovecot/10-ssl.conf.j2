@@ -56,8 +56,11 @@ ssl_client_ca_dir = /etc/ssl/certs
 #ssl_dh = </usr/share/dovecot/dh.pem
 
 # Minimum SSL protocol version to use. Potentially recognized values are SSLv3,
-# TLSv1, TLSv1.1, and TLSv1.2, depending on the OpenSSL version used.
-#ssl_min_protocol = TLSv1
+# TLSv1, TLSv1.1, TLSv1.2 and TLSv1.3, depending on the OpenSSL version used.
+#
+# Dovecot also recognizes values ANY and LATEST. ANY matches with any protocol
+# version, and LATEST matches with the latest version supported by library.
+#ssl_min_protocol = TLSv1.2
 
 # SSL ciphers to use, the default is:
 #ssl_cipher_list = ALL:!kRSA:!SRP:!kDHd:!DSS:!aNULL:!eNULL:!EXPORT:!DES:!3DES:!MD5:!PSK:!RC4:!ADH:!LOW@STRENGTH

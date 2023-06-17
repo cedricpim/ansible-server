@@ -18,7 +18,7 @@
 ##
 ## Start Monit in the background (run as a daemon):
 #
-  set daemon {{ monit_interval }}            # check services at 2-minute intervals
+set daemon {{ monit_interval }}              # check services at 120 seconds intervals
 #   with start delay 240    # optional: delay the first check by 4-minutes (by
 #                           # default Monit check immediately after Monit start)
 #
@@ -26,20 +26,22 @@
 ## Set syslog logging. If you want to log to a standalone log file instead,
 ## specify the full path to the log file
 #
-  set log {{ monit_logfile }}
+set log {{ monit_logfile }}
+
 #
 #
 ## Set the location of the Monit lock file which stores the process id of the
 ## running Monit instance. By default this file is stored in $HOME/.monit.pid
 #
-  set pidfile {{ monit_pidfile }}
+# set pidfile /var/run/monit.pid
+set pidfile {{ monit_pidfile }}
 #
 ## Set the location of the Monit id file which stores the unique id for the
 ## Monit instance. The id is generated and stored on first Monit start. By
 ## default the file is placed in $HOME/.monit.id.
 #
 # set idfile /var/.monit.id
-  set idfile {{ monit_idfile }}
+set idfile {{ monit_idfile }}
 #
 ## Set the location of the Monit state file which saves monitoring states
 ## on each cycle. By default the file is placed in $HOME/.monit.state. If
@@ -47,7 +49,8 @@
 ## the monitoring state across reboots. If it is on temporary filesystem, the
 ## state will be lost on reboot which may be convenient in some situations.
 #
-  set statefile {{ monit_statefile }}
+# set statefile /var/.monit.state
+set statefile {{ monit_statefile }}
 #
 #
 
@@ -76,14 +79,13 @@
 #
 ## Set the list of mail servers for alert delivery. Multiple servers may be
 ## specified using a comma separator. If the first mail server fails, Monit
-# will use the second mail server in the list and so on. By default Monit uses
-# port 25 - it is possible to override this with the PORT option.
+## will use the second mail server in the list and so on. By default Monit uses
+## port 25 - it is possible to override this with the PORT option.
 #
 # set mailserver mail.bar.baz,               # primary mailserver
 #                backup.bar.baz port 10025,  # backup mailserver on port 10025
 #                localhost                   # fallback relay
-  set mailserver localhost
-#
+set mailserver localhost
 #
 #
 ## By default Monit will drop alert events if no mail servers are available.
@@ -93,9 +95,9 @@
 ## by using the SLOTS option (if omitted, the queue is limited by space
 ## available in the back end filesystem).
 #
-  set eventqueue
-      basedir /var/lib/monit/events # set the base directory where events will be stored
-      slots 100                     # optionally limit the queue size
+ set eventqueue
+     basedir /var/lib/monit/events  # set the base directory where events will be stored
+     slots 100                      # optionally limit the queue size
 #
 #
 ## Send status and events to M/Monit (for more information about M/Monit
@@ -136,7 +138,7 @@
 ## are expanded at runtime. For example, to override the sender, use:
 #
 # set mail-format { from: monit@foo.bar }
-  set mail-format { from: {{ monit_sender }} }
+set mail-format { from: {{ monit_sender }} }
 #
 #
 ## You can set alert recipients whom will receive alerts if/when a
@@ -149,7 +151,7 @@
 ## This filter is recommended to avoid getting alerts for trivial cases.
 #
 # set alert your-name@your.domain not on { instance, action }
-  set alert {{ email_webmaster }}@{{ server }} not on { instance, action }
+set alert {{ email_webmaster }}@{{ server }} not on { instance, action }
 #
 #
 ## Monit has an embedded HTTP interface which can be used to view status of
@@ -160,14 +162,20 @@
 ## commands to a running Monit daemon. See the Monit Wiki if you want to
 ## enable SSL for the HTTP interface.
 #
-  set httpd port {{ monit_port }} and
-      use address {{ monit_bind_address }}  # only accept connection from localhost (drop if you use M/Monit)
+set httpd port {{ monit_port }} and
+    use address {{ monit_bind_address }}  # only accept connection from localhost (drop if you use M/Monit)
+    allow {{ monit_credentials }} # require user 'admin' with password 'monit'
 #     allow localhost        # allow localhost to connect to the server and
-      allow {{ monit_credentials }} # require user 'admin' with password 'monit'
 #     allow admin:monit      # require user 'admin' with password 'monit'
 #     #with ssl {            # enable SSL/TLS and set path to server certificate
 #     #    pemfile: /etc/ssl/certs/monit.pem
 #     #}
+#
+## Monit can perform act differently regarding services previous state when
+## going back in duty. By default, Monit will 'start' all services. Monit can
+## also takes no action to start services in 'nostart' mode. Monit can try to
+## restore the 'laststate' of the service when Monit was shutdown.
+# set onreboot start # start, nostart, laststart
 
 ###############################################################################
 ## Services
@@ -288,7 +296,7 @@
 ## and bandwidth usage.
 #
 #  check network public with interface eth0
-#    if failed link then alert
+#    if link down then alert
 #    if changed link then alert
 #    if saturation > 90% then alert
 #    if download > 10 MB/s then alert
@@ -308,6 +316,7 @@
 ## It is possible to include additional configuration parts from other files or
 ## directories.
 #
+#  include /etc/monit.d/*
    include {{ monit_directory }}/conf.d/*
    include {{ monit_directory }}/conf-enabled/*
 #
