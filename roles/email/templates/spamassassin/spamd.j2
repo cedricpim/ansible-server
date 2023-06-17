@@ -1,15 +1,10 @@
 {{ ansible_managed | comment }}
 
-# /etc/default/spamassassin
+# /etc/default/spamd
 # Duncan Findlay
 
 # WARNING: please read README.spamd before using.
 # There may be security risks.
-
-# Prior to version 3.4.2-1, spamd could be enabled by setting
-# ENABLED=1 in this file. This is no longer supported. Instead, please
-# use the update-rc.d command, invoked for example as "update-rc.d
-# spamassassin enable", to enable the spamd service.
 
 # Options
 # See man spamd for possible options. The -d option is automatically added.
@@ -18,9 +13,9 @@
 # make sure --max-children is not set to anything higher than 5,
 # unless you know what you're doing.
 
-OPTIONS="-x --max-children 5 \
+#OPTIONS="--create-prefs --max-children 5 --helper-home-dir"
+OPTIONS="--create-prefs -x --max-children 5 \
 --helper-home-dir {{ email_spamassassin_home }} \
--u {{ email_spamassassin_user }} -g {{ email_spamassassin_user }} \
 --siteconfigpath {{ email_spamassassin_config_directory }} \
 --socketpath={{ email_postfix_spool  }}/spamassassin/spamd.sock \
 --socketowner={{ email_spamassassin_user }} \
@@ -30,7 +25,7 @@ OPTIONS="-x --max-children 5 \
 # Pid file
 # Where should spamd write its PID to file? If you use the -u or
 # --username option above, this needs to be writable by that user.
-# Otherwise, the init script will not be able to shut spamd down.
+# Note that this setting is not used when spamd is managed by systemd
 PIDFILE="{{ email_spamd_pidfile }}"
 
 # Set nice level of spamd

@@ -13,7 +13,7 @@
 
 - name: "Reload SpamAssassin"
   systemd:
-    name: "spamassassin"
+    name: "spamd"
     state: "reloaded"
 
 - name: "Restart spamass-milter"

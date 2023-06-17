@@ -3,6 +3,7 @@
   apt:
     name:
       - "spamassassin"
+      - "spamd"
       - "spamass-milter"
     state: "latest"
   register: spamassassin_package
@@ -37,7 +38,7 @@
     dest: "/etc/default/{{ item }}"
     mode: "0644"
   with_items:
-    - "spamassassin"
+    - "spamd"
     - "spamass-milter"
   notify:
     - "Reload SpamAssassin"
@@ -133,7 +134,7 @@
     enabled: yes
     daemon_reload: yes
   with_items:
-    - "spamassassin"
+    - "spamd"
     - "spamass-milter"
     - "sa-learn.timer"
 

@@ -2,8 +2,8 @@
 
 check process spamassassin with pidfile {{ email_spamd_pidfile }}
    group mail
-   start program = "/usr/sbin/service spamassassin start && /usr/sbin/service spamass-milter start"
-   stop program  = "/usr/sbin/service spamassassin stop && /usr/sbin/service spamass-milter stop"
+   start program = "/usr/sbin/service spamd start && /usr/sbin/service spamass-milter start"
+   stop program  = "/usr/sbin/service spamd stop && /usr/sbin/service spamass-milter stop"
    if cpu usage > 99% for 5 cycles then alert
    if mem usage > 99% for 5 cycles then alert
    depends on spamassassin_bin
@@ -11,11 +11,11 @@ check process spamassassin with pidfile {{ email_spamd_pidfile }}
    depends on milter_bin
    depends on milter_rc
 
-check file spamassassin_bin with path /usr/bin/spamassassin
+check file spamassassin_bin with path /usr/sbin/spamd
   group mail
   include /etc/monit/templates/rootbin
 
-check file spamassassin_rc with path {{ lib_systemd_directory }}/spamassassin.service
+check file spamassassin_rc with path {{ lib_systemd_directory }}/spamd.service
   group mail
   include /etc/monit/templates/rootrc
 
