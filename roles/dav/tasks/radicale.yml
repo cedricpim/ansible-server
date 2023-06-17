@@ -1,19 +1,8 @@
 ---
-- name: "Install python3 and pip3"
+- name: "Install radicale"
   apt:
-    name:
-      - "python3"
-      - "python3-pip"
-      - "python-setuptools"
-    state: "latest"
-
-- name: "Install Radicale"
-  pip:
     name: "radicale"
-    version: "{{ dav_radicale_version }}"
-    state: "present"
-    executable: "pip3"
-  notify: "Restart Radicale"
+    state: "latest"
 
 - name: "Create Radicale directories"
   file:
@@ -57,10 +46,20 @@
       with_items: "{{ dav_collections }}"
   no_log: yes
 
-- name: "Copy Radicale systemd"
+- name: "Create Radicale service directory"
+  file:
+    path: "{{ systemd_directory }}/radicale.service.d"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+    state: "directory"
+
+- name: "Override Radicale service"
   template:
-    src: "radicale/radicale.service.j2"
-    dest: "{{ systemd_directory }}/radicale.service"
+    src: "radicale/override.conf.j2"
+    dest: "{{ systemd_directory }}/radicale.service.d/override.conf"
+    owner: "root"
+    group: "root"
     mode: "0644"
   notify: "Restart Radicale"
 

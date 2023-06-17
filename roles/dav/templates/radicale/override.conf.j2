@@ -1,0 +1,13 @@
+{{ ansible_managed | comment }}
+
+[Service]
+User={{ dav_user }}
+Group={{ dav_user }}
+
+# Logging
+StandardOutput=append:{{ dav_radicale_log_directory }}/radicale.log
+StandardError=append:{{ dav_radicale_log_directory }}/radicale.log
+
+ReadWritePaths={{ dav_home }} {{ dav_radicale_log_directory }}
+
+ProtectHome=false
