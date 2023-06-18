@@ -40,8 +40,6 @@ email_credentials: "{{ vault_email_credentials }}"
 email_mailboxes: "{{ vault_email_mailboxes }}"
 email_whitelist: "{{ vault_email_whitelist }}"
 email_spamassassin_languages: "{{ vault_email_spamassassin_languages }}"
-email_maxmind_account_id: "{{ vault_email_maxmind_account_id }}"
-email_maxmind_license_key: "{{ vault_email_maxmind_license_key }}"
 email_sieve_filters: "{{ vault_email_sieve_filters }}"
 email_spam: "{{ vault_email_spam }}"
 

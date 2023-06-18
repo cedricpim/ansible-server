@@ -45,8 +45,3 @@
   systemd:
     name: "nginx"
     state: "reloaded"
-
-- name: "Restart geoipupdate timer"
-  systemd:
-    name: "geoipupdate.timer"
-    state: "restarted"
