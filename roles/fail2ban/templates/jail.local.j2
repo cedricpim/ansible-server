@@ -320,6 +320,7 @@ port     = smtp,465,submission,imap,imaps,pop3,pop3s
 # "warn" level but overall at the smaller filesize.
 logpath  = %(postfix_log)s
 backend  = %(postfix_backend)s
+action   = %(action_)s
 bantime  = 3w
 findtime = 3d
 maxretry = 1
