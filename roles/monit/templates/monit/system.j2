@@ -6,7 +6,7 @@ check system $HOST
   if memory usage > 90% for 4 cycles then alert
   if swap usage > 25% for 4 cycles then alert
   if cpu usage (user) > 70% for 2 cycles then alert
-  if cpu usage (system) > 30% for 2 cycles then alert
+  if cpu usage (system) > 30% for 5 cycles then alert
   if cpu usage (wait) > 20% for 2 cycles then alert
 
 check filesystem rootfs with path {{ monit_filesystem_partition }}
