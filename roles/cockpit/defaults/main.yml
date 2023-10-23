@@ -1,0 +1,3 @@
+---
+cockpit_config_directory: "/etc/cockpit"
+cockpit_port: "9090"

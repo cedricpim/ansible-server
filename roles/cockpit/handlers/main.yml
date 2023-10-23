@@ -1,0 +1,6 @@
+---
+- name: "Restart Cockpit"
+  systemd:
+    name: "cockpit.socket"
+    state: "restarted"
+    daemon_reload: yes

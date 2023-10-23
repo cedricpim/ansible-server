@@ -40,6 +40,7 @@
     - { role: "netdata", tags: "netdata" }
     - { role: "ledger", tags: "ledger" }
     - { role: "htop", tags: "htop" }
+    - { role: "cockpit", tags: "cockpit" }
 
   post_tasks:
     - name: "Get list of users after running roles"

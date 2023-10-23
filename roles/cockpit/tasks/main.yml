@@ -1,0 +1,55 @@
+---
+- name: "Install cockpit"
+  apt:
+    name: "cockpit"
+    default_release: "{{ ansible_distribution_release }}-backports"
+    state: "latest"
+
+- name: "Create cockpit configuration directory"
+  file:
+    path: "{{ cockpit_config_directory }}"
+    mode: "0755"
+    state: "directory"
+
+- name: "Add cockpit configuration"
+  template:
+    src: "cockpit.conf.j2"
+    dest: "{{ cockpit_config_directory }}/cockpit.conf"
+    mode: "0644"
+
+- name: "Create Cockpit service directory"
+  file:
+    path: "{{ systemd_directory }}/cockpit.socket.d"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+    state: "directory"
+
+- name: "Override Cockpit service"
+  template:
+    src: "listen.conf.j2"
+    dest: "{{ systemd_directory }}/cockpit.socket.d/listen.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: "Restart Cockpit"
+
+- name: "Enable Cockpit"
+  systemd:
+    name: "cockpit.socket"
+    state: "restarted"
+    daemon_reload: yes
+
+- include_role:
+    name: "webserver"
+    tasks_from: "configure"
+  vars:
+    conf: "cockpit.conf"
+    credentials:
+      - "htpasswd.cockpit"
+
+- include_role:
+    name: "monit"
+    tasks_from: "configure"
+  vars:
+    conf: "cockpit"

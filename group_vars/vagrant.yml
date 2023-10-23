@@ -107,3 +107,5 @@ ledger_reoccurrences:
     currency: "EUR"
     trip: ""
     id: ""
+
+cockpit_credentials: "vagrant:YYzo3ZBykz1oI"

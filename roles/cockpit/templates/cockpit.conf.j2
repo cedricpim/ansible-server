@@ -1,0 +1,5 @@
+{{ ansible_managed | comment }}
+
+[WebService]
+Origins = https://cockpit.{{ server }} wss://cockpit.{{ server }}
+ProtocolHeader = X-Forwarded-Proto

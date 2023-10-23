@@ -58,3 +58,6 @@ ledger_postgresql_firefly_user: "{{ vault_ledger_postgresql_firefly_user }}"
 ledger_postgresql_firefly_password: "{{ vault_ledger_postgresql_firefly_password }}"
 ledger_credentials: "{{ vault_ledger_credentials }}"
 ledger_firefly_app_key: "{{ vault_ledger_firefly_app_key }}"
+
+cockpit_port: "{{ vault_cockpit_port }}"
+cockpit_credentials: "{{ vault_cockpit_credentials }}"
