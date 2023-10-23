@@ -45,8 +45,6 @@
     tasks_from: "configure"
   vars:
     conf: "cockpit.conf"
-    credentials:
-      - "htpasswd.cockpit"
 
 - include_role:
     name: "monit"
