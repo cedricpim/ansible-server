@@ -1,7 +1,13 @@
 ---
 - name: "Install cockpit"
   apt:
-    name: "cockpit"
+    name: 
+      - "cockpit"
+      - "cockpit-networkmanager"
+      - "cockpit-packagekit"
+      - "cockpit-pcp"
+      - "cockpit-sosreport"
+      - "cockpit-storaged"
     default_release: "{{ ansible_distribution_release }}-backports"
     state: "latest"
 
