@@ -6,6 +6,8 @@ server {
   access_log  {{ webserver_nginx_log_directory }}/monit.access.log;
   error_log   {{ webserver_nginx_log_directory }}/monit.error.log;
 
+  add_header Content-Security-Policy "default-src 'self' 'unsafe-inline' monit.{{ server }}; frame-ancestors 'none'";
+
   location / {
     proxy_set_header         X-Real-IP $remote_addr;
     proxy_set_header         X-Forwarded-For $proxy_add_x_forwarded_for;
