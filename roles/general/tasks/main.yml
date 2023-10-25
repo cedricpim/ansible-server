@@ -49,23 +49,6 @@
   loop_control:
     loop_var: "script"
 
-- name: "Create Rsyslog service directory"
-  file:
-    path: "{{ systemd_directory }}/rsyslog.service.d"
-    owner: "root"
-    group: "root"
-    mode: "0755"
-    state: "directory"
-
-- name: "Override Rsyslog exec command"
-  template:
-    src: "systemd/rsyslog.conf.j2"
-    dest: "{{ systemd_directory }}/rsyslog.service.d/override.conf"
-    owner: "root"
-    group: "root"
-    mode: "0644"
-  notify: "Restart Rsyslog"
-
 - name: "Copy service for mailing on failure"
   template:
     src: "systemd/status_email@.service.j2"
@@ -81,7 +64,6 @@
     - "at"
     - "cron"
     - "openssh-server"
-    - "rsyslog"
   loop_control:
     loop_var: "conf"
 
@@ -89,7 +71,7 @@
     name: "logrotate"
     tasks_from: "configure"
   vars:
-    conf: "rsyslog"
+    conf: "general"
 
 - name: "Install vim, curl, borg and some other utilities"
   apt:
@@ -98,7 +80,6 @@
       - "curl"
       - "at"
       - "acpid"
-      - "rsyslog"
       - "tmux"
       - "borgbackup"
     state: "latest"

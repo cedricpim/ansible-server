@@ -9,23 +9,12 @@
   compress
   delaycompress
   sharedscripts
-  postrotate
-    /usr/lib/rsyslog/rsyslog-rotate
-  endscript
 }
 
-{{ logs_directory }}/mail.info
-{{ logs_directory }}/mail.warn
-{{ logs_directory }}/mail.err
 {{ logs_directory }}/mail.log
-{{ logs_directory }}/daemon.log
-{{ logs_directory }}/kern.log
 {{ logs_directory }}/auth.log
 {{ logs_directory }}/user.log
-{{ logs_directory }}/lpr.log
 {{ logs_directory }}/cron.log
-{{ logs_directory }}/debug
-{{ logs_directory }}/messages
 {
   rotate 4
   weekly
@@ -34,7 +23,4 @@
   compress
   delaycompress
   sharedscripts
-  postrotate
-    /usr/lib/rsyslog/rsyslog-rotate
-  endscript
 }
