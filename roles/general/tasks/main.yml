@@ -82,6 +82,7 @@
       - "acpid"
       - "tmux"
       - "borgbackup"
+      - "ntp"
     state: "latest"
 
 - name: "Update bashrc with fix for terminal"
