@@ -5,6 +5,7 @@
       - "python3"
       - "python3-pip"
       - "ffmpeg"
+      - "pipx"
     state: "latest"
 
 - name: "Create {{ gallery_sigal_user }} user"
@@ -15,10 +16,9 @@
     state: "present"
 
 - name: "Install Sigal"
-  pip:
+  community.general.pipx:
     name: "sigal"
     state: "latest"
-    executable: "pip3"
 
 - name: "Create Sigal configuration directory"
   file:
