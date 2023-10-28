@@ -89,5 +89,3 @@
   lineinfile:
     dest: "~{{ general_user }}/.bashrc"
     line: 'export TERM=xterm-color'
-
-- import_tasks: logwatch.yml
