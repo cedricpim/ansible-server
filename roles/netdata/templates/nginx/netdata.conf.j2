@@ -6,7 +6,7 @@ server {
   access_log  {{ webserver_nginx_log_directory }}/netdata.access.log;
   error_log   {{ webserver_nginx_log_directory }}/netdata.error.log;
 
-  add_header Content-Security-Policy "default-src 'self' 'unsafe-inline' netdata.{{ server }}; frame-ancestors 'none'";
+  add_header Content-Security-Policy "default-src 'self' 'unsafe-inline' netdata.{{ server }} app.netdata.cloud data:; frame-ancestors 'none'";
 
   location / {
     auth_basic           "Restricted Area";
