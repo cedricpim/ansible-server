@@ -21,7 +21,7 @@
     name: "{{ item }}"
     state: "started"
     enabled: yes
-  with_items: 
+  with_items:
     - "postgresql"
     - "postgresql@{{ ledger_postgresql_version }}-main"
 
