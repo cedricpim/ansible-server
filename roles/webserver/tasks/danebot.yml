@@ -1,0 +1,49 @@
+---
+- name: "Download danebot executable"
+  get_url:
+    url: "{{ webserver_danebot_exec_url }}"
+    dest: "{{ general_scripts_directory }}/danebot"
+
+- name: "Download danebot configurations"
+  get_url:
+    url: "{{ webserver_danebot_config_url }}"
+    dest: "/etc/default/danebot"
+
+- name: "Initialize danebot"
+  command: "danebot init"
+
+- name: "Add template for dane-EE"
+  template:
+    src: "danebot/dane-ee.j2"
+    dest: "{{ webserver_letsencrypt_config_directory }}/staging/{{ server }}/dane-ee"
+    mode: "0755"
+
+- name: "Stop and disable certbot timer"
+  systemd:
+    name: "certbot.timer"
+    state: "stopped"
+    enabled: no
+
+- name: "Download danebot timer"
+  get_url:
+    url: "{{ webserver_danebot_timer_url }}"
+    dest: "{{ lib_systemd_directory }}/danebot.timer"
+
+- name: "Download danebot service"
+  get_url:
+    url: "{{ webserver_danebot_service_url }}"
+    dest: "{{ lib_systemd_directory }}/danebot.service"
+
+- name: "Start/enable danebot"
+  systemd:
+    name: "danebot.timer"
+    state: "started"
+    enabled: yes
+    daemon_reload: yes
+
+- name: "Display message about danebot next steps"
+  debug:
+    msg:
+      - "Please run"
+      - "danebot newkey {{ server }}"
+      - "and add the result to the DNS register"

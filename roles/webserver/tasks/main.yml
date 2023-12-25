@@ -2,6 +2,8 @@
 - import_tasks: "nginx.yml"
 - import_tasks: "letsencrypt.yml"
   when: group_names[0] != "vagrant"
+- import_tasks: "danebot.yml"
+  when: group_names[0] != "vagrant" and danebot is defined and danebot
 
 - include_role:
     name: "monit"

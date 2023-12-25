@@ -16,3 +16,8 @@ webserver_nginx_ssl_protocols:
 
 webserver_letsencrypt_challenge_directory: "/var/www/letsencrypt"
 webserver_letsencrypt_config_directory: "/etc/letsencrypt"
+
+webserver_danebot_exec_url: "https://raw.githubusercontent.com/tlsaware/danebot/main/danebot"
+webserver_danebot_config_url: "https://raw.githubusercontent.com/tlsaware/danebot/main/danebot.default"
+webserver_danebot_timer_url: "https://raw.githubusercontent.com/tlsaware/danebot/main/danebot.timer"
+webserver_danebot_service_url: "https://raw.githubusercontent.com/tlsaware/danebot/main/danebot.service"

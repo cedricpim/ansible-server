@@ -10,6 +10,7 @@ $(if ${CHECK},   $(eval ANSIBLE_OPTS += --check))
 $(if ${VERBOSE}, $(eval ANSIBLE_OPTS += -${VERBOSE}))
 $(if ${TAGS},    $(eval ANSIBLE_OPTS += --tags ${TAGS}))
 $(if ${UPDATE},  $(eval ANSIBLE_OPTS += -e "update=yes"))
+$(if ${DANEBOT}, $(eval ANSIBLE_OPTS += -e "danebot=yes"))
 
 setup:
 	$(eval ANSIBLE_OPTS += --vault-password-file vaulted_vars/system.txt)
