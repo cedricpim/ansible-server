@@ -16,8 +16,8 @@
   block:
     - tempfile: suffix="netdata" state="directory"
       register: tempdir
-    - get_url: url="{{ netdata_url }}" dest="{{ tempdir.path }}/installer.sh" checksum="{{ netdata_checksum }}"
-    - command: "bash {{ tempdir.path }}/installer.sh --non-interactive --no-updates --stable-channel --disable-telemetry"
+    - get_url: url="{{ netdata_url }}" dest="{{ tempdir.path }}/kickstart.sh" checksum="{{ netdata_checksum }}"
+    - command: "bash {{ tempdir.path }}/kickstart.sh --non-interactive --stable-channel --disable-telemetry"
   always:
     - file: path="{{ tempdir.path }}" state="absent"
   when: (netdata is defined and netdata.stat.islnk is not defined) or (update is defined and update)
