@@ -1,0 +1,2 @@
+{{ webserver_letsencrypt_config_directory }}/live/{{ server }}	IN_CREATE	systemctl restart dovecot
+{{ webserver_letsencrypt_config_directory }}/live/{{ server }}	IN_CREATE	systemctl reload postfix

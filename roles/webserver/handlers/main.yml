@@ -8,3 +8,8 @@
   systemd:
     name: "nginx"
     state: "restarted"
+
+- name: "Restart incron"
+  systemd:
+    name: "incron"
+    state: "restarted"
