@@ -10,10 +10,10 @@ if anyof (header :contains "X-Spam-Level" "****",
 }
 
 # File known Spam emails in spam bucket
-if address :is ["from", "reply-to"] {{ email_spam }} {
-  fileinto "Spam";
-  stop;
-}
+# if address :is ["from", "reply-to"] email_spam {
+#   fileinto "Spam";
+#   stop;
+# }
 
 if header "From" "{{ email_pflogsumm_sender }}" {
   fileinto :create "Reports";
