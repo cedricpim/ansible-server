@@ -45,24 +45,19 @@
     path: "{{ ledger_firefly_directory }}"
   register: firefly_iii_installed
 
-- name: "Install Firefly III"
-  composer:
-    command: "create-project"
-    arguments: "grumpydictator/firefly-iii {{ ledger_firefly_name }} {{ ledger_firefly_version }}"
-    working_dir: "{{ webserver_nginx_content_directory }}"
-    no_dev: yes
-    prefer_dist: yes
+- name: "Download and install Firefly III"
+  block:
+    - tempfile: suffix="firefly" state="directory"
+      register: tempdir
+    - get_url: url="{{ ledger_firefly_url }}" dest="{{ tempdir.path }}" checksum="sha256:{{ ledger_firefly_url }}.sha256"
+    - file: path="{{ webserver_nginx_content_directory }}/{{ ledger_firefly_name }}" mode="0755" state="directory"
+    - unarchive: src="{{ ledger_firefly_url }}" dest="{{ webserver_nginx_content_directory }}/{{ ledger_firefly_name }}" remote_src=yes
+    - file: path="{{ webserver_nginx_content_directory }}/{{ ledger_firefly_name }}" owner="{{ webserver_nginx_user }}" group="{{ webserver_nginx_user }}" mode="0755" state="directory" recurse=yes
+  always:
+    - file: path="{{ tempdir.path }}" state="absent"
   when:
     - firefly_iii_installed is defined
     - firefly_iii_installed.stat.islnk is not defined
-
-- name: "Ensure {{ ledger_firefly_directory }} permissions are set"
-  file:
-    path: "{{ ledger_firefly_directory }}"
-    owner: "{{ webserver_nginx_user }}"
-    group: "{{ webserver_nginx_user }}"
-    state: "directory"
-    recurse: yes
 
 - name: "Add configuration for Firefly III"
   template:
@@ -76,10 +71,11 @@
   command: "sudo -E -u {{ webserver_nginx_user }} php artisan {{ item }}"
   args:
     chdir: "{{ ledger_firefly_directory }}"
-    warn: no
   with_items:
-    - "migrate:refresh --seed"
     - "firefly-iii:upgrade-database"
+    - "firefly-iii:correct-database"
+    - "firefly-iii:report-integrity"
+    - "firefly-iii:laravel-passport-keys"
   when:
     - firefly_iii_installed is defined
     - firefly_iii_installed.stat.islnk is not defined
