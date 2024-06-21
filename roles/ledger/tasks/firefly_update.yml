@@ -13,7 +13,7 @@
   environment:
     COMPOSER_NO_INTERACTION: "1"
     COMPOSER_ALLOW_SUPERUSER: "1"
- 
+
 - name: "Add configuration for Firefly III"
   template:
     src: "firefly/env.j2"
@@ -46,11 +46,12 @@
   args:
     chdir: "{{ tempdir.path }}/{{ ledger_firefly_name }}"
   with_items:
-    - "cache:clear"
     - "migrate --seed"
-    - "firefly-iii:upgrade-database"
-    - "passport:install"
+    - "firefly-iii:decrypt-all"
     - "cache:clear"
+    - "view:clear"
+    - "firefly-iii:upgrade-database"
+    - "firefly-iii:laravel-passport-keys"
 
 - name: "Enable the new version of Firefly"
   block:
