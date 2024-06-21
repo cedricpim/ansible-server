@@ -52,7 +52,33 @@
     password: "{{ ledger_postgresql_firefly_password }}"
     db: "{{ ledger_postgresql_firefly_database }}"
     port: "{{ ledger_postgresql_port }}"
-    priv: "ALL"
+    state: "present"
+  become: yes
+  become_user: "{{ ledger_postgresql_user }}"
+  no_log: yes
+  vars:
+    ansible_ssh_pipelining: yes
+
+- name: "GRANT ALL PRIVILEGES ON DATABASE {{ ledger_postgresql_firefly_database }} TO {{ ledger_postgresql_firefly_user }}"
+  postgresql_privs:
+    privs: "ALL"
+    type: "database"
+    db: "{{ ledger_postgresql_firefly_database }}"
+    role: "{{ ledger_postgresql_firefly_user }}"
+    state: "present"
+  become: yes
+  become_user: "{{ ledger_postgresql_user }}"
+  no_log: yes
+  vars:
+    ansible_ssh_pipelining: yes
+
+- name: "GRANT ALL PRIVILEGES ON SCHEMA public TO {{ ledger_postgresql_firefly_user }}"
+  postgresql_privs:
+    privs: "ALL"
+    type: "schema"
+    objs: "public"
+    db: "{{ ledger_postgresql_firefly_database }}"
+    role: "{{ ledger_postgresql_firefly_user }}"
     state: "present"
   become: yes
   become_user: "{{ ledger_postgresql_user }}"
