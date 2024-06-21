@@ -32,3 +32,8 @@
   systemd:
     name: "php{{ ledger_firefly_php_version }}-fpm"
     state: "restarted"
+
+- name: "Clean temporary Firefly update directory"
+  file:
+    path: "{{ tempdir.path }}"
+    state: "absent"

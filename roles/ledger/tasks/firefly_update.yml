@@ -2,17 +2,14 @@
 - name: "Temporary directory for preparing new version of Firefly"
   tempfile: suffix="firefly" state="directory"
   register: tempdir
+  notify: "Clean temporary Firefly update directory"
 
 - name: "Update Firefly III"
-  composer:
-    command: "create-project"
-    arguments: "grumpydictator/firefly-iii {{ ledger_firefly_name }} {{ ledger_firefly_version }}"
-    working_dir: "{{ tempdir.path }}"
-    no_dev: yes
-    prefer_dist: yes
-  environment:
-    COMPOSER_NO_INTERACTION: "1"
-    COMPOSER_ALLOW_SUPERUSER: "1"
+  block:
+    - get_url: url="{{ ledger_firefly_url }}" dest="{{ tempdir.path }}" checksum="sha256:{{ ledger_firefly_url }}.sha256"
+    - file: path="{{ tempdir.path }}/{{ ledger_firefly_name }}" mode="0755" state="directory"
+    - unarchive: src="{{ ledger_firefly_url }}" dest="{{ tempdir.path }}/{{ ledger_firefly_name }}" remote_src=yes exclude=["storage/*"]
+    - file: path="{{ tempdir.path }}/{{ ledger_firefly_name }}" owner="{{ webserver_nginx_user }}" group="{{ webserver_nginx_user }}" mode="0755" state="directory" recurse=yes
 
 - name: "Add configuration for Firefly III"
   template:
@@ -23,23 +20,12 @@
     mode: "0644"
 
 - name: "Copy storage and uploads from current version"
-  command: "cp -r {{ ledger_firefly_directory }}/storage/{{ item }} {{ tempdir.path }}/{{ ledger_firefly_name }}/storage/{{ item }}"
-  with_items:
-    - "upload"
-    - "export"
-
-- name: "Clean cache files"
-  block:
-    - file: path="{{ tempdir.path }}/{{ ledger_firefly_name }}/bootstrap/cache" state="absent"
-    - file: path="{{ tempdir.path }}/{{ ledger_firefly_name }}/bootstrap/cache" owner="{{ webserver_nginx_user }}" group="{{ webserver_nginx_user }}" state="directory"
-
-- name: "Ensure firefly-iii permissions are set"
-  file:
-    path: "{{ tempdir.path }}"
+  copy:
+    src: "{{ ledger_firefly_directory }}/storage"
+    dest: "{{ tempdir.path }}/{{ ledger_firefly_name }}/storage"
     owner: "{{ webserver_nginx_user }}"
     group: "{{ webserver_nginx_user }}"
-    state: "directory"
-    recurse: yes
+    remote_src: yes
 
 - name: "Final steps for upgrade"
   command: "sudo -E -u {{ webserver_nginx_user }} php artisan {{ item }}"
@@ -58,8 +44,3 @@
     - file: path="{{ ledger_firefly_directory }}.bak" state="absent"
     - command: "mv {{ ledger_firefly_directory }} {{ ledger_firefly_directory }}.bak"
     - command: "mv {{ tempdir.path }}/{{ ledger_firefly_name }} {{ ledger_firefly_directory }}"
-
-- name: "Remove temporary directory"
-  file:
-    path: "{{ tempdir.path }}"
-    state: "absent"
