@@ -9,7 +9,7 @@
     - get_url: url="{{ ledger_firefly_url }}" dest="{{ tempdir.path }}" checksum="sha256:{{ ledger_firefly_url }}.sha256"
     - file: path="{{ tempdir.path }}/{{ ledger_firefly_name }}" mode="0755" state="directory"
     - unarchive: src="{{ ledger_firefly_url }}" dest="{{ tempdir.path }}/{{ ledger_firefly_name }}" remote_src=yes exclude=["storage/*"]
-    - file: path="{{ tempdir.path }}/{{ ledger_firefly_name }}" owner="{{ webserver_nginx_user }}" group="{{ webserver_nginx_user }}" mode="0755" state="directory" recurse=yes
+    - file: path="{{ tempdir.path }}" owner="{{ webserver_nginx_user }}" group="{{ webserver_nginx_user }}" mode="0755" state="directory" recurse=yes
 
 - name: "Add configuration for Firefly III"
   template:
