@@ -2,3 +2,4 @@ playbook.retry
 .vagrant
 vaulted_vars/*.txt
 inventory.ini
+ansible.log
