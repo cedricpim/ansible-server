@@ -3,3 +3,7 @@ apt_sury_key: "15058500A0235D97F5D10063B188E2B695BD4743"
 apt_sury_repo: "https://packages.sury.org/php/"
 
 ledger_version_output: "ledger {{ ledger_version }}"
+
+# Necessary because `unarchive` module doesn't seem to handle explicit exclude option correctly
+ledger_update_unarchive_exclusions:
+  - storage
