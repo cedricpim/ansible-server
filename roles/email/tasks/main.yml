@@ -7,9 +7,12 @@
     state: "present"
 
 - import_tasks: "sieve.yml"
-- import_tasks: "opendkim.yml"
-- import_tasks: "spamassassin.yml"
-- import_tasks: "mta_sts.yml"
-- import_tasks: "postfix.yml"
-- import_tasks: "dovecot.yml"
-- import_tasks: "pflogsumm.yml"
+
+- block:
+    - import_tasks: "opendkim.yml"
+    - import_tasks: "spamassassin.yml"
+    - import_tasks: "mta_sts.yml"
+    - import_tasks: "postfix.yml"
+    - import_tasks: "dovecot.yml"
+    - import_tasks: "pflogsumm.yml"
+  when: sieve is not defined or not sieve
