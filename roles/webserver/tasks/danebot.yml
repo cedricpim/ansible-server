@@ -34,6 +34,23 @@
     url: "{{ webserver_danebot_service_url }}"
     dest: "{{ lib_systemd_directory }}/danebot.service"
 
+- name: "Create danebot override service directory"
+  file:
+    path: "{{ systemd_directory }}/danebot.service.d"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+    state: "directory"
+
+- name: "Override danebot service"
+  template:
+    src: "danebot/override.conf.j2"
+    dest: "{{ systemd_directory }}/danebot.service.d/override.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: "Reload systemd"
+
 - name: "Start/enable danebot"
   systemd:
     name: "danebot.timer"

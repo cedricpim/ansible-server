@@ -13,3 +13,7 @@
   systemd:
     name: "incron"
     state: "restarted"
+
+- name: "Reload systemd"
+  systemd:
+    daemon_reload: yes
