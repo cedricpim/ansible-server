@@ -4,7 +4,7 @@
     name:
       - "nginx"
       - "ssl-cert"
-    default_release: "{{ ansible_distribution_release }}-backports"
+    default_release: "{{ ansible_facts.distribution_release }}-backports"
     state: "latest"
 
 - name: "Create {{ webserver_nginx_user }} user"

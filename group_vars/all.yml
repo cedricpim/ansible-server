@@ -29,3 +29,10 @@ services:
   - "monit"
   - "netdata"
   - "sync"
+
+ansible_managed: |
+  WARNING: This file is managed by Ansible
+  Template: {{ template_path }}
+  Modified: {{ ansible_facts.date_time.iso8601 }}
+  Host: {{ ansible_facts.hostname }}
+  DO NOT EDIT MANUALLY - Changes will be overwritten

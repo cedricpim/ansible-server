@@ -5,7 +5,7 @@
   pre_tasks:
     - name: "Update backports apt sources"
       apt_repository:
-        repo: "deb http://ftp.debian.org/debian {{ ansible_distribution_release }}-backports main"
+        repo: "deb http://ftp.debian.org/debian {{ ansible_facts.distribution_release }}-backports main"
         state: "present"
       tags: "always"
 

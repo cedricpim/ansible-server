@@ -5,7 +5,7 @@
       - "dovecot-core"
       - "dovecot-common"
       - "dovecot-imapd"
-    default_release: "{{ ansible_distribution_release }}-backports"
+    default_release: "{{ ansible_facts.distribution_release }}-backports"
     state: "latest"
 
 - name: "Check if certificate already exists"

@@ -4,7 +4,7 @@
     name:
       - "dovecot-managesieved"
       - "dovecot-sieve"
-    default_release: "{{ ansible_distribution_release }}-backports"
+    default_release: "{{ ansible_facts.distribution_release }}-backports"
     state: "latest"
 
 - name: "Create Sieve folders"
@@ -30,7 +30,7 @@
 - name: "Ensure usage of double quotes"
   replace:
     path: "{{ email_directory }}/sieve-before/master.sieve"
-    regexp: ''''
+    regexp: "'"
     replace: '"'
   when: before_filter_sieve is defined and before_filter_sieve.changed
 

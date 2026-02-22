@@ -2,7 +2,7 @@
 - name: "Install LetsEncrypt certbot"
   apt:
     name: "python-certbot-nginx"
-    default_release: "{{ ansible_distribution_release }}-backports"
+    default_release: "{{ ansible_facts.distribution_release }}-backports"
     state: "latest"
 
 - name: "Create {{ webserver_letsencrypt_challenge_directory }} directory"
@@ -48,7 +48,7 @@
     name: "nginx"
     state: "reloaded"
   when: (default_template is defined and default_template.changed) or
-        (letsencrypt_template is defined and letsencrypt_template.changed)
+    (letsencrypt_template is defined and letsencrypt_template.changed)
 
 - name: "Start/enable certbot"
   systemd:
