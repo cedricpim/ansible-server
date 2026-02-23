@@ -18,7 +18,7 @@
 ##
 ## Start Monit in the background (run as a daemon):
 #
-set daemon {{ monit_interval }}              # check services at 120 seconds intervals
+set daemon  {{ monit_interval }}             # check services at 120 seconds intervals
 #   with start delay 240    # optional: delay the first check by 4-minutes (by
 #                           # default Monit check immediately after Monit start)
 #
@@ -66,6 +66,7 @@ set statefile {{ monit_statefile }}
 #     stopTimeout:       30 seconds  # timeout for service stop
 #     startTimeout:      30 seconds  # timeout for service start
 #     restartTimeout:    30 seconds  # timeout for service restart
+#     execTimeout:       0 seconds   # timeout for test action exec
 # }
 
 ## Set global SSL options (just most common options showed, see manual for
@@ -111,9 +112,11 @@ set mailserver localhost
 ## ":", "?", "@". Default timeout is 5 seconds, you can customize it by
 ## adding the timeout option.
 #
-# set mmonit http://monit:monit@192.168.1.10:8080/collector
-#     # with timeout 30 seconds              # Default timeout is 5 seconds
-#     # and register without credentials     # Don't register credentials
+# set mmonit
+#     http://monit:monit@192.168.1.10:8080/collector
+#     # with timeout 30 seconds                     # Default timeout is 5 seconds
+#     # and register without credentials            # Don't register credentials
+#     # with hostgroups [ "Virtual machines", Web ] # Member of M/Monit hostgroup
 #
 #
 ## Monit by default uses the following format for alerts if the mail-format
@@ -162,15 +165,17 @@ set alert {{ email_webmaster }}@{{ server }} not on { instance, action }
 ## commands to a running Monit daemon. See the Monit Wiki if you want to
 ## enable SSL for the HTTP interface.
 #
-set httpd port {{ monit_port }} and
-    use address {{ monit_bind_address }}  # only accept connection from localhost (drop if you use M/Monit)
-    allow {{ monit_credentials }} # require user 'admin' with password 'monit'
-#     allow localhost        # allow localhost to connect to the server and
-#     allow admin:monit      # require user 'admin' with password 'monit'
-#     #with ssl {            # enable SSL/TLS and set path to server certificate
-#     #    pemfile: /etc/ssl/certs/monit.pem
-#     #}
+#set httpd port 2812 and
+#    use address localhost  # only accept connection from localhost (drop if you use M/Monit)
+#    allow localhost        # allow localhost to connect to the server and
+#    allow admin:monit      # require user 'admin' with password 'monit'
+#    #with ssl {            # enable SSL/TLS and set path to server certificate
+#    #    pemfile: /etc/ssl/certs/monit.pem
+#    #}
 #
+set httpd port {{ monit_port }} and
+    use address {{ monit_bind_address }}
+    allow {{ monit_credentials }}
 ## Monit can perform act differently regarding services previous state when
 ## going back in duty. By default, Monit will 'start' all services. Monit can
 ## also takes no action to start services in 'nostart' mode. Monit can try to
@@ -307,6 +312,7 @@ set httpd port {{ monit_port }} and
 #
 #  check program myscript with path /usr/local/bin/myscript.sh
 #    if status != 0 then alert
+#    if content changed then alert
 #
 #
 ###############################################################################
