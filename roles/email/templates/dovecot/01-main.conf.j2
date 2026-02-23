@@ -2,17 +2,6 @@
 
 # Some general options
 protocols = imap sieve
-{% if letsencrypt_cert is defined and letsencrypt_cert.stat.islnk is defined %}
-ssl_cert = <{{ webserver_letsencrypt_config_directory }}/live/{{ server }}/fullchain.pem
-ssl_key = <{{ webserver_letsencrypt_config_directory }}/live/{{ server }}/privkey.pem
-{% else %}
-ssl_cert = </etc/ssl/certs/ssl-cert-snakeoil.pem
-ssl_key = </etc/ssl/private/ssl-cert-snakeoil.key
-{% endif %}
-ssl_dh = <{{ email_dovecot_config_directory }}/dh.pem
-ssl_cipher_list = ALL:!LOW:!SSLv2:!EXP:!aNULL
-mail_home = {{ email_directory }}/%d/%n
-mail_location = maildir:{{ email_directory }}/%d/%n/mail:LAYOUT=fs
 auth_username_chars = abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890.-_@
 
 # Set max. process size in megabytes. Most of the memory goes to mmap()ing
@@ -28,7 +17,7 @@ protocol imap {
 # Authentication
 service auth-worker {
   # Forbid to access /etc/shadow
-  user = $default_internal_user
+  user = $SET:default_internal_user
 }
 
 # Used by netdata
@@ -65,31 +54,24 @@ protocol lda {
   postmaster_address = {{ email_webmaster }}@{{ server }}
   mail_plugins = sieve
   quota_full_tempfail = yes
-  deliver_log_format = msgid=%m: %$
-  rejection_reason = Your message to <%t> was automatically rejected:%n%r
+  deliver_log_format = msgid=%{msgid}: %{$}
+  rejection_reason = Your message to <%{to}> was automatically rejected:\n%{reason}
 }
 
 # Plugins configuration
-plugin {
-  sieve=~/.dovecot.sieve
-  sieve_dir=~/sieve
-  sieve_before = {{ email_directory }}/sieve-before
-  sieve_after = {{ email_directory }}/sieve-after
+sieve_script personal {
+  path = ~/sieve
+  active_path = ~/.dovecot.sieve
 }
 
-# Authentication configuration
-auth_mechanisms = plain login
+sieve_script before {
+  type = before
+  path = {{ email_directory }}/sieve-before
+}
 
-passdb {
-  driver = passwd-file
-  args = username_format=%u scheme=ssha512 /etc/dovecot/passwd.db
-  deny = no
-  master = no
-  pass = no
-  skip = never
-  result_failure = continue
-  result_internalfail = continue
-  result_success = return-ok
+sieve_script after {
+  type = after
+  path = {{ email_directory }}/sieve-after
 }
 
 userdb {
