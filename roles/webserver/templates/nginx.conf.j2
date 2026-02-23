@@ -2,9 +2,10 @@
 
 user  {{ webserver_nginx_user }};
 worker_processes  auto;
-include {{ webserver_nginx_config_directory }}/modules-enabled/*.conf;
-
+worker_cpu_affinity auto;
 pid {{ webserver_nginx_pidfile }};
+
+include {{ webserver_nginx_config_directory }}/modules-enabled/*.conf;
 
 events {
   worker_connections 768;
@@ -51,6 +52,7 @@ http {
   ##
 
   gzip on;
+
   # gzip_vary on;
   # gzip_proxied any;
   # gzip_comp_level 6;
@@ -63,6 +65,7 @@ http {
   ##
 
   include {{ webserver_nginx_config_directory }}/conf.d/*.conf;
+  include {{ webserver_nginx_config_directory }}/sites-enabled/*;
 
   log_format  main  '$remote_addr - $remote_user [$time_local] '
                     '"$request" $status $body_bytes_sent '
@@ -82,3 +85,24 @@ http {
   add_header Expect-CT "max-age=86400, enforce";
   add_header X-XSS-Protection "0";
 }
+
+#mail {
+#  # See sample authentication script at:
+#  # http://wiki.nginx.org/ImapAuthenticateWithApachePhpScript
+#
+#  # auth_http localhost/auth.php;
+#  # pop3_capabilities "TOP" "USER";
+#  # imap_capabilities "IMAP4rev1" "UIDPLUS";
+#
+#  server {
+#    listen     localhost:110;
+#    protocol   pop3;
+#    proxy      on;
+#  }
+#
+#  server {
+#    listen     localhost:143;
+#    protocol   imap;
+#    proxy      on;
+#  }
+#}
