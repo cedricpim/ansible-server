@@ -16,18 +16,3 @@
     name: "ledger-networth.timer"
     state: "restarted"
     daemon_reload: yes
-
-- name: "Restart PostgreSQL"
-  systemd:
-    name: "postgresql"
-    state: "restarted"
-
-- name: "Restart PHP-FPM"
-  systemd:
-    name: "php{{ ledger_firefly_php_version }}-fpm"
-    state: "restarted"
-
-- name: "Clean temporary Firefly update directory"
-  file:
-    path: "{{ tempdir.path }}"
-    state: "absent"

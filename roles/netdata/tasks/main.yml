@@ -65,7 +65,6 @@
     group: "netdata"
     mode: "0644"
   with_items:
-    - "postgres"
     - "systemdunits"
     - "unbound"
     - "web_log"
