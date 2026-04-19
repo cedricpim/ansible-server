@@ -16,7 +16,6 @@ ExecStart=/usr/bin/node {{ actual_server_directory }}/node_modules/@actual-app/s
 Restart=on-failure
 RestartSec=60
 Environment=ACTUAL_PORT={{ actual_port }}
-Environment=ACTUAL_UPLOAD_DIR={{ actual_data_directory }}
 StandardOutput=append:{{ actual_log_directory }}/actual.log
 StandardError=append:{{ actual_log_directory }}/actual.log
 
