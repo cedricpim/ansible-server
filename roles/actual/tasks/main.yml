@@ -52,8 +52,6 @@
     tasks_from: "configure"
   vars:
     conf: "actual.conf"
-    credentials:
-      - "htpasswd.actual"
 
 - include_role:
     name: "monit"
