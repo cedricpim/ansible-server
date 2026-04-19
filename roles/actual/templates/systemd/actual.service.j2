@@ -1,0 +1,24 @@
+{{ ansible_managed | comment }}
+
+[Unit]
+Description=Actual Budget Server
+After=network.target
+OnFailure=status_email@%n.service
+StartLimitIntervalSec=600
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User={{ actual_user }}
+Group={{ actual_user }}
+WorkingDirectory={{ actual_server_directory }}
+ExecStart=/usr/bin/node {{ actual_server_directory }}/node_modules/@actual-app/sync-server/build/app.js
+Restart=on-failure
+RestartSec=60
+Environment=ACTUAL_PORT={{ actual_port }}
+Environment=ACTUAL_UPLOAD_DIR={{ actual_data_directory }}
+StandardOutput=append:{{ actual_log_directory }}/actual.log
+StandardError=append:{{ actual_log_directory }}/actual.log
+
+[Install]
+WantedBy=multi-user.target

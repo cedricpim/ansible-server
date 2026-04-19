@@ -38,6 +38,7 @@
     - { role: "fail2ban", tags: "fail2ban" }
     - { role: "email", tags: "email" }
     - { role: "netdata", tags: "netdata" }
+    - { role: "actual", tags: "actual" }
     - { role: "ledger", tags: "ledger" }
     - { role: "htop", tags: "htop" }
     - { role: "cockpit", tags: "cockpit" }

@@ -14,6 +14,8 @@ monit_port: "22122"
 monit_credentials: "monit:monit"
 monit_bind_address: "0.0.0.0"
 
+actual_credentials: "vagrant:YYzo3ZBykz1oI"
+
 keeweb_credentials: "vagrant:YYzo3ZBykz1oI"
 
 netdata_credentials: "vagrant:YYzo3ZBykz1oI"

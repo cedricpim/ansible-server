@@ -1,0 +1,6 @@
+---
+- name: "Restart actual"
+  systemd:
+    name: "actual"
+    state: "restarted"
+    daemon_reload: yes

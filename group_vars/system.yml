@@ -13,6 +13,8 @@ webserver_letsencrypt_email: "{{ vault_webserver_letsencrypt_email }}"
 monit_port: "{{ vault_monit_port }}"
 monit_credentials: "{{ vault_monit_credentials }}"
 
+actual_credentials: "{{ vault_actual_credentials }}"
+
 keeweb_credentials: "{{ vault_keeweb_credentials }}"
 
 netdata_port: "{{ vault_netdata_port }}"
