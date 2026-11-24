@@ -1,2 +1,3 @@
 ---
 systemd_sender: "systemd@localhost"
+journald_system_max_retention: "7day"
